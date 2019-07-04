@@ -390,9 +390,9 @@
 
       <h2 class="post-title">
         
-          <a class="post-title-link" href="/2019/07/03/myTitle/" itemprop="url">
+          <a class="post-title-link" href="/2019/07/03/hello-world/" itemprop="url">
             
-              <span itemprop="name">myTitle</span>
+              <span itemprop="name">Hello World</span>
             
           </a>
         
@@ -425,9 +425,9 @@
 
       <h2 class="post-title">
         
-          <a class="post-title-link" href="/2019/07/03/hello-world/" itemprop="url">
+          <a class="post-title-link" href="/2019/07/03/myTitle/" itemprop="url">
             
-              <span itemprop="name">Hello World</span>
+              <span itemprop="name">myTitle</span>
             
           </a>
         
@@ -781,6 +781,42 @@
   
 
   
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unjkp.com/valine/dist/Valine.min.js"></script>  //删除Valine核心代码库外链调用
+  <script src="/js/src/Valine.min.js"></script>  //调用刚下载的本地文件以加速加载速度
+
+    //这里改为从本地加载
+  
+  <script src="/js/src/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'SsAWGcn6CHm6Oif4CGFKBhVv-gzGzoHsz',
+        appKey: 'bniDOuxQuzVdGASyS3SyDFF8',
+        placeholder: '说点什么吧！',
+        avatar:'wavatar',
+        guest_info:['nick'] ,  //评论者只需要提供评论的昵称即可
+        pageSize:'10' || 10,
+    });
+    //增加以下六行代码去除 power by valine
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+  </script>
+
+
 
 
 
