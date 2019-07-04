@@ -94,16 +94,18 @@
 
 
 
-  <meta name="description" content="sysu-student">
-<meta property="og:type" content="website">
-<meta property="og:title" content="PerryWang🍎博客">
-<meta property="og:url" content="http://yoursite.com/archives/2019/index.html">
+  <meta name="description" content="有句话说得好，一切递归皆可用栈来实现。关键是理解好递归以及栈的基本原理。 这里以最为典型的中序遍历为例，其他的实现类似 直接调用c++STL中的stack 树的知识点用到大量的递归知识，建议大家不太理解的去找一下典型二叉树的例子然后一一步的去遍历尝试一下算法  数据结构：123456typedef char ElemType;typedef struct BiTNode &amp;#123;ElemTy">
+<meta name="keywords" content="c,算法,数据结构,c++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉树遍历的递归与非递归的实现">
+<meta property="og:url" content="http://yoursite.com/2019/07/04/二叉树遍历的递归与非递归的实现/index.html">
 <meta property="og:site_name" content="PerryWang🍎博客">
-<meta property="og:description" content="sysu-student">
+<meta property="og:description" content="有句话说得好，一切递归皆可用栈来实现。关键是理解好递归以及栈的基本原理。 这里以最为典型的中序遍历为例，其他的实现类似 直接调用c++STL中的stack 树的知识点用到大量的递归知识，建议大家不太理解的去找一下典型二叉树的例子然后一一步的去遍历尝试一下算法  数据结构：123456typedef char ElemType;typedef struct BiTNode &amp;#123;ElemTy">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-04T06:01:11.400Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="PerryWang🍎博客">
-<meta name="twitter:description" content="sysu-student">
+<meta name="twitter:title" content="二叉树遍历的递归与非递归的实现">
+<meta name="twitter:description" content="有句话说得好，一切递归皆可用栈来实现。关键是理解好递归以及栈的基本原理。 这里以最为典型的中序遍历为例，其他的实现类似 直接调用c++STL中的stack 树的知识点用到大量的递归知识，建议大家不太理解的去找一下典型二叉树的例子然后一一步的去遍历尝试一下算法  数据结构：123456typedef char ElemType;typedef struct BiTNode &amp;#123;ElemTy">
 
 
 
@@ -113,7 +115,7 @@
 
   
   
-  <link rel="canonical" href="http://yoursite.com/archives/2019/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/04/二叉树遍历的递归与非递归的实现/">
 
 
 
@@ -123,7 +125,7 @@
   };
 </script>
 
-  <title>归档 | PerryWang🍎博客</title>
+  <title>二叉树遍历的递归与非递归的实现 | PerryWang🍎博客</title>
   
 
 
@@ -171,7 +173,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -277,7 +279,7 @@
         
         
           
-          <li class="menu-item menu-item-archives menu-item-active">
+          <li class="menu-item menu-item-archives">
 
     
     
@@ -325,454 +327,289 @@
           
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
           
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-      
-      <span class="archive-page-counter">
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/04/二叉树遍历的递归与非递归的实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">二叉树遍历的递归与非递归的实现
+
+              
+            
+          </h1>
         
+
+        <div class="post-meta">
+
           
-        
-        嗯..! 目前共计 11 篇日志。 继续努力。
-      </span>
-      
-
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
+          
 
-        
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+              
+                
+              
 
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/07/04/二叉树的层序遍历/" itemprop="url">
+              <time title="创建时间：2019-07-04 13:57:20 / 修改时间：14:01:11" itemprop="dateCreated datePublished" datetime="2019-07-04T13:57:20+08:00">2019-07-04</time>
+            </span>
+          
+
+          
             
-              <span itemprop="name">二叉树的层序遍历</span>
+
             
-          </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-07-04T13:59:28+08:00" content="2019-07-04">
-          07-04
-        </time>
-      </div>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
 
-    </header>
-  </article>
+                
+                
+              
+            </span>
+          
 
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/04/二叉树遍历的递归与非递归的实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/04/二叉树遍历的递归与非递归的实现/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">853</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>有句话说得好，一切递归皆可用栈来实现。关键是理解好递归以及栈的基本原理。</li>
+<li>这里以最为典型的中序遍历为例，其他的实现类似</li>
+<li>直接调用c++STL中的stack</li>
+<li>树的知识点用到大量的递归知识，建议大家不太理解的去找一下典型二叉树的例子然后一一步的去遍历尝试一下算法</li>
+</ul>
+<h3 id="数据结构："><a href="#数据结构：" class="headerlink" title="数据结构："></a>数据结构：</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> ElemType;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">BiTNode</span> &#123;</span></span><br><span class="line">ElemType data;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BiTNode</span> *<span class="title">lchild</span>, *<span class="title">rchild</span>;</span></span><br><span class="line">&#125; Node, *Tree;</span><br></pre></td></tr></table></figure>
+
+<h3 id="中序遍历的递归实现："><a href="#中序遍历的递归实现：" class="headerlink" title="中序遍历的递归实现："></a>中序遍历的递归实现：</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InOrderTraverse</span><span class="params">(Tree T, <span class="keyword">void</span> (*Visit)(ElemType e))</span> </span>&#123;</span><br><span class="line"><span class="keyword">if</span>(T) &#123;</span><br><span class="line">InOrderTraverse(T-&gt;lchild,Visit);</span><br><span class="line">Visit(T-&gt;data);</span><br><span class="line">InOrderTraverse(T-&gt;rchild,Visit);</span><br><span class="line">&#125;    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="中序遍历的非递归实现："><a href="#中序遍历的非递归实现：" class="headerlink" title="中序遍历的非递归实现："></a>中序遍历的非递归实现：</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">InOrderTraverse2</span><span class="params">(Tree T, <span class="keyword">void</span> (*Visit)(ElemType e))</span> </span>&#123;</span><br><span class="line"><span class="built_in">stack</span>&lt;Node*&gt; S;</span><br><span class="line">Tree p;</span><br><span class="line">p = T;</span><br><span class="line">S.push(p);</span><br><span class="line"><span class="keyword">while</span> (p-&gt;lchild != <span class="literal">NULL</span>) &#123;</span><br><span class="line">p = p-&gt;lchild;</span><br><span class="line">S.push(p);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">while</span> (!S.empty()) &#123;</span><br><span class="line">p = S.top();</span><br><span class="line">Visit(p-&gt;data);</span><br><span class="line">S.pop();</span><br><span class="line"><span class="keyword">if</span> (p-&gt;rchild != <span class="literal">NULL</span>) &#123;</span><br><span class="line">p=p-&gt;rchild;</span><br><span class="line">S.push(p);</span><br><span class="line"><span class="keyword">while</span> (p-&gt;lchild != <span class="literal">NULL</span>) &#123;</span><br><span class="line">p = p-&gt;lchild;</span><br><span class="line">S.push(p);</span><br><span class="line">&#125;            </span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/07/04/二叉树遍历的递归与非递归的实现/" itemprop="url">
-            
-              <span itemprop="name">二叉树遍历的递归与非递归的实现</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-07-04T13:57:20+08:00" content="2019-07-04">
-          07-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/07/04/c语言实现稀疏矩阵/" itemprop="url">
-            
-              <span itemprop="name">c语言实现稀疏矩阵</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-07-04T13:55:26+08:00" content="2019-07-04">
-          07-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/07/04/KMP算法/" itemprop="url">
-            
-              <span itemprop="name">KMP算法</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-07-04T13:47:16+08:00" content="2019-07-04">
-          07-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/07/04/c语言实现string-二级指针的用法a/" itemprop="url">
-            
-              <span itemprop="name">c语言实现string & 二级指针的用法a</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-07-04T13:44:30+08:00" content="2019-07-04">
-          07-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/07/04/c语言实现栈的动态顺序存储/" itemprop="url">
-            
-              <span itemprop="name">c语言实现栈的动态顺序存储</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-07-04T13:42:29+08:00" content="2019-07-04">
-          07-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/07/04/c语言实现循环队列/" itemprop="url">
-            
-              <span itemprop="name">c语言实现循环队列</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-07-04T13:40:06+08:00" content="2019-07-04">
-          07-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/07/04/c语言实现双向链表/" itemprop="url">
-            
-              <span itemprop="name">c语言实现双向链表</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-07-04T13:38:03+08:00" content="2019-07-04">
-          07-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/07/04/struct和typedef-struct的区别/" itemprop="url">
-            
-              <span itemprop="name">struct和typedef struct的区别</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-07-04T13:15:45+08:00" content="2019-07-04">
-          07-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/07/04/c语言实现顺序表/" itemprop="url">
-            
-              <span itemprop="name">顺序表的实现</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-07-04T13:11:30+08:00" content="2019-07-04">
-          07-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-          <a class="post-title-link" href="/2019/07/04/iOS应用生命周期/" itemprop="url">
-            
-              <span itemprop="name">iOS应用生命周期</span>
-            
-          </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-07-04T12:59:03+08:00" content="2019-07-04">
-          07-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>PerryWang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://yoursite.com/2019/07/04/二叉树遍历的递归与非递归的实现/" title="二叉树遍历的递归与非递归的实现">http://yoursite.com/2019/07/04/二叉树遍历的递归与非递归的实现/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/c/" rel="tag"># c</a>
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+          
+            <a href="/tags/c/" rel="tag"># c++</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/04/c语言实现稀疏矩阵/" rel="next" title="c语言实现稀疏矩阵">
+                <i class="fa fa-chevron-left"></i> c语言实现稀疏矩阵
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/04/二叉树的层序遍历/" rel="prev" title="二叉树的层序遍历">
+                二叉树的层序遍历 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
 
         </div>
         
@@ -792,8 +629,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -947,6 +793,23 @@
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据结构："><span class="nav-number">1.</span> <span class="nav-text">数据结构：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中序遍历的递归实现："><span class="nav-number">2.</span> <span class="nav-text">中序遍历的递归实现：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中序遍历的非递归实现："><span class="nav-number">3.</span> <span class="nav-text">中序遍历的非递归实现：</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       
@@ -1115,6 +978,10 @@
 
 
   
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
 
   
 
@@ -1165,6 +1032,8 @@
 
 
 
+
+  
 
 
   

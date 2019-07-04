@@ -94,17 +94,18 @@
 
 
 
-  <meta name="description" content="sysu-student">
+  <meta name="description" content="分三块来讲述： 1 首先：//注意在C和C++里不同 ​    在C中定义一个结构体类型要用typedef: 1234typedef struct Student&amp;#123;    int a;&amp;#125;Stu;  ​    于是在声明变量的时候就可：Stu stu1;(如果没有typedef就必须用struct Student stu1;来声明) 　　这里的Stu实际上就是struct Stu">
+<meta name="keywords" content="c,c++">
 <meta property="og:type" content="article">
-<meta property="og:title" content="myTitle">
-<meta property="og:url" content="http://yoursite.com/2019/07/03/myTitle/index.html">
+<meta property="og:title" content="struct和typedef struct的区别">
+<meta property="og:url" content="http://yoursite.com/2019/07/04/struct和typedef-struct的区别/index.html">
 <meta property="og:site_name" content="PerryWang🍎博客">
-<meta property="og:description" content="sysu-student">
+<meta property="og:description" content="分三块来讲述： 1 首先：//注意在C和C++里不同 ​    在C中定义一个结构体类型要用typedef: 1234typedef struct Student&amp;#123;    int a;&amp;#125;Stu;  ​    于是在声明变量的时候就可：Stu stu1;(如果没有typedef就必须用struct Student stu1;来声明) 　　这里的Stu实际上就是struct Stu">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-03T12:41:08.766Z">
+<meta property="og:updated_time" content="2019-07-04T05:35:01.764Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="myTitle">
-<meta name="twitter:description" content="sysu-student">
+<meta name="twitter:title" content="struct和typedef struct的区别">
+<meta name="twitter:description" content="分三块来讲述： 1 首先：//注意在C和C++里不同 ​    在C中定义一个结构体类型要用typedef: 1234typedef struct Student&amp;#123;    int a;&amp;#125;Stu;  ​    于是在声明变量的时候就可：Stu stu1;(如果没有typedef就必须用struct Student stu1;来声明) 　　这里的Stu实际上就是struct Stu">
 
 
 
@@ -114,7 +115,7 @@
 
   
   
-  <link rel="canonical" href="http://yoursite.com/2019/07/03/myTitle/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/04/struct和typedef-struct的区别/">
 
 
 
@@ -124,7 +125,7 @@
   };
 </script>
 
-  <title>myTitle | PerryWang🍎博客</title>
+  <title>struct和typedef struct的区别 | PerryWang🍎博客</title>
   
 
 
@@ -346,7 +347,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/03/myTitle/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/04/struct和typedef-struct的区别/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="PerryWang">
@@ -363,7 +364,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">myTitle
+          <h1 class="post-title" itemprop="name headline">struct和typedef struct的区别
 
               
             
@@ -389,7 +390,7 @@
                 
               
 
-              <time title="创建时间：2019-07-03 20:23:53 / 修改时间：20:41:08" itemprop="dateCreated datePublished" datetime="2019-07-03T20:23:53+08:00">2019-07-03</time>
+              <time title="创建时间：2019-07-04 13:15:45 / 修改时间：13:35:01" itemprop="dateCreated datePublished" datetime="2019-07-04T13:15:45+08:00">2019-07-04</time>
             </span>
           
 
@@ -408,7 +409,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS开发/" itemprop="url" rel="index"><span itemprop="name">iOS开发</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
 
                 
                 
@@ -426,8 +427,8 @@
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/03/myTitle/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/03/myTitle/" itemprop="commentCount"></span>
+                <a href="/2019/07/04/struct和typedef-struct的区别/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/04/struct和typedef-struct的区别/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -455,7 +456,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">0</span>
+              <span title="本文字数">1.8k</span>
             </span>
           
 
@@ -476,7 +477,60 @@
       
 
       
-        
+        <p>分三块来讲述：</p>
+<p>1 首先：<strong>//注意在C和C++里不同</strong></p>
+<p>​    在C中定义一个结构体类型要用typedef:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> a;</span><br><span class="line">&#125;Stu;</span><br></pre></td></tr></table></figure>
+
+<p>​    于是在声明变量的时候就可：Stu stu1;(如果没有typedef就必须用struct Student stu1;来声明)</p>
+<p>　　这里的Stu实际上就是struct Student的别名。<strong>Stu==struct Student</strong></p>
+<p>　　另外这里也可以不写Student（于是也不能struct Student stu1;了，必须是Stu stu1;）　　　</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> a;</span><br><span class="line">&#125;Stu;</span><br><span class="line"><span class="comment">// 但在c++里很简单，直接</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Student</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> a;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>于是就定义了结构体类型Student，声明变量时直接Student stu2；</p>
+<p>2.其次：</p>
+<p>在c++中如果用typedef的话，又会造成区别：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span>   <span class="title">Student</span>  </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">int</span> a;  </span><br><span class="line">&#125;stu1;<span class="comment">//stu1是一个变量  </span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">Student2</span>  </span></span><br><span class="line"><span class="class">&#123;</span>  </span><br><span class="line">	<span class="keyword">int</span> a;   </span><br><span class="line">&#125;stu2;<span class="comment">//stu2是一个结构体类型=struct Student</span></span><br></pre></td></tr></table></figure>
+
+<p>使用时可以直接访问stu1.a</p>
+<p>但是stu2则必须先 stu2 s2;</p>
+<p>然后 s2.a=10;</p>
+<p>3 掌握上面两条就可以了，不过最后我们探讨个没多大关系的问题</p>
+<p>如果在c程序中我们写：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">&#125;aaa,bbb,ccc;</span><br></pre></td></tr></table></figure>
+
+<p>这相当于</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span>  </span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> num;</span><br><span class="line">    <span class="keyword">int</span> age;</span><br><span class="line">&#125;aaa；</span><br><span class="line"><span class="keyword">typedef</span> aaa bbb;</span><br><span class="line"><span class="keyword">typedef</span> aaa ccc;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说aaa,bbb,ccc三者都是结构体类型。声明变量时用任何一个都可以,在c++中也是如此。但是你要注意的是这个在c++中如果写掉了typedef关键字，那么aaa，bbb，ccc将是截然不同的三个对象。　</p>
+<p>　 </p>
+<p> <strong>typedef struct和struct的区别：</strong></p>
+<p><strong>1.</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tagMyStruct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> iNum;</span><br><span class="line">    <span class="keyword">long</span> lLength;</span><br><span class="line">&#125; MyStruct;</span><br></pre></td></tr></table></figure>
+
+<p> 上面的tagMyStruct是标识符，MyStruct是变量类型（相当于（int,char等））。</p>
+<p> 这语句实际上完成两个操作：</p>
+<p>1) 定义一个新的结构类型</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">tagMyStruct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> iNum;</span><br><span class="line">    <span class="keyword">long</span> lLength;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>分析：tagMyStruct称为“tag”，即“标签”，实际上是一个临时名字，不论是否有typedefstruct 关键字和tagMyStruct一起，构成了这个结构类型，这个结构都存在。</p>
+<p>我们可以用struct tagMyStruct varName来定义变量，但要注意，使用tagMyStruct varName来定义变量是不对的，因为struct 和tagMyStruct合在一起才能表示一个结构类型。</p>
+<p>　　</p>
+<p>2) typedef为这个新的结构起了一个名字，叫MyStruct。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tagMyStruct</span> <span class="title">MyStruct</span>;</span></span><br></pre></td></tr></table></figure>
+
+<p>因此，MyStruct实际上相当于struct tagMyStruct，我们可以使用MyStruct varName来定义变量。</p>
+<p><strong>2.</strong></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tagMyStruct</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> iNum;</span><br><span class="line">    <span class="keyword">long</span> lLength;</span><br><span class="line">&#125; MyStruct;</span><br></pre></td></tr></table></figure>
+
+<p>在C中，这个申明后申请结构变量的方法有两种：</p>
+<p>（1）struct tagMyStruct 变量名</p>
+<p>（2）MyStruct 变量名</p>
+<p>在c++中可以有</p>
+<p>（1）struct tagMyStruct 变量名</p>
+<p>（2）MyStruct 变量名</p>
+<p>（3）tagMyStruct 变量名</p>
+
       
     </div>
 
@@ -510,7 +564,7 @@
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
     
-    <a href="http://yoursite.com/2019/07/03/myTitle/" title="myTitle">http://yoursite.com/2019/07/03/myTitle/</a>
+    <a href="http://yoursite.com/2019/07/04/struct和typedef-struct的区别/" title="struct和typedef struct的区别">http://yoursite.com/2019/07/04/struct和typedef-struct的区别/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
@@ -532,6 +586,17 @@
 
     <footer class="post-footer">
       
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/c/" rel="tag"># c</a>
+          
+            <a href="/tags/c/" rel="tag"># c++</a>
+          
+        </div>
+      
 
       
       
@@ -541,14 +606,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2019/07/04/c语言实现顺序表/" rel="next" title="顺序表的实现">
+                <i class="fa fa-chevron-left"></i> 顺序表的实现
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/07/03/hello-world/" rel="prev" title="Hello World">
-                Hello World <i class="fa fa-chevron-right"></i>
+              <a href="/2019/07/04/c语言实现双向链表/" rel="prev" title="c语言实现双向链表">
+                c语言实现双向链表 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -615,7 +684,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">2</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -636,12 +705,45 @@
                     
                       
                     
-                    <span class="site-state-item-count">2</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
               
 
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
               
             </nav>
           
@@ -748,7 +850,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">0k</span>
+    <span title="站点总字数">34k</span>
   
 
   
