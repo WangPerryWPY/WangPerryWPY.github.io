@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Ex2：用 CImg 重写、封装给定的 Canny 代码，并测试C++封装要求：(1)所有的图像读写、数据处理只能用 CImg 库(整个工程文件不允许使用 Opencv 之类的第三方库)； (2)代码封装要求函数接口简洁清晰，可参考Code2 的方式封装。在原来的代码基础上, 增加一个函数：首先把相邻的边缘连成长的线条，并删除长度小于 20 的 Edge。对算法的若干组参数，对所有测试图像进行测试">
+<meta name="keywords" content="c++,计算机图形学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Canny算子实现边缘分割并做连线处理">
+<meta property="og:url" content="http://yoursite.com/2019/07/06/Canny算子实现边缘分割并做连线处理/index.html">
+<meta property="og:site_name" content="PerryWang🍎博客">
+<meta property="og:description" content="Ex2：用 CImg 重写、封装给定的 Canny 代码，并测试C++封装要求：(1)所有的图像读写、数据处理只能用 CImg 库(整个工程文件不允许使用 Opencv 之类的第三方库)； (2)代码封装要求函数接口简洁清晰，可参考Code2 的方式封装。在原来的代码基础上, 增加一个函数：首先把相邻的边缘连成长的线条，并删除长度小于 20 的 Edge。对算法的若干组参数，对所有测试图像进行测试">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-05T16:38:07.236Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Canny算子实现边缘分割并做连线处理">
+<meta name="twitter:description" content="Ex2：用 CImg 重写、封装给定的 Canny 代码，并测试C++封装要求：(1)所有的图像读写、数据处理只能用 CImg 库(整个工程文件不允许使用 Opencv 之类的第三方库)； (2)代码封装要求函数接口简洁清晰，可参考Code2 的方式封装。在原来的代码基础上, 增加一个函数：首先把相邻的边缘连成长的线条，并删除长度小于 20 的 Edge。对算法的若干组参数，对所有测试图像进行测试">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="PerryWang🍎博客" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/07/06/Canny算子实现边缘分割并做连线处理/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Canny算子实现边缘分割并做连线处理 | PerryWang🍎博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PerryWang🍎博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">分享软件开发中学到的点滴知识</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/WangPerryWPY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/06/Canny算子实现边缘分割并做连线处理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Canny算子实现边缘分割并做连线处理
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-06 00:37:29 / 修改时间：00:38:07" itemprop="dateCreated datePublished" datetime="2019-07-06T00:37:29+08:00">2019-07-06</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/计算机图形学/" itemprop="url" rel="index"><span itemprop="name">计算机图形学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/06/Canny算子实现边缘分割并做连线处理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/06/Canny算子实现边缘分割并做连线处理/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">20k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Ex2：用-CImg-重写、封装给定的-Canny-代码，并测试"><a href="#Ex2：用-CImg-重写、封装给定的-Canny-代码，并测试" class="headerlink" title="Ex2：用 CImg 重写、封装给定的 Canny 代码，并测试"></a>Ex2：用 CImg 重写、封装给定的 Canny 代码，并测试</h2><h3 id="C-封装要求："><a href="#C-封装要求：" class="headerlink" title="C++封装要求："></a><strong>C++封装要求：</strong></h3><p>(1)所有的图像读写、数据处理只能用 CImg 库(整个工程文件不允许<br>使用 Opencv 之类的第三方库)； (2)代码封装要求函数接口简洁清晰，可参考<br>Code2 的方式封装。<br>在原来的代码基础上, 增加一个函数：首先把相邻的边缘连成长的线条，并删除<br>长度小于 20 的 Edge。<br>对算法的若干组参数，对所有测试图像进行测试，并分析各参数对结果的影响。</p>
+<h3 id="实现过程："><a href="#实现过程：" class="headerlink" title="实现过程："></a><strong>实现过程：</strong></h3><p><strong>原理：</strong><br>实现 canny 边缘检测的原理通俗来说就是用离散化的梯度逼近函数根据二维灰度矩阵梯度向量来寻找图像灰度矩阵的灰度跃变位置，然后再图像中将这些点连起来就形成了图像的边缘。<br><strong>处理过程：</strong><br>一般对图像进行 canny 边缘检测要经过以下几步： </p>
+<ol>
+<li><p>对图像进行灰度化处理：<br><strong>公式：</strong> Gimg = 0.299R+0.587G+0.114B </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">RGBtoGray</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>对图像进行高斯滤波(出去图片中噪声对边缘检测的影响) </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">gaussian_smooth</span><span class="params">(<span class="keyword">float</span> sigma)</span></span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>用到辅助函数：<br><code>void make_gaussian_kernel(float sigma, float **kernel, int *windowsize);</code> </p>
+<ol start="3">
+<li>用一阶偏导的有限差分来计算梯度的幅值和方向 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//计算x,y方向的一阶导数 </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">derrivative_x_y</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>用到辅助函数：<br><code>double angle_radians(double x, double y);</code> </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//计算梯度向上的方向，以正x轴为逆时针方向指定的弧度 </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">radian_direction</span><span class="params">(<span class="keyword">int</span> xdirtag, <span class="keyword">int</span> ydirtag)</span></span>; </span><br><span class="line"><span class="comment">//计算梯度的幅值 </span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">magnitude_x_y</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><p>对梯度幅值进行非极大值抑制 </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">non_max_supp</span><span class="params">()</span></span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>双阈值检测和连接边缘 </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">apply_hysteresis</span><span class="params">(<span class="keyword">float</span> tlow, <span class="keyword">float</span> thigh)</span></span>;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>用到辅助函数:<br><code>void follow_edges(int *edgemapptr, int *edgemagptr, int lowval, int cols);</code> </p>
+<ol start="6">
+<li>之后再对将相邻边缘连成线条： <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CImg&lt;<span class="keyword">int</span>&gt; canny_line(CImg&lt;<span class="keyword">int</span>&gt; picture, <span class="keyword">int</span> distance);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>用到辅助函数：<br><code>CImg&lt;int&gt; Draw_line(CImg&lt;int&gt; tmp, int x, int y, int x1, int y1);</code> </p>
+<ol start="7">
+<li>删除长度小于20的线条： <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CImg&lt;<span class="keyword">int</span>&gt; delete_line(CImg&lt;<span class="keyword">int</span>&gt; picture); CImg&lt;<span class="keyword">int</span>&gt; delete_line(CImg&lt;<span class="keyword">int</span>&gt; picture);</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h2 id="代码："><a href="#代码：" class="headerlink" title="代码："></a><strong>代码：</strong></h2><p><strong>Canny.h</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*实现canny边缘检测的原理通俗来说就是用离散化的梯度逼近函数根据二维灰度矩阵梯度向量来寻找图像灰度矩阵</span></span><br><span class="line"><span class="comment">的灰度跃变位置，然后再图像中将这些点连起来就形成了图像的边缘</span></span><br><span class="line"><span class="comment">一般对图像进行canny边缘检测要经过以下几步：</span></span><br><span class="line"><span class="comment">1.对图像进行灰度化处理：Gimg = 0.299R+0.587G+0.114B</span></span><br><span class="line"><span class="comment">2.对图像进行高斯滤波(出去图片中噪声对边缘检测的影响)</span></span><br><span class="line"><span class="comment">3.用一阶偏导的有限差分来计算梯度的幅值和方向</span></span><br><span class="line"><span class="comment">4.对梯度幅值进行非极大值抑制</span></span><br><span class="line"><span class="comment">5.双阈值检测和连接边缘</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> CANNY_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CANNY_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"CImg.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cimg_library;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Canny</span> &#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">	CImg&lt;<span class="keyword">int</span>&gt; img;</span><br><span class="line">	<span class="keyword">int</span> rows;</span><br><span class="line">	<span class="keyword">int</span> cols;</span><br><span class="line">	<span class="keyword">int</span> *smoothedim;</span><br><span class="line">	<span class="keyword">int</span> *delta_x;  <span class="comment">//x方向的一阶导数</span></span><br><span class="line">	<span class="keyword">int</span> *delta_y;  <span class="comment">//y方向的一阶导数</span></span><br><span class="line">	<span class="keyword">float</span> *dirim;  <span class="comment">//梯度的方向</span></span><br><span class="line">	<span class="keyword">int</span> *magnitude; <span class="comment">//梯度的幅值</span></span><br><span class="line">	<span class="keyword">int</span> *nms;   <span class="comment">//非极大值抑制后得到矩阵</span></span><br><span class="line">	<span class="keyword">int</span> *edge;  <span class="comment">//边缘数组</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">	Canny();</span><br><span class="line">	Canny(<span class="built_in">string</span> name,<span class="built_in">string</span> format);</span><br><span class="line">	~Canny();</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">RGBtoGray</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">gaussian_smooth</span><span class="params">(<span class="keyword">float</span> sigma)</span></span>;</span><br><span class="line">	<span class="comment">//计算x,y方向的一阶导数</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">derrivative_x_y</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//计算梯度向上的方向，以正x轴为逆时针方向指定的弧度</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">radian_direction</span><span class="params">(<span class="keyword">int</span> xdirtag, <span class="keyword">int</span> ydirtag)</span></span>;</span><br><span class="line">	<span class="comment">//计算梯度的幅值</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">magnitude_x_y</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//进行非极大值抑制</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">non_max_supp</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//双阈值检测</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">apply_hysteresis</span><span class="params">(<span class="keyword">float</span> tlow, <span class="keyword">float</span> thigh)</span></span>;</span><br><span class="line">	<span class="comment">//默认参数设置高斯滤波标准差为2.0，低阈值为0.25，高阈值为0.75</span></span><br><span class="line">	CImg&lt;<span class="keyword">int</span>&gt; canny_image();</span><br><span class="line">	<span class="comment">//整合所有获取最后的边缘图,sigma表示高斯滤波的参数，tlow和thigh为两个阈值</span></span><br><span class="line">	CImg&lt;<span class="keyword">int</span>&gt; canny_image(<span class="keyword">int</span> sigma, <span class="keyword">float</span> tlow, <span class="keyword">float</span> thigh);</span><br><span class="line">	<span class="comment">//选出两个边缘点较近的距离连线</span></span><br><span class="line">	CImg&lt;<span class="keyword">int</span>&gt; canny_line(CImg&lt;<span class="keyword">int</span>&gt; picture, <span class="keyword">int</span> distance);</span><br><span class="line">	<span class="comment">//删掉长度小于20的边缘线</span></span><br><span class="line">	CImg&lt;<span class="keyword">int</span>&gt; delete_line(CImg&lt;<span class="keyword">int</span>&gt; picture);</span><br><span class="line">	<span class="comment">//显示图像</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">display</span><span class="params">()</span></span>;</span><br><span class="line">	<span class="comment">//编写类过程的测试，无实际用处</span></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Canny.cpp</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br><span class="line">554</span><br><span class="line">555</span><br><span class="line">556</span><br><span class="line">557</span><br><span class="line">558</span><br><span class="line">559</span><br><span class="line">560</span><br><span class="line">561</span><br><span class="line">562</span><br><span class="line">563</span><br><span class="line">564</span><br><span class="line">565</span><br><span class="line">566</span><br><span class="line">567</span><br><span class="line">568</span><br><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br><span class="line">580</span><br><span class="line">581</span><br><span class="line">582</span><br><span class="line">583</span><br><span class="line">584</span><br><span class="line">585</span><br><span class="line">586</span><br><span class="line">587</span><br><span class="line">588</span><br><span class="line">589</span><br><span class="line">590</span><br><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br><span class="line">603</span><br><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br><span class="line">623</span><br><span class="line">624</span><br><span class="line">625</span><br><span class="line">626</span><br><span class="line">627</span><br><span class="line">628</span><br><span class="line">629</span><br><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"pch.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"Canny.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"CImg.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstdlib&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> pi 3.1415926</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> M_PI 3.14159265358979323846</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> BOOSTBLURFACTOR 90.0</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NOEDGE 255</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> POSSIBLE_EDGE 128</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> EDGE 0</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cimg_library;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">make_gaussian_kernel</span><span class="params">(<span class="keyword">float</span> sigma, <span class="keyword">float</span> **kernel, <span class="keyword">int</span> *windowsize)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">angle_radians</span><span class="params">(<span class="keyword">double</span> x, <span class="keyword">double</span> y)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">follow_edges</span><span class="params">(<span class="keyword">int</span> *edgemapptr, <span class="keyword">int</span> *edgemagptr, <span class="keyword">int</span> lowval, <span class="keyword">int</span> cols)</span></span>;</span><br><span class="line">CImg&lt;<span class="keyword">int</span>&gt; Draw_line(CImg&lt;<span class="keyword">int</span>&gt; tmp, <span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> x1, <span class="keyword">int</span> y1);</span><br><span class="line"></span><br><span class="line">Canny::Canny() &#123;</span><br><span class="line">	rows = <span class="number">0</span>;</span><br><span class="line">	cols = <span class="number">0</span>;</span><br><span class="line">	smoothedim = <span class="literal">NULL</span>;</span><br><span class="line">	delta_x = <span class="literal">NULL</span>;  <span class="comment">//x方向的一阶导数</span></span><br><span class="line">	delta_y = <span class="literal">NULL</span>;  <span class="comment">//y方向的一阶导数</span></span><br><span class="line">	dirim = <span class="literal">NULL</span>;  <span class="comment">//梯度的方向</span></span><br><span class="line">	magnitude = <span class="literal">NULL</span>; <span class="comment">//梯度的幅值</span></span><br><span class="line">	nms = <span class="literal">NULL</span>;   <span class="comment">//非极大值抑制后得到矩阵</span></span><br><span class="line">	edge = <span class="literal">NULL</span>; <span class="comment">//边缘数组</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Canny::Canny(<span class="built_in">string</span> name, <span class="built_in">string</span> format) &#123;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">char</span> *a = name.c_str();</span><br><span class="line">	<span class="built_in">string</span> jpg = <span class="string">"jpg"</span>;</span><br><span class="line">	<span class="built_in">string</span> png = <span class="string">"png"</span>;</span><br><span class="line">	<span class="built_in">string</span> tiff = <span class="string">"tiff"</span>;</span><br><span class="line">	<span class="built_in">string</span> bmp = <span class="string">"bmp"</span>;</span><br><span class="line">	<span class="keyword">if</span> (format.compare(jpg) == <span class="number">0</span>)</span><br><span class="line">		img.load_jpeg(a);</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (format.compare(png) == <span class="number">0</span>)</span><br><span class="line">		img.load_png(a);</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (format.compare(tiff) == <span class="number">0</span>)</span><br><span class="line">		img.load_tiff(a);</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (format.compare(bmp) == <span class="number">0</span>)</span><br><span class="line">		img.load_bmp(a);</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="built_in">exit</span>(<span class="number">-1</span>);</span><br><span class="line">	<span class="comment">//img.load_jpeg("lena.jpg");</span></span><br><span class="line">	rows = img.width();</span><br><span class="line">	cols = img.height();</span><br><span class="line">	delta_x = <span class="keyword">new</span> <span class="keyword">int</span>[rows*cols]; <span class="built_in">memset</span>(delta_x, <span class="number">0x0</span>, rows*cols*<span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">	delta_y = <span class="keyword">new</span> <span class="keyword">int</span>[rows*cols]; <span class="built_in">memset</span>(delta_y, <span class="number">0x0</span>, rows*cols * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">	dirim = <span class="keyword">new</span> <span class="keyword">float</span>[rows*cols]; <span class="built_in">memset</span>(dirim, <span class="number">0x0</span>, rows*cols * <span class="keyword">sizeof</span>(<span class="keyword">float</span>));</span><br><span class="line">	magnitude = <span class="keyword">new</span> <span class="keyword">int</span>[rows*cols]; <span class="built_in">memset</span>(magnitude, <span class="number">0x0</span>, rows*cols * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">	nms = <span class="keyword">new</span> <span class="keyword">int</span>[rows*cols]; <span class="built_in">memset</span>(nms, <span class="number">0x0</span>, rows*cols * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">	edge = <span class="keyword">new</span> <span class="keyword">int</span>[rows*cols]; <span class="built_in">memset</span>(edge, <span class="number">0x0</span>, rows*cols * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">	smoothedim = <span class="keyword">new</span> <span class="keyword">int</span>[rows*cols];  <span class="built_in">memset</span>(smoothedim, <span class="number">0x0</span>, rows*cols * <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Canny::~Canny() &#123;</span><br><span class="line">	<span class="keyword">delete</span>[] delta_x;</span><br><span class="line">	<span class="keyword">delete</span>[] delta_y;</span><br><span class="line">	<span class="keyword">delete</span>[] dirim;</span><br><span class="line">	<span class="keyword">delete</span>[] magnitude;</span><br><span class="line">	<span class="keyword">delete</span>[] nms;</span><br><span class="line">	<span class="keyword">delete</span>[] edge;</span><br><span class="line">	<span class="keyword">delete</span>[] smoothedim;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Canny::display() &#123;</span><br><span class="line">	img.display();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Canny::RGBtoGray() &#123;</span><br><span class="line">	<span class="keyword">int</span> r = <span class="number">0</span>, g = <span class="number">0</span>, b = <span class="number">0</span>;</span><br><span class="line">	cimg_forXY(img, x, y) &#123;</span><br><span class="line">		r = img(x, y, <span class="number">0</span>);</span><br><span class="line">		g = img(x, y, <span class="number">1</span>);</span><br><span class="line">		b = img(x, y, <span class="number">2</span>);</span><br><span class="line">		img(x, y, <span class="number">0</span>) = img(x, y, <span class="number">1</span>) = img(x, y, <span class="number">2</span>) = (r*<span class="number">0.2126</span> + g * <span class="number">0.7152</span> + b * <span class="number">0.0722</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	img.resize(rows, cols, <span class="number">1</span>, <span class="number">1</span>, <span class="number">5</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Canny::gaussian_smooth(<span class="keyword">float</span> sigma)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> *tempim = <span class="keyword">new</span> <span class="keyword">int</span>[rows*cols];</span><br><span class="line">	<span class="keyword">int</span> r, c,rr,cc,</span><br><span class="line">		windowsize,  <span class="comment">//高斯核维度</span></span><br><span class="line">		center;      <span class="comment">//核中心</span></span><br><span class="line">	<span class="keyword">float</span> *kernel,</span><br><span class="line">		dot,</span><br><span class="line">		sum;</span><br><span class="line">	make_gaussian_kernel(sigma, &amp;kernel, &amp;windowsize);</span><br><span class="line">	center = windowsize / <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">for</span> (r = <span class="number">0</span>; r &lt; rows; r++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (c = <span class="number">0</span>; c &lt; cols; c++) &#123;</span><br><span class="line">			dot = <span class="number">0.0</span>;</span><br><span class="line">			sum = <span class="number">0.0</span>;</span><br><span class="line">			<span class="keyword">for</span> (cc = (-center); cc &lt;= center; cc++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (((c + cc) &gt;= <span class="number">0</span>) &amp;&amp; ((c + cc) &lt; cols)) &#123;</span><br><span class="line">					dot += (<span class="keyword">float</span>)img(r,c+cc) * kernel[center + cc];</span><br><span class="line">					sum += kernel[center + cc];</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			tempim[r*cols + c] = dot / sum;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (c = <span class="number">0</span>; c &lt; cols; c++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (r = <span class="number">0</span>; r &lt; rows; r++) &#123;</span><br><span class="line">			sum = <span class="number">0.0</span>;</span><br><span class="line">			dot = <span class="number">0.0</span>;</span><br><span class="line">			<span class="keyword">for</span> (rr = (-center); rr &lt;= center; rr++) &#123;</span><br><span class="line">				<span class="keyword">if</span> (((r + rr) &gt;= <span class="number">0</span>) &amp;&amp; ((r + rr) &lt; rows)) &#123;</span><br><span class="line">					dot += tempim[(r + rr)*cols + c] * kernel[center + rr];</span><br><span class="line">					sum += kernel[center + rr];</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			smoothedim[r*cols + c] = (<span class="keyword">short</span> <span class="keyword">int</span>)(dot*BOOSTBLURFACTOR / sum + <span class="number">0.5</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Canny::derrivative_x_y() &#123;</span><br><span class="line">	<span class="keyword">int</span> r = <span class="number">0</span>, c = <span class="number">0</span>, pos = <span class="number">0</span>;</span><br><span class="line">	<span class="comment">//计算x方向的一阶导数，判断边界避免遗失边界像素点</span></span><br><span class="line">	<span class="keyword">for</span> (r = <span class="number">0</span>; r &lt; rows; r++) &#123;</span><br><span class="line">		pos = r * cols;</span><br><span class="line">		delta_x[pos] = smoothedim[pos + <span class="number">1</span>] - smoothedim[pos];</span><br><span class="line">		pos++;</span><br><span class="line">		<span class="keyword">for</span> (c = <span class="number">1</span>; c &lt; (cols - <span class="number">1</span>); c++, pos++) &#123;</span><br><span class="line">			delta_x[pos] = smoothedim[pos + <span class="number">1</span>] - smoothedim[pos - <span class="number">1</span>];</span><br><span class="line">		&#125;</span><br><span class="line">		delta_x[pos] = smoothedim[pos] - smoothedim[pos - <span class="number">1</span>];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//计算y方向的一阶导数，判断边界避免遗失边界像素点</span></span><br><span class="line">	<span class="keyword">for</span> (c = <span class="number">0</span>; c &lt; cols; c++) &#123;</span><br><span class="line">		pos = c;</span><br><span class="line">		delta_y[pos] = smoothedim[pos + cols] - smoothedim[pos];</span><br><span class="line">		pos += cols;</span><br><span class="line">		<span class="keyword">for</span> (r = <span class="number">1</span>; r &lt; (rows - <span class="number">1</span>); r++, pos += cols) &#123;</span><br><span class="line">			delta_y[pos] = smoothedim[pos + cols] - smoothedim[pos - cols];</span><br><span class="line">		&#125;</span><br><span class="line">		delta_y[pos] = smoothedim[pos] - smoothedim[pos - cols];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Canny::radian_direction(<span class="keyword">int</span> xdirtag, <span class="keyword">int</span> ydirtag) &#123;</span><br><span class="line">	<span class="keyword">double</span> dx = <span class="number">0.0</span>, dy = <span class="number">0.0</span>;</span><br><span class="line">	<span class="keyword">int</span> r = <span class="number">0</span>, c = <span class="number">0</span>, pos = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (r = <span class="number">0</span>, pos = <span class="number">0</span>; r &lt; rows; r++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (c = <span class="number">0</span>; c &lt; cols; c++, pos++) &#123;</span><br><span class="line">			dx = (<span class="keyword">double</span>)delta_x[pos];</span><br><span class="line">			dy = (<span class="keyword">double</span>)delta_y[pos];</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (xdirtag == <span class="number">1</span>) dx = -dx;</span><br><span class="line">			<span class="keyword">if</span> (ydirtag == <span class="number">-1</span>) dy = -dy;</span><br><span class="line"></span><br><span class="line">			dirim[pos] = (<span class="keyword">float</span>)angle_radians(dx, dy);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Canny::magnitude_x_y() &#123;</span><br><span class="line">	<span class="keyword">int</span> r = <span class="number">0</span>, c = <span class="number">0</span>, pos = <span class="number">0</span>, sq1 = <span class="number">0</span>, sq2 = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (r = <span class="number">0</span>, pos = <span class="number">0</span>; r &lt; rows; r++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (c = <span class="number">0</span>; c &lt; cols; c++, pos++) &#123;</span><br><span class="line">			sq1 = (<span class="keyword">int</span>)delta_x[pos] * (<span class="keyword">int</span>)delta_x[pos];</span><br><span class="line">			sq2 = (<span class="keyword">int</span>)delta_y[pos] * (<span class="keyword">int</span>)delta_y[pos];</span><br><span class="line">			magnitude[pos] = (<span class="keyword">short</span>)(<span class="number">0.5</span> + <span class="built_in">sqrt</span>((<span class="keyword">float</span>)sq1 + (<span class="keyword">float</span>)sq2));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Canny::non_max_supp() &#123;</span><br><span class="line">	<span class="keyword">int</span> rowcount = <span class="number">0</span>, colcount = <span class="number">0</span>, count = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> *magrowptr, *magptr;</span><br><span class="line">	<span class="keyword">int</span> *gxrowptr, *gxptr;</span><br><span class="line">	<span class="keyword">int</span> *gyrowptr, *gyptr, z1 = <span class="number">0</span>, z2 = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> m00, gx = <span class="number">0</span>, gy = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">float</span> mag1 = <span class="number">0.0</span>, mag2 = <span class="number">0.0</span>, xperp = <span class="number">0.0</span>, yperp = <span class="number">0.0</span>;</span><br><span class="line">	<span class="keyword">int</span> *resultrowptr, *resultptr;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (count = <span class="number">0</span>, resultrowptr = nms, resultptr = nms + cols * (rows - <span class="number">1</span>);</span><br><span class="line">		count &lt; cols; resultptr++, resultrowptr++, count++) &#123;</span><br><span class="line">		*resultrowptr = *resultptr = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (count = <span class="number">0</span>, resultptr = nms, resultrowptr = nms + cols - <span class="number">1</span>;</span><br><span class="line">		count &lt; rows; count++, resultptr += cols, resultrowptr += cols) &#123;</span><br><span class="line">		*resultptr = *resultrowptr = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (rowcount = <span class="number">1</span>, magrowptr = magnitude + cols + <span class="number">1</span>, gxrowptr = delta_x + cols + <span class="number">1</span>,</span><br><span class="line">		gyrowptr = delta_y + cols + <span class="number">1</span>, resultrowptr = nms + cols + <span class="number">1</span>;</span><br><span class="line">		rowcount &lt; rows - <span class="number">2</span>;</span><br><span class="line">		rowcount++, magrowptr += cols, gyrowptr += cols, gxrowptr += cols,</span><br><span class="line">		resultrowptr += cols) &#123;</span><br><span class="line">		<span class="keyword">for</span> (colcount = <span class="number">1</span>, magptr = magrowptr, gxptr = gxrowptr, gyptr = gyrowptr,</span><br><span class="line">			resultptr = resultrowptr; colcount &lt; cols - <span class="number">2</span>;</span><br><span class="line">			colcount++, magptr++, gxptr++, gyptr++, resultptr++) &#123;</span><br><span class="line">			m00 = *magptr;</span><br><span class="line">			<span class="keyword">if</span> (m00 == <span class="number">0</span>) &#123;</span><br><span class="line">				*resultptr = NOEDGE;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span> &#123;</span><br><span class="line">				xperp = -(gx = *gxptr) / ((<span class="keyword">float</span>)m00);</span><br><span class="line">				yperp = (gy = *gyptr) / ((<span class="keyword">float</span>)m00);</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (gx &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">				<span class="keyword">if</span> (gy &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">					<span class="keyword">if</span> (gx &gt;= gy)</span><br><span class="line">					&#123;</span><br><span class="line">						<span class="comment">/* 111 */</span></span><br><span class="line">						<span class="comment">/* Left point */</span></span><br><span class="line">						z1 = *(magptr - <span class="number">1</span>);</span><br><span class="line">						z2 = *(magptr - cols - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag1 = (m00 - z1)*xperp + (z2 - z1)*yperp;</span><br><span class="line"></span><br><span class="line">						<span class="comment">/* Right point */</span></span><br><span class="line">						z1 = *(magptr + <span class="number">1</span>);</span><br><span class="line">						z2 = *(magptr + cols + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag2 = (m00 - z1)*xperp + (z2 - z1)*yperp;</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">else</span></span><br><span class="line">					&#123;</span><br><span class="line">						<span class="comment">/* 110 */</span></span><br><span class="line">						<span class="comment">/* Left point */</span></span><br><span class="line">						z1 = *(magptr - cols);</span><br><span class="line">						z2 = *(magptr - cols - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag1 = (z1 - z2)*xperp + (z1 - m00)*yperp;</span><br><span class="line"></span><br><span class="line">						<span class="comment">/* Right point */</span></span><br><span class="line">						z1 = *(magptr + cols);</span><br><span class="line">						z2 = *(magptr + cols + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag2 = (z1 - z2)*xperp + (z1 - m00)*yperp;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span></span><br><span class="line">				&#123;</span><br><span class="line">					<span class="keyword">if</span> (gx &gt;= -gy)</span><br><span class="line">					&#123;</span><br><span class="line">						<span class="comment">/* 101 */</span></span><br><span class="line">						<span class="comment">/* Left point */</span></span><br><span class="line">						z1 = *(magptr - <span class="number">1</span>);</span><br><span class="line">						z2 = *(magptr + cols - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag1 = (m00 - z1)*xperp + (z1 - z2)*yperp;</span><br><span class="line"></span><br><span class="line">						<span class="comment">/* Right point */</span></span><br><span class="line">						z1 = *(magptr + <span class="number">1</span>);</span><br><span class="line">						z2 = *(magptr - cols + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag2 = (m00 - z1)*xperp + (z1 - z2)*yperp;</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">else</span></span><br><span class="line">					&#123;</span><br><span class="line">						<span class="comment">/* 100 */</span></span><br><span class="line">						<span class="comment">/* Left point */</span></span><br><span class="line">						z1 = *(magptr + cols);</span><br><span class="line">						z2 = *(magptr + cols - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag1 = (z1 - z2)*xperp + (m00 - z1)*yperp;</span><br><span class="line"></span><br><span class="line">						<span class="comment">/* Right point */</span></span><br><span class="line">						z1 = *(magptr - cols);</span><br><span class="line">						z2 = *(magptr - cols + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag2 = (z1 - z2)*xperp + (m00 - z1)*yperp;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">if</span> ((gy = *gyptr) &gt;= <span class="number">0</span>)</span><br><span class="line">				&#123;</span><br><span class="line">					<span class="keyword">if</span> (-gx &gt;= gy)</span><br><span class="line">					&#123;</span><br><span class="line">						<span class="comment">/* 011 */</span></span><br><span class="line">						<span class="comment">/* Left point */</span></span><br><span class="line">						z1 = *(magptr + <span class="number">1</span>);</span><br><span class="line">						z2 = *(magptr - cols + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag1 = (z1 - m00)*xperp + (z2 - z1)*yperp;</span><br><span class="line"></span><br><span class="line">						<span class="comment">/* Right point */</span></span><br><span class="line">						z1 = *(magptr - <span class="number">1</span>);</span><br><span class="line">						z2 = *(magptr + cols - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag2 = (z1 - m00)*xperp + (z2 - z1)*yperp;</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">else</span></span><br><span class="line">					&#123;</span><br><span class="line">						<span class="comment">/* 010 */</span></span><br><span class="line">						<span class="comment">/* Left point */</span></span><br><span class="line">						z1 = *(magptr - cols);</span><br><span class="line">						z2 = *(magptr - cols + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag1 = (z2 - z1)*xperp + (z1 - m00)*yperp;</span><br><span class="line"></span><br><span class="line">						<span class="comment">/* Right point */</span></span><br><span class="line">						z1 = *(magptr + cols);</span><br><span class="line">						z2 = *(magptr + cols - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag2 = (z2 - z1)*xperp + (z1 - m00)*yperp;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">else</span></span><br><span class="line">				&#123;</span><br><span class="line">					<span class="keyword">if</span> (-gx &gt; -gy)</span><br><span class="line">					&#123;</span><br><span class="line">						<span class="comment">/* 001 */</span></span><br><span class="line">						<span class="comment">/* Left point */</span></span><br><span class="line">						z1 = *(magptr + <span class="number">1</span>);</span><br><span class="line">						z2 = *(magptr + cols + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag1 = (z1 - m00)*xperp + (z1 - z2)*yperp;</span><br><span class="line"></span><br><span class="line">						<span class="comment">/* Right point */</span></span><br><span class="line">						z1 = *(magptr - <span class="number">1</span>);</span><br><span class="line">						z2 = *(magptr - cols - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag2 = (z1 - m00)*xperp + (z1 - z2)*yperp;</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">else</span></span><br><span class="line">					&#123;</span><br><span class="line">						<span class="comment">/* 000 */</span></span><br><span class="line">						<span class="comment">/* Left point */</span></span><br><span class="line">						z1 = *(magptr + cols);</span><br><span class="line">						z2 = *(magptr + cols + <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag1 = (z2 - z1)*xperp + (m00 - z1)*yperp;</span><br><span class="line"></span><br><span class="line">						<span class="comment">/* Right point */</span></span><br><span class="line">						z1 = *(magptr - cols);</span><br><span class="line">						z2 = *(magptr - cols - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">						mag2 = (z2 - z1)*xperp + (m00 - z1)*yperp;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="comment">/* Now determine if the current point is a maximum point */</span></span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> ((mag1 &gt; <span class="number">0.0</span>) || (mag2 &gt; <span class="number">0.0</span>))</span><br><span class="line">			&#123;</span><br><span class="line">				*resultptr = NOEDGE;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">if</span> (mag2 == <span class="number">0.0</span>)</span><br><span class="line">					*resultptr = NOEDGE;</span><br><span class="line">				<span class="keyword">else</span></span><br><span class="line">					*resultptr = POSSIBLE_EDGE;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Canny::apply_hysteresis(<span class="keyword">float</span> tlow, <span class="keyword">float</span> thigh) &#123;</span><br><span class="line">	<span class="keyword">int</span> r = <span class="number">0</span>, c = <span class="number">0</span>, pos = <span class="number">0</span>, numedges = <span class="number">0</span>, lowcount = <span class="number">0</span>, highcount = <span class="number">0</span>, lowthreshold = <span class="number">0</span>, highthreshold = <span class="number">0</span>,</span><br><span class="line">		i = <span class="number">0</span>, *hist, rr = <span class="number">0</span>, cc = <span class="number">0</span>;</span><br><span class="line">	hist = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="number">32768</span>];</span><br><span class="line">	<span class="keyword">int</span> maximum_mag = <span class="number">0</span>, sumpix = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (r = <span class="number">0</span>, pos = <span class="number">0</span>; r &lt; rows; r++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (c = <span class="number">0</span>; c &lt; cols; c++, pos++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (nms[pos] == POSSIBLE_EDGE) edge[pos] = POSSIBLE_EDGE;</span><br><span class="line">			<span class="keyword">else</span> edge[pos] = NOEDGE;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (r = <span class="number">0</span>, pos = <span class="number">0</span>; r &lt; rows; r++, pos += cols) &#123;</span><br><span class="line">		edge[pos] = NOEDGE;</span><br><span class="line">		edge[pos + cols - <span class="number">1</span>] = NOEDGE;</span><br><span class="line">	&#125;</span><br><span class="line">	pos = (rows - <span class="number">1</span>) * cols;</span><br><span class="line">	<span class="keyword">for</span> (c = <span class="number">0</span>; c &lt; cols; c++, pos++) &#123;</span><br><span class="line">		edge[c] = NOEDGE;</span><br><span class="line">		edge[pos] = NOEDGE;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (r = <span class="number">0</span>; r &lt; <span class="number">32768</span>; r++) hist[r] = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (r = <span class="number">0</span>, pos = <span class="number">0</span>; r &lt; rows; r++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (c = <span class="number">0</span>; c &lt; cols; c++, pos++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (edge[pos] == POSSIBLE_EDGE) hist[magnitude[pos]]++;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (r = <span class="number">1</span>, numedges = <span class="number">0</span>; r &lt; <span class="number">32768</span>; r++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (hist[r] != <span class="number">0</span>) maximum_mag = r;</span><br><span class="line">		numedges += hist[r];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	highcount = (<span class="keyword">int</span>)(numedges * thigh + <span class="number">0.5</span>);</span><br><span class="line"></span><br><span class="line">	r = <span class="number">1</span>;</span><br><span class="line">	numedges = hist[<span class="number">1</span>];</span><br><span class="line">	<span class="keyword">while</span> ((r &lt; (maximum_mag - <span class="number">1</span>)) &amp;&amp; (numedges &lt; highcount)) &#123;</span><br><span class="line">		r++;</span><br><span class="line">		numedges += hist[r];</span><br><span class="line">	&#125;</span><br><span class="line">	highthreshold = r;</span><br><span class="line">	lowthreshold = (<span class="keyword">int</span>)(highthreshold * tlow + <span class="number">0.5</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (r = <span class="number">0</span>, pos = <span class="number">0</span>; r &lt; rows; r++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (c = <span class="number">0</span>; c &lt; cols; c++, pos++) &#123;</span><br><span class="line">			<span class="keyword">if</span> ((edge[pos] == POSSIBLE_EDGE) &amp;&amp; (magnitude[pos] &gt;= highthreshold)) &#123;</span><br><span class="line">				edge[pos] = EDGE;</span><br><span class="line">				follow_edges((edge + pos), (magnitude + pos), lowthreshold, cols);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (r = <span class="number">0</span>, pos = <span class="number">0</span>; r &lt; rows; r++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (c = <span class="number">0</span>; c &lt; cols; c++, pos++) <span class="keyword">if</span> (edge[pos] != EDGE) edge[pos] = NOEDGE;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">delete</span>[] hist;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">make_gaussian_kernel</span><span class="params">(<span class="keyword">float</span> sigma, <span class="keyword">float</span> **kernel, <span class="keyword">int</span> *windowsize)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> i = <span class="number">0</span>, center = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">float</span> x, fx, sum = <span class="number">0.0</span>;</span><br><span class="line">	<span class="comment">//根据高斯滤波核的方差计算高斯核的宽高</span></span><br><span class="line">	*windowsize = <span class="number">1</span> + <span class="number">2</span> * <span class="built_in">ceil</span>(<span class="number">2.5</span> * sigma);</span><br><span class="line">	<span class="comment">//*kernel = (float*)calloc((*windowsize), sizeof(float));</span></span><br><span class="line">	center = (*windowsize) / <span class="number">2</span>;</span><br><span class="line">	*kernel = <span class="keyword">new</span> <span class="keyword">float</span>[*windowsize];</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; (*windowsize); i++) &#123;</span><br><span class="line">		x = (<span class="keyword">float</span>)(i - center);</span><br><span class="line">		fx = <span class="built_in">pow</span>(<span class="number">2.71828</span>, <span class="number">-0.5</span>*x*x / (sigma*sigma)) / (sigma * <span class="built_in">sqrt</span>(<span class="number">6.2831853</span>));</span><br><span class="line">		(*kernel)[i] = fx;</span><br><span class="line">		sum += fx;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; (*windowsize); i++) &#123;</span><br><span class="line">		(*kernel)[i] /= sum;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">angle_radians</span><span class="params">(<span class="keyword">double</span> x, <span class="keyword">double</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">double</span> xu = <span class="number">0.0</span>, yu = <span class="number">0.0</span>, ang = <span class="number">0.0</span>;</span><br><span class="line">	xu = <span class="built_in">fabs</span>(x);</span><br><span class="line">	yu = <span class="built_in">fabs</span>(y);</span><br><span class="line">	<span class="keyword">if</span> ((xu == <span class="number">0</span>) &amp;&amp; (yu == <span class="number">0</span>)) <span class="keyword">return</span>(<span class="number">0</span>);</span><br><span class="line">	ang = <span class="built_in">atan</span>(yu / xu);</span><br><span class="line">	<span class="keyword">if</span> (x &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (y &gt;= <span class="number">0</span>) <span class="keyword">return</span> (ang);</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">return</span>(<span class="number">2</span> * M_PI - ang);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (y &gt;= <span class="number">0</span>) <span class="keyword">return</span> (M_PI - ang);</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">return</span>(M_PI + ang);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">follow_edges</span><span class="params">(<span class="keyword">int</span> *edgemapptr, <span class="keyword">int</span> *edgemagptr, <span class="keyword">int</span> lowval, <span class="keyword">int</span> cols)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> *tempmagptr;</span><br><span class="line">	<span class="keyword">int</span> *tempmapptr;</span><br><span class="line">	<span class="keyword">int</span> i;</span><br><span class="line">	<span class="keyword">float</span> thethresh;</span><br><span class="line">	<span class="keyword">int</span> x[<span class="number">8</span>] = &#123; <span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">0</span>,<span class="number">1</span> &#125;,</span><br><span class="line">		y[<span class="number">8</span>] = &#123; <span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>,<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">-1</span> &#125;;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">8</span>; i++) &#123;</span><br><span class="line">		tempmapptr = edgemapptr - y[i] * cols + x[i];</span><br><span class="line">		tempmagptr = edgemagptr - y[i] * cols + x[i];</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> ((*tempmapptr == POSSIBLE_EDGE) &amp;&amp; (*tempmagptr &gt; lowval)) &#123;</span><br><span class="line">			*tempmapptr = EDGE;</span><br><span class="line">			follow_edges(tempmapptr, tempmagptr, lowval, cols);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CImg&lt;<span class="keyword">int</span>&gt; Canny::canny_image() &#123;</span><br><span class="line">	CImg&lt;<span class="keyword">int</span>&gt; pic = canny_image(<span class="number">2.0</span>, <span class="number">0.25</span>, <span class="number">0.75</span>);</span><br><span class="line">	<span class="keyword">return</span> pic;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CImg&lt;<span class="keyword">int</span>&gt; Canny::canny_image(<span class="keyword">int</span> sigma, <span class="keyword">float</span> tlow, <span class="keyword">float</span> thigh) &#123;</span><br><span class="line">	RGBtoGray();</span><br><span class="line">	gaussian_smooth(sigma);</span><br><span class="line">	derrivative_x_y();</span><br><span class="line">	radian_direction(<span class="number">-1</span>, <span class="number">-1</span>);</span><br><span class="line">	magnitude_x_y();</span><br><span class="line">	non_max_supp();</span><br><span class="line">	apply_hysteresis(tlow, thigh);</span><br><span class="line">	<span class="comment">//img.test();</span></span><br><span class="line">	CImg&lt;<span class="keyword">int</span>&gt; pic(rows, cols, <span class="number">1</span>, <span class="number">1</span>, <span class="number">5</span>);</span><br><span class="line">	pic.fill(<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rows; i++) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; cols; j++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (edge[i*cols + j] &lt; <span class="number">0</span>)</span><br><span class="line">				pic(i, j) = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (edge[i*cols + j] &gt; <span class="number">255</span>)</span><br><span class="line">				pic(i, j) = <span class="number">255</span>;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">				pic(i, j) = edge[i*cols + j];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> pic;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">CImg&lt;<span class="keyword">int</span>&gt; Canny::canny_line(CImg&lt;<span class="keyword">int</span>&gt; picture, <span class="keyword">int</span> distance) &#123;</span><br><span class="line">	CImg&lt;<span class="keyword">int</span>&gt; pic = picture;</span><br><span class="line">	<span class="comment">//用于计算某一个像素点是否为边缘点</span></span><br><span class="line">	<span class="comment">//判断方法为查看以这个点为中心的八邻域，如果附近只有1个像素点为0, 其他7个为255则是边缘点</span></span><br><span class="line">	<span class="keyword">bool</span> isEdge[<span class="number">1000</span>][<span class="number">1000</span>];</span><br><span class="line">	cimg_forXY(pic, x, y) &#123;</span><br><span class="line">		isEdge[x][y] = <span class="literal">false</span>;</span><br><span class="line">		<span class="keyword">if</span> (x != rows - <span class="number">1</span> &amp;&amp; x != <span class="number">0</span> &amp;&amp; y != cols - <span class="number">1</span> &amp;&amp; y != <span class="number">0</span> &amp;&amp; pic(x, y) == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> linyu[<span class="number">8</span>];</span><br><span class="line">			<span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = x - <span class="number">1</span>; i &lt;= x + <span class="number">1</span>; i++) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> j = y - <span class="number">1</span>; j &lt;= y + <span class="number">1</span>; j++) &#123;</span><br><span class="line">					<span class="keyword">if</span> (!(i == x &amp;&amp; j == y)) &#123;</span><br><span class="line">						linyu[m] = pic(i, j);</span><br><span class="line">						m++;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			sort(linyu, linyu + <span class="number">8</span>);</span><br><span class="line">			<span class="keyword">if</span> (linyu[<span class="number">0</span>] == <span class="number">0</span> &amp;&amp; linyu[<span class="number">1</span>] == <span class="number">255</span>)</span><br><span class="line">				isEdge[x][y] = <span class="literal">true</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	cimg_forXY(pic, x, y) &#123;</span><br><span class="line">		<span class="keyword">if</span> (x &gt;= distance &amp;&amp; x &lt;= rows - <span class="number">1</span> - distance &amp;&amp; y &gt;= distance &amp;&amp; y &lt;= cols - <span class="number">1</span> - distance &amp;&amp; isEdge[x][y] == <span class="literal">true</span>) &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = x - distance; i &lt;= x + distance; i++) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> j = y - distance; j &lt;= y + distance; j++) &#123;</span><br><span class="line">					<span class="keyword">if</span> (isEdge[i][j] == <span class="literal">true</span>) &#123;</span><br><span class="line">						pic = Draw_line(pic, x, y, i, j);</span><br><span class="line">						isEdge[i][j] = <span class="literal">false</span>;</span><br><span class="line">						isEdge[x][y] = <span class="literal">false</span>;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> pic;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CImg&lt;<span class="keyword">int</span>&gt; Canny::delete_line(CImg&lt;<span class="keyword">int</span>&gt; picture) &#123;</span><br><span class="line">	<span class="comment">//用于计算某一个像素点是否为边缘点</span></span><br><span class="line">	<span class="comment">//判断方法为查看以这个点为中心的八邻域，如果附近只有1个像素点为0, 其他7个为255则是边缘点</span></span><br><span class="line">	CImg&lt;<span class="keyword">int</span>&gt; pic = picture;</span><br><span class="line">	<span class="keyword">bool</span> isEdge[<span class="number">1000</span>][<span class="number">1000</span>];</span><br><span class="line">	cimg_forXY(pic, x, y) &#123;</span><br><span class="line">		isEdge[x][y] = <span class="literal">false</span>;</span><br><span class="line">		<span class="keyword">if</span> (x != rows - <span class="number">1</span> &amp;&amp; x != <span class="number">0</span> &amp;&amp; y != cols - <span class="number">1</span> &amp;&amp; y != <span class="number">0</span> &amp;&amp; pic(x, y) == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> linyu[<span class="number">8</span>];</span><br><span class="line">			<span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = x - <span class="number">1</span>; i &lt;= x + <span class="number">1</span>; i++) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> j = y - <span class="number">1</span>; j &lt;= y + <span class="number">1</span>; j++) &#123;</span><br><span class="line">					<span class="keyword">if</span> (!(i == x &amp;&amp; j == y)) &#123;</span><br><span class="line">						linyu[m] = pic(i, j);</span><br><span class="line">						m++;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			sort(linyu, linyu + <span class="number">8</span>);</span><br><span class="line">			<span class="keyword">if</span> (linyu[<span class="number">0</span>] == <span class="number">0</span> &amp;&amp; linyu[<span class="number">1</span>] == <span class="number">255</span>)</span><br><span class="line">				isEdge[x][y] = <span class="literal">true</span>;</span><br><span class="line">			<span class="comment">//删除单个孤立的点</span></span><br><span class="line">			<span class="keyword">if</span> (linyu[<span class="number">0</span>] == <span class="number">255</span>)</span><br><span class="line">				pic(x, y) = <span class="number">255</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//删除长度少于20的连线</span></span><br><span class="line">	<span class="comment">//判断如果两个边界点的距离小于20，就删除这两个边界点组成的矩阵内所有黑点，这样的话即使两个边界点分别是两条直线的话也无所谓</span></span><br><span class="line">	<span class="comment">//反正是这样的话这两边界点之间都是白色区域，删除也无所谓</span></span><br><span class="line">	cimg_forXY(pic, x, y) &#123;</span><br><span class="line">		<span class="keyword">int</span> distance = <span class="number">20</span>;</span><br><span class="line">		<span class="keyword">if</span> (isEdge[x][y] == <span class="literal">true</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> begin_x = x - distance &gt; <span class="number">0</span> ? x - distance : <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">int</span> begin_y = y - distance &gt; <span class="number">0</span> ? y - distance : <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">int</span> end_x = x + distance &lt; rows - <span class="number">1</span> ? x + distance : rows - <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">int</span> end_y = y + distance &lt; cols - <span class="number">1</span> ? y + distance : cols - <span class="number">1</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = begin_x; i &lt;= end_x; i++) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> j = begin_y; j &lt;= end_y; j++) &#123;</span><br><span class="line">					<span class="keyword">if</span> (isEdge[i][j] == <span class="literal">true</span>) &#123;</span><br><span class="line">						<span class="keyword">int</span> max_x = x &gt;= i ? x : i;</span><br><span class="line">						<span class="keyword">int</span> max_y = y &gt;= j ? y : j;</span><br><span class="line">						<span class="keyword">int</span> min_x = max_x == x ? i : x;</span><br><span class="line">						<span class="keyword">int</span> min_y = max_y == y ? j : y;</span><br><span class="line">						<span class="keyword">for</span> (<span class="keyword">int</span> ii = min_x; ii &lt;= max_x; ii++) &#123;</span><br><span class="line">							<span class="keyword">for</span> (<span class="keyword">int</span> jj = min_y; jj &lt;= max_y; jj++) &#123;</span><br><span class="line">								pic(ii, jj) = <span class="number">255</span>;</span><br><span class="line">							&#125;</span><br><span class="line">						&#125;</span><br><span class="line">						isEdge[i][j] = <span class="literal">false</span>;</span><br><span class="line">						isEdge[x][y] = <span class="literal">false</span>;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//删除经过上一步处理完可能存在的单个孤立的噪声点</span></span><br><span class="line">	cimg_forXY(pic, x, y) &#123;</span><br><span class="line">		<span class="keyword">if</span> (x != rows - <span class="number">1</span> &amp;&amp; x != <span class="number">0</span> &amp;&amp; y != cols - <span class="number">1</span> &amp;&amp; y != <span class="number">0</span> &amp;&amp; pic(x, y) == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">int</span> linyu[<span class="number">8</span>];</span><br><span class="line">			<span class="keyword">int</span> m = <span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = x - <span class="number">1</span>; i &lt;= x + <span class="number">1</span>; i++) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> j = y - <span class="number">1</span>; j &lt;= y + <span class="number">1</span>; j++) &#123;</span><br><span class="line">					<span class="keyword">if</span> (!(i == x &amp;&amp; j == y)) &#123;</span><br><span class="line">						linyu[m] = pic(i, j);</span><br><span class="line">						m++;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			sort(linyu, linyu + <span class="number">8</span>);</span><br><span class="line">			<span class="keyword">if</span> (linyu[<span class="number">0</span>] == <span class="number">255</span>)</span><br><span class="line">				pic(x, y) = <span class="number">255</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> pic;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CImg&lt;<span class="keyword">int</span>&gt; Draw_line(CImg&lt;<span class="keyword">int</span>&gt; tmp, <span class="keyword">int</span> x ,<span class="keyword">int</span> y, <span class="keyword">int</span> x1, <span class="keyword">int</span> y1) &#123;</span><br><span class="line">	</span><br><span class="line">	CImg &lt;<span class="keyword">int</span>&gt; TempImg = tmp;</span><br><span class="line">	<span class="keyword">int</span> black[] = &#123; <span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span> &#125;;</span><br><span class="line">	TempImg.draw_line(x, y, x1, y1, black);</span><br><span class="line">	<span class="keyword">return</span> TempImg;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Canny::test() &#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rows*cols; i++) &#123;</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; edge[i] &lt;&lt; <span class="string">" "</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>详细测试结果看测试报告：</strong><br><a href="https://download.csdn.net/download/perry0528/10732970" target="_blank" rel="noopener">https://download.csdn.net/download/perry0528/10732970</a><br><strong>完整代码参见：</strong><br><a href="https://github.com/WangPerryWPY/Computer-Version/tree/master/Exp2" target="_blank" rel="noopener">https://github.com/WangPerryWPY/Computer-Version/tree/master/Exp2</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>PerryWang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://yoursite.com/2019/07/06/Canny算子实现边缘分割并做连线处理/" title="Canny算子实现边缘分割并做连线处理">http://yoursite.com/2019/07/06/Canny算子实现边缘分割并做连线处理/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/c/" rel="tag"># c++</a>
+          
+            <a href="/tags/计算机图形学/" rel="tag"># 计算机图形学</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/06/用中位切割算法实现图像减色/" rel="next" title="用中位切割算法实现图像减色">
+                <i class="fa fa-chevron-left"></i> 用中位切割算法实现图像减色
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="PerryWang">
+            
+              <p class="site-author-name" itemprop="name">PerryWang</p>
+              <div class="site-description motion-element" itemprop="description">sysu-student</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">31</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/WangPerryWPY" title="GitHub &rarr; https://github.com/WangPerryWPY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/perry0528" title="CSDN &rarr; https://blog.csdn.net/perry0528" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:1731611872@qq.com" title="E-Mail &rarr; mailto:1731611872@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ex2：用-CImg-重写、封装给定的-Canny-代码，并测试"><span class="nav-number">1.</span> <span class="nav-text">Ex2：用 CImg 重写、封装给定的 Canny 代码，并测试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-封装要求："><span class="nav-number">1.1.</span> <span class="nav-text">C++封装要求：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现过程："><span class="nav-number">1.2.</span> <span class="nav-text">实现过程：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码："><span class="nav-number">2.</span> <span class="nav-text">代码：</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Perry</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">140k</span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unjkp.com/valine/dist/Valine.min.js"></script>  
+  <script src="/js/src/Valine.min.js"></script> 
+
+    
+  
+  <script src="/js/src/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'SsAWGcn6CHm6Oif4CGFKBhVv-gzGzoHsz',
+        appKey: 'bniDOuxQuzVdGASyS3SyDFF8',
+        placeholder: '说点什么吧！',
+        avatar:'wavatar',
+        guest_info:['nick'] ,  
+        pageSize:'10' || 10,
+    });
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+  </script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
