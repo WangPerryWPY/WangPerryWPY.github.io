@@ -94,18 +94,18 @@
 
 
 
-  <meta name="description" content="层序遍历即从一棵树的每一层由上到下开始依次从左到右遍历输出 从上面一句话的原理不难看出这就是一个FIFO算法，也就是一个基本的先进先出队列，因此我们考虑调用STL的queue  数据结构：1234typedef struct BiTNode &amp;#123;ElemType data;struct BiTNode *lchild, *rchild;&amp;#125; Node, *Tree;  算法：12">
-<meta name="keywords" content="c,算法,数据结构,c++">
+  <meta name="description" content="层序遍历即从一棵树的每一层由上到下开始依次从左到右遍历输出 从上面一句话的原理不难看出这就是一个FIFO算法，也就是一个基本的先进先出队列，因此我们考虑调用STL的queue  数据结构：1234typedef struct BiTNode &amp;#123;	ElemType data;	struct BiTNode *lchild, *rchild;&amp;#125; Node, *Tree;  算法：">
+<meta name="keywords" content="c,算法,c++,数据结构">
 <meta property="og:type" content="article">
 <meta property="og:title" content="二叉树的层序遍历">
 <meta property="og:url" content="http://yoursite.com/2019/07/04/二叉树的层序遍历/index.html">
 <meta property="og:site_name" content="PerryWang🍎博客">
-<meta property="og:description" content="层序遍历即从一棵树的每一层由上到下开始依次从左到右遍历输出 从上面一句话的原理不难看出这就是一个FIFO算法，也就是一个基本的先进先出队列，因此我们考虑调用STL的queue  数据结构：1234typedef struct BiTNode &amp;#123;ElemType data;struct BiTNode *lchild, *rchild;&amp;#125; Node, *Tree;  算法：12">
+<meta property="og:description" content="层序遍历即从一棵树的每一层由上到下开始依次从左到右遍历输出 从上面一句话的原理不难看出这就是一个FIFO算法，也就是一个基本的先进先出队列，因此我们考虑调用STL的queue  数据结构：1234typedef struct BiTNode &amp;#123;	ElemType data;	struct BiTNode *lchild, *rchild;&amp;#125; Node, *Tree;  算法：">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-04T06:00:59.029Z">
+<meta property="og:updated_time" content="2019-07-05T14:31:39.787Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="二叉树的层序遍历">
-<meta name="twitter:description" content="层序遍历即从一棵树的每一层由上到下开始依次从左到右遍历输出 从上面一句话的原理不难看出这就是一个FIFO算法，也就是一个基本的先进先出队列，因此我们考虑调用STL的queue  数据结构：1234typedef struct BiTNode &amp;#123;ElemType data;struct BiTNode *lchild, *rchild;&amp;#125; Node, *Tree;  算法：12">
+<meta name="twitter:description" content="层序遍历即从一棵树的每一层由上到下开始依次从左到右遍历输出 从上面一句话的原理不难看出这就是一个FIFO算法，也就是一个基本的先进先出队列，因此我们考虑调用STL的queue  数据结构：1234typedef struct BiTNode &amp;#123;	ElemType data;	struct BiTNode *lchild, *rchild;&amp;#125; Node, *Tree;  算法：">
 
 
 
@@ -390,13 +390,23 @@
                 
               
 
-              <time title="创建时间：2019-07-04 13:59:28 / 修改时间：14:00:59" itemprop="dateCreated datePublished" datetime="2019-07-04T13:59:28+08:00">2019-07-04</time>
+              <time title="创建时间：2019-07-04 13:59:28" itemprop="dateCreated datePublished" datetime="2019-07-04T13:59:28+08:00">2019-07-04</time>
             </span>
           
 
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-05 22:31:39" itemprop="dateModified" datetime="2019-07-05T22:31:39+08:00">2019-07-05</time>
+              </span>
             
           
 
@@ -456,7 +466,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">479</span>
+              <span title="本文字数">511</span>
             </span>
           
 
@@ -481,11 +491,9 @@
 <li>层序遍历即从一棵树的每一层由上到下开始依次从左到右遍历输出</li>
 <li>从上面一句话的原理不难看出这就是一个FIFO算法，也就是一个基本的先进先出队列，因此我们考虑调用STL的queue</li>
 </ul>
-<h3 id="数据结构："><a href="#数据结构：" class="headerlink" title="数据结构："></a>数据结构：</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">BiTNode</span> &#123;</span></span><br><span class="line">ElemType data;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BiTNode</span> *<span class="title">lchild</span>, *<span class="title">rchild</span>;</span></span><br><span class="line">&#125; Node, *Tree;</span><br></pre></td></tr></table></figure>
+<h3 id="数据结构："><a href="#数据结构：" class="headerlink" title="数据结构："></a>数据结构：</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">BiTNode</span> &#123;</span></span><br><span class="line">	ElemType data;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">BiTNode</span> *<span class="title">lchild</span>, *<span class="title">rchild</span>;</span></span><br><span class="line">&#125; Node, *Tree;</span><br></pre></td></tr></table></figure>
 
-<h3 id="算法："><a href="#算法：" class="headerlink" title="算法："></a>算法：</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LevelOrderTraverse</span><span class="params">(Tree T, <span class="keyword">void</span> (*Visit)(ElemType e))</span> </span>&#123;</span><br><span class="line"><span class="built_in">queue</span>&lt;Tree&gt; Q;</span><br><span class="line"><span class="keyword">if</span> (T) &#123;</span><br><span class="line">Q.push(T);</span><br><span class="line"><span class="keyword">while</span> (!Q.empty()) &#123;</span><br><span class="line">Tree tmp = Q.front();</span><br><span class="line">Q.pop();</span><br><span class="line">Visit(tmp-&gt;data);</span><br><span class="line"><span class="keyword">if</span> (tmp-&gt;lchild)</span><br><span class="line">Q.push(tmp-&gt;lchild);</span><br><span class="line"><span class="keyword">if</span>(tmp-&gt;rchild)</span><br><span class="line">Q.push(tmp-&gt;rchild);</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
+<h3 id="算法："><a href="#算法：" class="headerlink" title="算法："></a>算法：</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">LevelOrderTraverse</span><span class="params">(Tree T, <span class="keyword">void</span> (*Visit)(ElemType e))</span> </span>&#123;</span><br><span class="line">	<span class="built_in">queue</span>&lt;Tree&gt; Q;</span><br><span class="line">	<span class="keyword">if</span> (T) &#123;</span><br><span class="line">		Q.push(T);</span><br><span class="line">		<span class="keyword">while</span> (!Q.empty()) &#123;</span><br><span class="line">			Tree tmp = Q.front();</span><br><span class="line">			Q.pop();</span><br><span class="line">			Visit(tmp-&gt;data);</span><br><span class="line">			<span class="keyword">if</span> (tmp-&gt;lchild)</span><br><span class="line">				Q.push(tmp-&gt;lchild);</span><br><span class="line">			<span class="keyword">if</span>(tmp-&gt;rchild)</span><br><span class="line">				Q.push(tmp-&gt;rchild);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -550,9 +558,9 @@
           
             <a href="/tags/算法/" rel="tag"># 算法</a>
           
-            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
-          
             <a href="/tags/c/" rel="tag"># c++</a>
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
           
         </div>
       
@@ -574,6 +582,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/05/c-c-定义全局变量的方法/" rel="prev" title="c/c++定义全局变量的方法">
+                c/c++定义全局变量的方法 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -648,7 +660,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-count">25</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -673,7 +685,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">4</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -704,7 +722,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">7</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -831,7 +855,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">34k</span>
+    <span title="站点总字数">109k</span>
   
 
   
