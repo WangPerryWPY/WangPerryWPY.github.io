@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="编译运行：运行环境： Ubuntu 18 链接库： VLFeat&amp;amp;&amp;amp;CImg 编译命令： g++ -o test main.cpp ImageStitching.cpp ImageStitching.h -lpthread -l X11 -Lglnxa64/ -lvl -O3 -std=c++11 (linux下编译比较简单，只需将CImg.h文件和用到的vl库放在同目录下，但是要">
+<meta name="keywords" content="c++,计算机视觉">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像拼接(Image Stitch)">
+<meta property="og:url" content="http://yoursite.com/2019/07/06/Stitch/index.html">
+<meta property="og:site_name" content="PerryWang🍎博客">
+<meta property="og:description" content="编译运行：运行环境： Ubuntu 18 链接库： VLFeat&amp;amp;&amp;amp;CImg 编译命令： g++ -o test main.cpp ImageStitching.cpp ImageStitching.h -lpthread -l X11 -Lglnxa64/ -lvl -O3 -std=c++11 (linux下编译比较简单，只需将CImg.h文件和用到的vl库放在同目录下，但是要">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdn.net/20160201195938321">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181209194726866.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20181209194741175.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-07-06T13:10:19.048Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图像拼接(Image Stitch)">
+<meta name="twitter:description" content="编译运行：运行环境： Ubuntu 18 链接库： VLFeat&amp;amp;&amp;amp;CImg 编译命令： g++ -o test main.cpp ImageStitching.cpp ImageStitching.h -lpthread -l X11 -Lglnxa64/ -lvl -O3 -std=c++11 (linux下编译比较简单，只需将CImg.h文件和用到的vl库放在同目录下，但是要">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20160201195938321">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="PerryWang🍎博客" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/07/06/Stitch/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>图像拼接(Image Stitch) | PerryWang🍎博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PerryWang🍎博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">分享软件开发中学到的点滴知识</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/WangPerryWPY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/06/Stitch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">图像拼接(Image Stitch)
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-06 21:09:16 / 修改时间：21:10:19" itemprop="dateCreated datePublished" datetime="2019-07-06T21:09:16+08:00">2019-07-06</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/计算机视觉/" itemprop="url" rel="index"><span itemprop="name">计算机视觉</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/06/Stitch/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/06/Stitch/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">17k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="编译运行："><a href="#编译运行：" class="headerlink" title="编译运行："></a>编译运行：</h3><p><strong>运行环境</strong>：</p>
+<p><code>Ubuntu 18</code></p>
+<p><strong>链接库：</strong></p>
+<p><code>VLFeat</code>&amp;&amp;<code>CImg</code></p>
+<p><strong>编译命令：</strong></p>
+<p><code>g++ -o test main.cpp ImageStitching.cpp ImageStitching.h -lpthread -l X11 -Lglnxa64/ -lvl -O3 -std=c++11</code></p>
+<p>(linux下编译比较简单，只需将CImg.h文件和用到的vl库放在同目录下，但是要将libvl.so添加到usr下的动态链接库内)</p>
+<h3 id="读入图像："><a href="#读入图像：" class="headerlink" title="读入图像："></a>读入图像：</h3><p>将目录下的多张图片读入，运用了linux环境下提取目录文件的一个目录指针，然后图片存在了CImgList中</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">dirent</span> *<span class="title">ptr</span>;</span></span><br><span class="line">	DIR *dir;</span><br><span class="line">	dir = opendir(<span class="string">"TEST-ImageData1"</span>);</span><br><span class="line">	<span class="keyword">while</span> ((ptr = readdir(dir)) != <span class="literal">NULL</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span>(ptr-&gt;d_name[<span class="number">0</span>] == <span class="string">'.'</span>)</span><br><span class="line">            		<span class="keyword">continue</span>;</span><br><span class="line">		<span class="built_in">string</span> file = <span class="built_in">string</span>(<span class="string">"TEST-ImageData1/"</span>) + <span class="built_in">string</span>(ptr-&gt;d_name);</span><br><span class="line">		<span class="built_in">cout</span> &lt;&lt; file &lt;&lt; <span class="built_in">endl</span>;</span><br><span class="line">		<span class="keyword">const</span> <span class="keyword">char</span> *Ff = file.c_str();</span><br><span class="line">		CImg&lt;<span class="keyword">float</span>&gt; picture;</span><br><span class="line">		picture.load(Ff);</span><br><span class="line">		imgs.push_back(picture);</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="柱面投影："><a href="#柱面投影：" class="headerlink" title="柱面投影："></a>柱面投影：</h3><p>在全景图像中，由于摄像头的朝向不同，重合部分部分图像不一定满足视觉一致性的要求，因此先对图像进行投影，使其满足要求，以为后面的拼接做准备。在环形全景中，一般选择柱面投影算法，将图像分别投影到以 像素焦距+摄像头与圆心距离 为半径的圆柱上。投影后的图像为上图摄像头前方的圆弧。从圆弧上看，图像的重合部分已经满足视觉一致性的要求 。</p>
+<p><img src="https://img-blog.csdn.net/20160201195938321" alt="img"></p>
+<p><strong>圆柱面坐标转换的公式为：</strong><br>$$<br>x = \frac{x’-\frac{W}{2}}{k}+\frac{W}{2}=\frac{(x’-\frac{W}{2})\sqrt{R^2+(x-\frac{W}{2})^2}}{R}+\frac{W}{2}<br>$$</p>
+<p>$$<br>y = \frac{y’-\frac{H}{2}}{k}+\frac{H}{2}=\frac{(y’-\frac{H}{2})\sqrt{R^2+(x-\frac{W}{2})^2}}{R}+\frac{H}{2}<br>$$</p>
+<p>可以注意到把x和y写在了等式的左边而x’,y’写在了右边，这样做是为了方便进行插值计算 。投影后的图像点坐标未必为整数，而图像的坐标需要为整数，所以必将造成误差 。为了减少这种误差，我们对坐标点进行双线性插值。</p>
+<p>其中半径R的值: <strong>R = W / (2*tan(α/2))</strong>，α的取值一般为相机视场角度。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">CImg&lt;<span class="keyword">float</span>&gt; ImageStitching::CylindricalProjection(CImg&lt;<span class="keyword">float</span>&gt; pic) &#123;</span><br><span class="line">    <span class="keyword">int</span> width = pic._width;</span><br><span class="line">    <span class="keyword">int</span> height = pic._height;</span><br><span class="line">    <span class="keyword">int</span> channel = pic._spectrum;</span><br><span class="line">    CImg&lt;<span class="keyword">float</span>&gt; result(width, height, <span class="number">1</span>, channel, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">float</span>  R = width / (<span class="number">2</span>*<span class="built_in">tan</span>(<span class="number">28.0f</span>/<span class="number">2.0f</span>*PI/<span class="number">180.0f</span>));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; width; x++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; height; y++) &#123;</span><br><span class="line">            <span class="keyword">float</span> x0 = x - (<span class="keyword">float</span>)(width / <span class="number">2</span>);</span><br><span class="line">            <span class="keyword">float</span> y0 = y - (<span class="keyword">float</span>) (height/<span class="number">2</span>);</span><br><span class="line">            <span class="keyword">float</span> _x = x0*<span class="built_in">sqrt</span>(R*R + x0*x0) / R + (<span class="keyword">float</span>) width / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">float</span> _y = y0*<span class="built_in">sqrt</span>(R*R + x0*x0) / R + (<span class="keyword">float</span>) height / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (_x &gt;= <span class="number">0</span> &amp;&amp; _x &lt; width &amp;&amp; _y &gt;=<span class="number">0</span> &amp;&amp; _y &lt;= height) &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> c = <span class="number">0</span>;  c &lt; channel; c++) &#123;</span><br><span class="line">                    result(x,y,c) = Interpolation(pic,_x,_y,c);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="将图像由RGB空间转为灰度空间："><a href="#将图像由RGB空间转为灰度空间：" class="headerlink" title="将图像由RGB空间转为灰度空间："></a>将图像由RGB空间转为灰度空间：</h3><p>这一步是为了下面的sift算法做铺垫：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CImg&lt;<span class="keyword">float</span>&gt; ImageStitching::convertTogray(CImg&lt;<span class="keyword">float</span>&gt; pic) &#123;</span><br><span class="line">	CImg&lt;<span class="keyword">float</span>&gt; picture(pic._width, pic._height, <span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>);</span><br><span class="line">	cimg_forXY(pic,x,y) &#123;</span><br><span class="line">		<span class="keyword">float</span> R = pic(x,y,<span class="number">0</span>);</span><br><span class="line">		<span class="keyword">float</span> G = pic(x,y,<span class="number">1</span>);</span><br><span class="line">		<span class="keyword">float</span> B = pic(x,y,<span class="number">2</span>);		</span><br><span class="line">		picture(x,y) =  R*<span class="number">0.299</span> + G*<span class="number">0.587</span> + B*<span class="number">0.114</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> picture;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="SIFT算法查找特征点"><a href="#SIFT算法查找特征点" class="headerlink" title="SIFT算法查找特征点"></a>SIFT算法查找特征点</h3><p>SIFT算法的实质是在不同尺度空间上查找关键点(特征点)，并计算关键点方向。SIFT所查找的关键点是一些十分突出，不会因光照，仿射变换和噪音等因素而变化的点，例如角点、边缘点、暗区的亮点以及亮区的暗点。</p>
+<p>算法主要分为以下四步：</p>
+<ol>
+<li><strong>尺度空间极值检测</strong>：搜索所有尺度上的图像位置。通过高斯微分函数来识别潜在的对于尺度和旋转不变的兴趣点。</li>
+<li><strong>关键点定位：</strong>在每个候选位置上，通过一个拟合精细的模型来确定位置和尺度。关键点的选择依据它们的稳定程度。</li>
+<li><strong>方向确定：</strong>基于图像局部梯度方向，分配给每个关键点位置一个或多个方向。所有后面的对图像数据的操作都相对于关键点的方向，尺度和位置进行变换。</li>
+<li><strong>关键点描述：</strong>在每个关键点周围的邻域内，在选定的尺度上测量图像局部的梯度。这些梯度被变换成一种表示，这种表示允许比较大的局部形状的变形和光照变化。</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">map</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt;, VlSiftKeypoint&gt; ImageStitching::SIFTFeatures(CImg&lt;<span class="keyword">float</span>&gt; pic) &#123;</span><br><span class="line">    <span class="keyword">int</span> noctaves = <span class="number">4</span>, nlevels = <span class="number">2</span>, o_min = <span class="number">0</span>;</span><br><span class="line">    vl_sift_pix *ImageData = <span class="keyword">new</span> vl_sift_pix[pic._width*pic._height];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; pic._width; i++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; pic._height; j++) &#123;</span><br><span class="line">            ImageData[j*pic._width + i] = pic(i,j,<span class="number">0</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 定义VlSiftFilt结构体指针</span></span><br><span class="line">	VlSiftFilt *SiftFilt = <span class="literal">NULL</span>;</span><br><span class="line">	<span class="comment">// 创建一个新的sift滤波器</span></span><br><span class="line">	SiftFilt = vl_sift_new(pic._width, pic._height, noctaves, nlevels, o_min);</span><br><span class="line">    <span class="comment">//int KeyPoint = 0;</span></span><br><span class="line">    <span class="built_in">map</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt;, VlSiftKeypoint&gt; Feature;</span><br><span class="line">    <span class="keyword">if</span> (vl_sift_process_first_octave(SiftFilt, ImageData) != VL_ERR_EOF) &#123;</span><br><span class="line">        <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</span><br><span class="line">            <span class="comment">//计算每组中的关键点</span></span><br><span class="line">            vl_sift_detect(SiftFilt);</span><br><span class="line">			<span class="comment">//遍历并绘制每个点  </span></span><br><span class="line">			<span class="comment">//KeyPoint += SiftFilt-&gt;nkeys;//检测到的关键点的数目</span></span><br><span class="line">            VlSiftKeypoint *pKeyPoint = SiftFilt-&gt;keys;<span class="comment">//检测到的关键点</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i&lt;SiftFilt-&gt;nkeys; i++) &#123;</span><br><span class="line">                VlSiftKeypoint tempKeyPoint = *pKeyPoint;</span><br><span class="line">                pKeyPoint++;</span><br><span class="line">                <span class="keyword">double</span> angles[<span class="number">4</span>];</span><br><span class="line">				<span class="keyword">int</span> angleCount = vl_sift_calc_keypoint_orientations(SiftFilt, angles, &amp;tempKeyPoint);<span class="comment">//计算关键点的方向</span></span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j&lt;angleCount; j++) &#123;</span><br><span class="line">                    <span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt; Descriptor;</span><br><span class="line">                    <span class="keyword">double</span> tempAngle = angles[j];</span><br><span class="line">					vl_sift_pix descriptors[<span class="number">128</span>];</span><br><span class="line">					<span class="comment">// 计算每个方向的描述</span></span><br><span class="line">					vl_sift_calc_keypoint_descriptor(SiftFilt, descriptors, &amp;tempKeyPoint, tempAngle);</span><br><span class="line">                    <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt; <span class="number">128</span> ;k++) &#123;</span><br><span class="line">                        Descriptor.push_back(descriptors[k]);</span><br><span class="line">                    &#125;</span><br><span class="line">                    Feature.insert(pair&lt;<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt;, VlSiftKeypoint&gt;(Descriptor, tempKeyPoint));</span><br><span class="line">                &#125;</span><br><span class="line">                </span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">//下一阶  </span></span><br><span class="line">			<span class="keyword">if</span> (vl_sift_process_next_octave(SiftFilt) == VL_ERR_EOF)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="comment">//free(pKeyPoint);  </span></span><br><span class="line">			<span class="comment">//KeyPoint = NULL;</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    vl_sift_delete(SiftFilt);</span><br><span class="line">	<span class="keyword">delete</span>[]ImageData;</span><br><span class="line">	ImageData = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> Feature;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="K-d-Tree最近邻搜索进行特征点匹配："><a href="#K-d-Tree最近邻搜索进行特征点匹配：" class="headerlink" title="K-d Tree最近邻搜索进行特征点匹配："></a>K-d Tree最近邻搜索进行特征点匹配：</h3><h4 id="k-d树算法可以分为两大部分，一部分是有关k-d树本身这种数据结构建立的算法，另一部分是在建立的k-d树上如何进行最邻近查找的算法。"><a href="#k-d树算法可以分为两大部分，一部分是有关k-d树本身这种数据结构建立的算法，另一部分是在建立的k-d树上如何进行最邻近查找的算法。" class="headerlink" title="k-d树算法可以分为两大部分，一部分是有关k-d树本身这种数据结构建立的算法，另一部分是在建立的k-d树上如何进行最邻近查找的算法。"></a>k-d树算法可以分为两大部分，一部分是有关k-d树本身这种数据结构建立的算法，另一部分是在建立的k-d树上如何进行最邻近查找的算法。</h4><p><strong>构建k-d树：</strong></p>
+<p>构造kd树的方法：首先构造根节点，根节点对应于整个k维空间，包含所有的实例点，（至于如何选取划分点，有不同的策略。最常用的是一种方法是：对于所有的样本点，统计它们在每个维上的方差，挑选出方差中的最大值，对应的维就是要进行数据切分的维度。数据方差最大表明沿该维度数据点分散得比较开，这个方向上进行数据分割可以获得最好的分辨率；然后再将所有样本点按切分维度的值进行排序，位于正中间的那个数据点选为分裂结点。）。然后利用递归的方法，分别构造k-d树根节点的左右子树。在超矩形区域上选择一个坐标轴（切分维度）和一个分裂结点，以通过此分裂结点且垂直于切分方向坐标轴的直线作为分隔线，将当前超矩形区域分隔成左右或者上下两个子超矩形区域，对应于分裂结点的左右子树的根节点。实例也就被分到两个不相交的区域中。重复此过程直到子区域内没有实例点时终止。终止时的结点为叶结点。</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">算法：createKDTree 构建一棵k-d tree </span><br><span class="line"> </span><br><span class="line">输入：exm_<span class="keyword">set</span> 样本集 </span><br><span class="line"> </span><br><span class="line">输出 : Kd, 类型为kd-tree </span><br><span class="line"> </span><br><span class="line">1. 如果exm_<span class="keyword">set</span>是空的，则返回空的kd-tree </span><br><span class="line"> </span><br><span class="line">2.调用分裂结点选择程序（输入是exm_<span class="keyword">set</span>），返回两个值 </span><br><span class="line"> </span><br><span class="line">       dom_elt:= exm_<span class="keyword">set</span>中的一个样本点 </span><br><span class="line"> </span><br><span class="line">       split := 分裂维的序号 </span><br><span class="line"> </span><br><span class="line">3.exm_<span class="keyword">set</span>_left = &#123;exm∈exm_<span class="keyword">set</span> – dom_elt &amp;&amp; exm[split] &lt;= dom_elt[split]&#125; </span><br><span class="line"> </span><br><span class="line">   exm_<span class="keyword">set</span>_right = &#123;exm∈exm_<span class="keyword">set</span> – dom_elt &amp;&amp; exm[split] &gt; dom_elt[split]&#125; </span><br><span class="line"> </span><br><span class="line">4.left = createKDTree<span class="params">(exm_set_left)</span> </span><br><span class="line"> </span><br><span class="line">right = createKDTree<span class="params">(exm_set_right)</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>k-d tree最近邻搜索算法</strong></p>
+<p>在k-d tree树中进行数据的k近邻搜索是特征匹配的重要环节，其目的是检索在k-d tree中与待查询点距离最近的k个数据点。</p>
+<p> 最近邻搜索是k近邻的特例，也就是1近邻。将1近邻改扩展到k近邻非常容易。下面介绍最简单的k-d tree最近邻搜索算法。</p>
+<p>基本的思路很简单：首先通过二叉树搜索（比较待查询节点和分裂节点的分裂维的值，小于等于就进入左子树分支，等于就进入右子树分支直到叶子结点），顺着“搜索路径”很快能找到最近邻的近似点，也就是与待查询点处于同一个子空间的叶子结点；然后再回溯搜索路径，并判断搜索路径上的结点的其他子结点空间中是否可能有距离查询点更近的数据点，如果有可能，则需要跳到其他子结点空间中去搜索（将其他子结点加入到搜索路径）。重复这个过程直到搜索路径为空。下面是k-d tree最近邻搜索的伪代码：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">算法：kdtreeFindNearest <span class="comment">/* k-d tree的最近邻搜索 */</span> </span><br><span class="line"> </span><br><span class="line">输入：Kd <span class="comment">/* k-d tree类型*/</span>  </span><br><span class="line">target <span class="comment">/* 待查询数据点 */</span> </span><br><span class="line"> </span><br><span class="line">输出 : nearest <span class="comment">/* 最近邻数据结点 */</span> </span><br><span class="line">dist <span class="comment">/* 最近邻和查询点的距离 */</span> </span><br><span class="line"> </span><br><span class="line"><span class="number">1.</span> 如果Kd是空的，则设dist为无穷大返回 </span><br><span class="line"><span class="number">2.</span> 向下搜索直到叶子结点 </span><br><span class="line">pSearch = &amp;Kd </span><br><span class="line"><span class="keyword">while</span>(pSearch != <span class="literal">NULL</span>)  </span><br><span class="line">&#123;  </span><br><span class="line">pSearch加入到search_path中;  </span><br><span class="line"><span class="keyword">if</span>(target[pSearch-&gt;split] &lt;= pSearch-&gt;dom_elt[pSearch-&gt;split]) <span class="comment">/* 如果小于就进入左子树 */</span>  </span><br><span class="line">&#123;  </span><br><span class="line">pSearch = pSearch-&gt;left;  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">else</span>  </span><br><span class="line">&#123;  </span><br><span class="line">pSearch = pSearch-&gt;right;  </span><br><span class="line">&#125;  </span><br><span class="line">&#125;  </span><br><span class="line">取出search_path最后一个赋给nearest  </span><br><span class="line">dist = Distance(nearest, target);  </span><br><span class="line"><span class="number">3.</span> 回溯搜索路径 </span><br><span class="line"><span class="keyword">while</span>(search_path不为空)  </span><br><span class="line">&#123;  </span><br><span class="line">取出search_path最后一个结点赋给pBack  </span><br><span class="line"><span class="keyword">if</span>(pBack-&gt;left为空 &amp;&amp; pBack-&gt;right为空) <span class="comment">/* 如果pBack为叶子结点 */</span> </span><br><span class="line">&#123; </span><br><span class="line"><span class="keyword">if</span>( Distance(nearest, target) &gt; Distance(pBack-&gt;dom_elt, target) )  </span><br><span class="line">&#123;  </span><br><span class="line">nearest = pBack-&gt;dom_elt;  </span><br><span class="line">dist = Distance(pBack-&gt;dom_elt, target);  </span><br><span class="line">&#125; </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">else</span> </span><br><span class="line">&#123; </span><br><span class="line">s = pBack-&gt;split;  </span><br><span class="line"><span class="keyword">if</span>( <span class="built_in">abs</span>(pBack-&gt;dom_elt[s] - target[s]) &lt; dist) <span class="comment">/* 如果以target为中心的圆（球或超球），半径为dist的圆与分割超平面相交， 那么就要跳到另一边的子空间去搜索 */</span>  </span><br><span class="line">&#123;  </span><br><span class="line"><span class="keyword">if</span>( Distance(nearest, target) &gt; Distance(pBack-&gt;dom_elt, target) )  </span><br><span class="line">&#123;  </span><br><span class="line">nearest = pBack-&gt;dom_elt;  </span><br><span class="line">dist = Distance(pBack-&gt;dom_elt, target);  </span><br><span class="line">&#125;  </span><br><span class="line"><span class="keyword">if</span>(target[s] &lt;= pBack-&gt;dom_elt[s]) <span class="comment">/* 如果target位于pBack的左子空间，那么就要跳到右子空间去搜索 */</span>  </span><br><span class="line">pSearch = pBack-&gt;right;  </span><br><span class="line"><span class="keyword">else</span>  </span><br><span class="line">pSearch = pBack-&gt;left; <span class="comment">/* 如果target位于pBack的右子空间，那么就要跳到左子空间去搜索 */</span>  </span><br><span class="line"><span class="keyword">if</span>(pSearch != <span class="literal">NULL</span>)  </span><br><span class="line">pSearch加入到search_path中  </span><br><span class="line">&#125;  </span><br><span class="line">&#125;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>利用VLFeat实现k-d tree算法的代码：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;point_pair&gt; ImageStitching::KDtreeMatch(<span class="built_in">map</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt;, VlSiftKeypoint&gt; feature_a, <span class="built_in">map</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt;, VlSiftKeypoint&gt; feature_b) &#123;</span><br><span class="line">	<span class="built_in">vector</span>&lt;point_pair&gt; result;</span><br><span class="line"></span><br><span class="line">    VlKDForest* forest = vl_kdforest_new(VL_TYPE_FLOAT, <span class="number">128</span>, <span class="number">1</span>, VlDistanceL1);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">float</span> *data = <span class="keyword">new</span> <span class="keyword">float</span>[<span class="number">128</span> * feature_a.size()];</span><br><span class="line">	<span class="keyword">int</span> k = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> it = feature_a.begin(); it != feature_a.end(); it++) &#123;</span><br><span class="line">		<span class="keyword">const</span> <span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt; &amp;descriptors = it-&gt;first;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">128</span>; i++) &#123;</span><br><span class="line">			data[i + <span class="number">128</span> * k] = descriptors[i];</span><br><span class="line">		&#125;</span><br><span class="line">		k++;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	vl_kdforest_build(forest, feature_a.size(), data);</span><br><span class="line">	VlKDForestSearcher* searcher = vl_kdforest_new_searcher(forest);</span><br><span class="line">	VlKDForestNeighbor neighbours[<span class="number">2</span>];</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">auto</span> it = feature_b.begin(); it != feature_b.end(); it++)&#123;</span><br><span class="line">		<span class="keyword">float</span> *temp_data = <span class="keyword">new</span> <span class="keyword">float</span>[<span class="number">128</span>];</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">128</span>; i++) &#123;</span><br><span class="line">			temp_data[i] = (it-&gt;first)[i];</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">int</span> nvisited = vl_kdforestsearcher_query(searcher, neighbours, <span class="number">2</span>, temp_data);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">float</span> ratio = neighbours[<span class="number">0</span>].distance / neighbours[<span class="number">1</span>].distance;</span><br><span class="line">		<span class="keyword">if</span> (ratio &lt; <span class="number">0.5</span>) &#123;</span><br><span class="line">			<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt; des(<span class="number">128</span>);</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">128</span>; j++) &#123;</span><br><span class="line">				des[j] = data[j + neighbours[<span class="number">0</span>].index * <span class="number">128</span>];</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			VlSiftKeypoint left = feature_a.find(des)-&gt;second;</span><br><span class="line">			VlSiftKeypoint right = it-&gt;second;</span><br><span class="line">			result.push_back(point_pair(left, right));</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">delete</span>[] temp_data;</span><br><span class="line">		temp_data = <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	vl_kdforestsearcher_delete(searcher);</span><br><span class="line">	vl_kdforest_delete(forest);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">delete</span>[] data;</span><br><span class="line">	data = <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="RANSAC筛选出特征匹配点："><a href="#RANSAC筛选出特征匹配点：" class="headerlink" title="RANSAC筛选出特征匹配点："></a>RANSAC筛选出特征匹配点：</h3><p><strong>RANSAC算法在SIFT特征筛选中的主要流程是：</strong></p>
+<p>(1) 从样本集中随机抽选一个RANSAC样本，即4个匹配点对</p>
+<p>(2) 根据这4个匹配点对计算变换矩阵M</p>
+<p>(3) 根据样本集，变换矩阵M，和误差度量函数计算满足当前变换矩阵的一致集consensus，并返回一致集中元素个数</p>
+<p>(4) 根据当前一致集中元素个数判断是否最优(最大)一致集，若是则更新当前最优一致集</p>
+<p>(5) 更新当前错误概率p，若p大于允许的最小错误概率则重复(1)至(4)继续迭代，直到当前错误概率p小于最小错误概率</p>
+<pre><code>![img](https://img-blog.csdn.net/20151208162540847)</code></pre><p> <strong>其中，p为置信度，一般取0.995；w为”内点”的比例 ; m为计算模型所需要的最少样本数=4；</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line">points ImageStitching::RANSAC(<span class="built_in">vector</span>&lt;point_pair&gt; pairs) &#123;</span><br><span class="line">	srand(time(<span class="number">0</span>));</span><br><span class="line">	<span class="keyword">int</span> iterations = <span class="built_in">ceil</span>(<span class="built_in">log</span>(<span class="number">1</span> - <span class="number">0.99</span>) / <span class="built_in">log</span>(<span class="number">1</span> - <span class="built_in">pow</span>(<span class="number">0.5</span>, <span class="number">4</span>)));</span><br><span class="line">	<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; max_inliner_indexs;</span><br><span class="line">	<span class="keyword">while</span> (iterations--) &#123;</span><br><span class="line">		<span class="built_in">vector</span>&lt;point_pair&gt; random_pairs;</span><br><span class="line">		<span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt; seleted_indexs;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">			<span class="keyword">int</span> index = rand() % pairs.size();</span><br><span class="line">			<span class="keyword">while</span> (seleted_indexs.find(index) != seleted_indexs.end()) &#123;</span><br><span class="line">				index = rand() % pairs.size();</span><br><span class="line">			&#125;</span><br><span class="line">			seleted_indexs.insert(index);</span><br><span class="line"></span><br><span class="line">			random_pairs.push_back(pairs[index]);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		points H = HomographyMatrix(random_pairs);</span><br><span class="line">		<span class="comment">//cout &lt;&lt; H.x1 &lt;&lt; endl;</span></span><br><span class="line">		<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; cur_inliner_indexs;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; pairs.size(); i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (seleted_indexs.find(i) != seleted_indexs.end()) &#123;</span><br><span class="line">				<span class="keyword">continue</span>;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">float</span> real_x = pairs[i].b.x;</span><br><span class="line">			<span class="keyword">float</span> real_y = pairs[i].b.y;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">float</span> x = H.x1 * pairs[i].a.x + H.x2 * pairs[i].a.y + H.x3 * pairs[i].a.x * pairs[i].a.y + H.x4;</span><br><span class="line">			<span class="keyword">float</span> y = H.x5 * pairs[i].a.x + H.x6 * pairs[i].a.y + H.x7 * pairs[i].a.x * pairs[i].a.y + H.x8;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">float</span> distance = <span class="built_in">sqrt</span>((x - real_x) * (x - real_x) + (y - real_y) * (y - real_y));</span><br><span class="line">			<span class="keyword">if</span> (distance &lt; <span class="number">4</span>) &#123;</span><br><span class="line">				cur_inliner_indexs.push_back(i);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (cur_inliner_indexs.size() &gt; max_inliner_indexs.size()) &#123;</span><br><span class="line">			max_inliner_indexs = cur_inliner_indexs;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> calc_size = max_inliner_indexs.size();</span><br><span class="line"></span><br><span class="line">	CImg&lt;<span class="keyword">double</span>&gt; A(<span class="number">4</span>, calc_size, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">	CImg&lt;<span class="keyword">double</span>&gt; b(<span class="number">1</span>, calc_size, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; calc_size; i++) &#123;</span><br><span class="line">		<span class="keyword">int</span> cur_index = max_inliner_indexs[i];</span><br><span class="line"></span><br><span class="line">		A(<span class="number">0</span>, i) = pairs[cur_index].a.x;</span><br><span class="line">		A(<span class="number">1</span>, i) = pairs[cur_index].a.y;</span><br><span class="line">		A(<span class="number">2</span>, i) = pairs[cur_index].a.x * pairs[cur_index].a.y;</span><br><span class="line">		A(<span class="number">3</span>, i) = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">		b(<span class="number">0</span>, i) = pairs[cur_index].b.x;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	CImg&lt;<span class="keyword">double</span>&gt; x1 = b.get_solve(A);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; calc_size; i++) &#123;</span><br><span class="line">		<span class="keyword">int</span> cur_index = max_inliner_indexs[i];</span><br><span class="line"></span><br><span class="line">		b(<span class="number">0</span>, i) = pairs[cur_index].b.y;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	CImg&lt;<span class="keyword">double</span>&gt; x2 = b.get_solve(A);</span><br><span class="line">	<span class="keyword">return</span> points(x1(<span class="number">0</span>, <span class="number">0</span>), x1(<span class="number">0</span>, <span class="number">1</span>), x1(<span class="number">0</span>, <span class="number">2</span>), x1(<span class="number">0</span>, <span class="number">3</span>), x2(<span class="number">0</span>, <span class="number">0</span>), x2(<span class="number">0</span>, <span class="number">1</span>), x2(<span class="number">0</span>, <span class="number">2</span>), x2(<span class="number">0</span>, <span class="number">3</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="图像拼接："><a href="#图像拼接：" class="headerlink" title="图像拼接："></a>图像拼接：</h3><p>先是进行进行拷贝，将一副图像按照需要拼接的点拷贝到另一幅图像上。但如果是直接拼接的话可能两幅图像对接点显得很不自然。这里使用Cimg的滤波函数进行边缘的滤波平滑。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br></pre></td><td class="code"><pre><span class="line">CImg&lt;<span class="keyword">float</span>&gt; ImageStitching::Blend(CImg&lt;<span class="keyword">float</span>&gt; pic1, CImg&lt;<span class="keyword">float</span>&gt; pic2) &#123;</span><br><span class="line">	<span class="keyword">double</span> sum_a_x = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">double</span> sum_a_y = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> a_n = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">double</span> sum_overlap_x = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">double</span> sum_overlap_y = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> overlap_n = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">if</span> (pic1.width() &gt; pic1.height()) &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; pic1.width(); x++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!IsBlack(pic1, x, pic1.height() / <span class="number">2</span>)) &#123;</span><br><span class="line">				sum_a_x += x;</span><br><span class="line">				a_n++;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span> (!IsBlack(pic1, x, pic1.height() / <span class="number">2</span>) &amp;&amp; !IsBlack(pic2, x, pic1.height() / <span class="number">2</span>)) &#123;</span><br><span class="line">				sum_overlap_x += x;</span><br><span class="line">				overlap_n++;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; pic1.height(); y++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (!IsBlack(pic1, pic1.width() / <span class="number">2</span>, y)) &#123;</span><br><span class="line">				sum_a_y += y;</span><br><span class="line">				a_n++;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (!IsBlack(pic1, pic1.width() / <span class="number">2</span>, y) &amp;&amp; !IsBlack(pic2, pic2.width() / <span class="number">2</span>, y)) &#123;</span><br><span class="line">				sum_overlap_y += y;</span><br><span class="line">				overlap_n++;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">int</span> min_len = (pic1.width() &lt; pic1.height()) ? pic1.width() : pic1.height();</span><br><span class="line">	<span class="keyword">int</span> n_level = <span class="built_in">floor</span>(log2(min_len));</span><br><span class="line">	<span class="built_in">vector</span>&lt;CImg&lt;<span class="keyword">float</span>&gt; &gt; a_pyramid(n_level);</span><br><span class="line">	<span class="built_in">vector</span>&lt;CImg&lt;<span class="keyword">float</span>&gt; &gt; b_pyramid(n_level);</span><br><span class="line">	<span class="built_in">vector</span>&lt;CImg&lt;<span class="keyword">float</span>&gt; &gt; mask(n_level);</span><br><span class="line">	<span class="comment">// Initialize the base.</span></span><br><span class="line">	a_pyramid[<span class="number">0</span>] = pic1;</span><br><span class="line">	b_pyramid[<span class="number">0</span>] = pic2;</span><br><span class="line">	mask[<span class="number">0</span>] = CImg&lt;<span class="keyword">float</span>&gt;(pic1.width(), pic1.height(), <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">	<span class="keyword">if</span> (pic1.width() &gt; pic1.height()) &#123;</span><br><span class="line">		<span class="keyword">if</span> (sum_a_x / a_n &lt; sum_overlap_x / overlap_n) &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; sum_overlap_x / overlap_n; x++) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; pic1.height(); y++) &#123;</span><br><span class="line">					mask[<span class="number">0</span>](x, y) = <span class="number">1</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> x = sum_overlap_x / overlap_n + <span class="number">1</span>; x &lt; pic1.width(); x++) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; pic1.height(); y++) &#123;</span><br><span class="line">					mask[<span class="number">0</span>](x, y) = <span class="number">1</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (sum_a_y / a_n &lt; sum_overlap_y / overlap_n) &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; pic1.width(); x++) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; sum_overlap_y / overlap_n; y++) &#123;</span><br><span class="line">					mask[<span class="number">0</span>](x, y) = <span class="number">1</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; pic1.width(); x++) &#123;</span><br><span class="line">				<span class="keyword">for</span> (<span class="keyword">int</span> y = sum_overlap_y / overlap_n; y &lt; pic1.height(); y++) &#123;</span><br><span class="line">					mask[<span class="number">0</span>](x, y) = <span class="number">1</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// Down sampling a and b, building Gaussian pyramids.</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; n_level; i++) &#123;</span><br><span class="line">		a_pyramid[i] = a_pyramid[i - <span class="number">1</span>].get_blur(<span class="number">2</span>).get_resize(a_pyramid[i - <span class="number">1</span>].width() / <span class="number">2</span>, a_pyramid[i - <span class="number">1</span>].height() / <span class="number">2</span>, <span class="number">1</span>, a_pyramid[i - <span class="number">1</span>].spectrum(), <span class="number">3</span>);</span><br><span class="line">		b_pyramid[i] = b_pyramid[i - <span class="number">1</span>].get_blur(<span class="number">2</span>).get_resize(b_pyramid[i - <span class="number">1</span>].width() / <span class="number">2</span>, b_pyramid[i - <span class="number">1</span>].height() / <span class="number">2</span>, <span class="number">1</span>, b_pyramid[i - <span class="number">1</span>].spectrum(), <span class="number">3</span>);</span><br><span class="line"></span><br><span class="line">		mask[i] = mask[i - <span class="number">1</span>].get_blur(<span class="number">2</span>).get_resize(mask[i - <span class="number">1</span>].width() / <span class="number">2</span>, mask[i - <span class="number">1</span>].height() / <span class="number">2</span>, <span class="number">1</span>, mask[i - <span class="number">1</span>].spectrum(), <span class="number">3</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// Building Laplacian pyramids.</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n_level - <span class="number">1</span>; i++) &#123;</span><br><span class="line">		a_pyramid[i] = a_pyramid[i] - a_pyramid[i + <span class="number">1</span>].get_resize(a_pyramid[i].width(), a_pyramid[i].height(), <span class="number">1</span>, a_pyramid[i].spectrum(), <span class="number">3</span>);</span><br><span class="line">		b_pyramid[i] = b_pyramid[i] - b_pyramid[i + <span class="number">1</span>].get_resize(b_pyramid[i].width(), b_pyramid[i].height(), <span class="number">1</span>, b_pyramid[i].spectrum(), <span class="number">3</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">vector</span>&lt;CImg&lt;<span class="keyword">float</span>&gt; &gt; blend_pyramid(n_level);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n_level; i++) &#123;</span><br><span class="line">		blend_pyramid[i] = CImg&lt;<span class="keyword">float</span>&gt;(a_pyramid[i].width(), a_pyramid[i].height(), <span class="number">1</span>, a_pyramid[i].spectrum(), <span class="number">0</span>);</span><br><span class="line">		cimg_forXYC(blend_pyramid[i], x, y, c) &#123;</span><br><span class="line">			blend_pyramid[i](x, y, c) = a_pyramid[i](x, y, c) * mask[i](x, y) + b_pyramid[i](x, y, c) * (<span class="number">1.0</span> - mask[i](x, y));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	CImg&lt;<span class="keyword">float</span>&gt; res = blend_pyramid[n_level - <span class="number">1</span>];</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = n_level - <span class="number">2</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line">		res.resize(blend_pyramid[i].width(), blend_pyramid[i].height(), <span class="number">1</span>, blend_pyramid[i].spectrum(), <span class="number">3</span>);</span><br><span class="line">		cimg_forXYC(blend_pyramid[i], x, y, c) &#123;</span><br><span class="line">			res(x, y, c) = blend_pyramid[i](x, y, c) + res(x, y, c);</span><br><span class="line">			<span class="keyword">if</span> (res(x, y, c) &gt; <span class="number">255</span>) res(x, y, c) = <span class="number">255</span>;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span> (res(x, y, c) &lt; <span class="number">0</span>) res(x, y, c) = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="最后封装成类："><a href="#最后封装成类：" class="headerlink" title="最后封装成类："></a>最后封装成类：</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ImageStitching</span> &#123;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">//源图列表</span></span><br><span class="line">    CImgList&lt;<span class="keyword">float</span>&gt; imgs;</span><br><span class="line">    <span class="comment">//拼接后的图像</span></span><br><span class="line">    CImg&lt;<span class="keyword">float</span>&gt; resultImg;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="comment">//柱面投影</span></span><br><span class="line">    CImg&lt;<span class="keyword">float</span>&gt; CylindricalProjection(CImg&lt;<span class="keyword">float</span>&gt; pic);</span><br><span class="line">    <span class="comment">//图像从rgb空间转为灰度空间</span></span><br><span class="line">    CImg&lt;<span class="keyword">float</span>&gt; convertTogray(CImg&lt;<span class="keyword">float</span>&gt; pic);</span><br><span class="line">    <span class="comment">//提取图像中的特征点</span></span><br><span class="line">    <span class="built_in">map</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt;, VlSiftKeypoint&gt; SIFTFeatures(CImg&lt;<span class="keyword">float</span>&gt; pic);</span><br><span class="line">    <span class="comment">//k-d树进行特征点匹配</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;point_pair&gt; KDtreeMatch(<span class="built_in">map</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt;, VlSiftKeypoint&gt; feature_a, <span class="built_in">map</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">float</span>&gt;, VlSiftKeypoint&gt; feature_b);</span><br><span class="line">    <span class="comment">//利用RANSAC算法求单应矩阵</span></span><br><span class="line">    <span class="function">points <span class="title">RANSAC</span><span class="params">(<span class="built_in">vector</span>&lt;point_pair&gt; pairs)</span></span>;</span><br><span class="line">    <span class="comment">//通过单应矩阵扭曲两幅图像内容</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">WarpTwoImg</span><span class="params">(CImg&lt;<span class="keyword">float</span>&gt; src, CImg&lt;<span class="keyword">float</span>&gt; &amp;dst, points H, <span class="keyword">float</span> offset_x, <span class="keyword">float</span> offset_y)</span></span>;</span><br><span class="line">    <span class="comment">//移动两幅图像</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">MoveTwoImg</span><span class="params">(CImg&lt;<span class="keyword">float</span>&gt; src, CImg&lt;<span class="keyword">float</span>&gt; &amp;dst, <span class="keyword">int</span> offset_x, <span class="keyword">int</span> offset_y)</span></span>;</span><br><span class="line">    <span class="comment">//图像拼接</span></span><br><span class="line">    CImg&lt;<span class="keyword">float</span>&gt; Blend(CImg&lt;<span class="keyword">float</span>&gt; pic1, CImg&lt;<span class="keyword">float</span>&gt; pic2);</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ImageStitching();</span><br><span class="line">    ~ImageStitching();</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">StitchProcess</span><span class="params">()</span></span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="结果拼接出的图像："><a href="#结果拼接出的图像：" class="headerlink" title="结果拼接出的图像："></a>结果拼接出的图像：</h3><p><img src="https://img-blog.csdnimg.cn/20181209194726866.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20181209194741175.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="实验总结："><a href="#实验总结：" class="headerlink" title="实验总结："></a>实验总结：</h4><p>程序复杂度过高，第二组图跑了半个小时，不过也跟自己虚拟机分配的内存和处理器不足有关。代码而言一方面是SIFT算法本身复杂度就比较高，网上有提到SIFT的简化版SURF的复杂度会低很多，其次自己在边缘处的一些插值算法以及图像拼接处的平滑等也大大提高了算法复杂度。有时间之后会思考去改进一下。</p>
+<p>再就是最大的缺点感觉柱面投影时图片边缘存在许多毛刺，这个本来以为用了插值算法会大大减少这种像素点，结果还是看起来比较明显。同时图像接合处的用滤波的效果感觉不如开始使用opencv库尝试的时候溶解效果好，到时会去读一下opencv中溶解的源码了解一下这类的算法。</p>
+<p><strong>完整代码参见：</strong><br><a href="https://github.com/WangPerryWPY/Computer-Version/tree/master/Exp6" target="_blank" rel="noopener">https://github.com/WangPerryWPY/Computer-Version/tree/master/Exp6</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>PerryWang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://yoursite.com/2019/07/06/Stitch/" title="图像拼接(Image Stitch)">http://yoursite.com/2019/07/06/Stitch/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/c/" rel="tag"># c++</a>
+          
+            <a href="/tags/计算机视觉/" rel="tag"># 计算机视觉</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/06/自适应的霍夫曼编码与原始的霍夫曼编码的比较/" rel="next" title="自适应的霍夫曼编码与原始的霍夫曼编码的比较">
+                <i class="fa fa-chevron-left"></i> 自适应的霍夫曼编码与原始的霍夫曼编码的比较
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/06/c-实现MD5/" rel="prev" title="c++实现MD5">
+                c++实现MD5 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="PerryWang">
+            
+              <p class="site-author-name" itemprop="name">PerryWang</p>
+              <div class="site-description motion-element" itemprop="description">sysu-student</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">44</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">12</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/WangPerryWPY" title="GitHub &rarr; https://github.com/WangPerryWPY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/perry0528" title="CSDN &rarr; https://blog.csdn.net/perry0528" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:1731611872@qq.com" title="E-Mail &rarr; mailto:1731611872@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#编译运行："><span class="nav-number">1.</span> <span class="nav-text">编译运行：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#读入图像："><span class="nav-number">2.</span> <span class="nav-text">读入图像：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#柱面投影："><span class="nav-number">3.</span> <span class="nav-text">柱面投影：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将图像由RGB空间转为灰度空间："><span class="nav-number">4.</span> <span class="nav-text">将图像由RGB空间转为灰度空间：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SIFT算法查找特征点"><span class="nav-number">5.</span> <span class="nav-text">SIFT算法查找特征点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#K-d-Tree最近邻搜索进行特征点匹配："><span class="nav-number">6.</span> <span class="nav-text">K-d Tree最近邻搜索进行特征点匹配：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#k-d树算法可以分为两大部分，一部分是有关k-d树本身这种数据结构建立的算法，另一部分是在建立的k-d树上如何进行最邻近查找的算法。"><span class="nav-number">6.1.</span> <span class="nav-text">k-d树算法可以分为两大部分，一部分是有关k-d树本身这种数据结构建立的算法，另一部分是在建立的k-d树上如何进行最邻近查找的算法。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RANSAC筛选出特征匹配点："><span class="nav-number">7.</span> <span class="nav-text">RANSAC筛选出特征匹配点：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像拼接："><span class="nav-number">8.</span> <span class="nav-text">图像拼接：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后封装成类："><span class="nav-number">9.</span> <span class="nav-text">最后封装成类：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结果拼接出的图像："><span class="nav-number">10.</span> <span class="nav-text">结果拼接出的图像：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实验总结："><span class="nav-number">10.1.</span> <span class="nav-text">实验总结：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Perry</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">241k</span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unjkp.com/valine/dist/Valine.min.js"></script>  
+  <script src="/js/src/Valine.min.js"></script> 
+
+    
+  
+  <script src="/js/src/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'SsAWGcn6CHm6Oif4CGFKBhVv-gzGzoHsz',
+        appKey: 'bniDOuxQuzVdGASyS3SyDFF8',
+        placeholder: '说点什么吧！',
+        avatar:'wavatar',
+        guest_info:['nick'] ,  
+        pageSize:'10' || 10,
+    });
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+  </script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
