@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="GUI and Draw simple graphics基础知识学习来源  learnOpenGL  重要概念 顶点数组对象(VAO) 顶点缓冲对象(VBO) 索引缓冲对象(EBO) 图形渲染管线3D坐标转为2D像素的处理过程是由OpenGL的图形渲染管线管理的，它分为两部分工作。  第一部分把3D坐标转为适应屏幕的2D坐标。 第二部分把2D坐标转变为实际有颜色的像素。  顶点输入标准化设备坐标(">
+<meta name="keywords" content="c++,计算机图形学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="绘制简单三角形并利用ImGUI改变三角形颜色">
+<meta property="og:url" content="http://yoursite.com/2019/07/08/绘制简单三角形并利用ImGUI改变三角形颜色/index.html">
+<meta property="og:site_name" content="PerryWang🍎博客">
+<meta property="og:description" content="GUI and Draw simple graphics基础知识学习来源  learnOpenGL  重要概念 顶点数组对象(VAO) 顶点缓冲对象(VBO) 索引缓冲对象(EBO) 图形渲染管线3D坐标转为2D像素的处理过程是由OpenGL的图形渲染管线管理的，它分为两部分工作。  第一部分把3D坐标转为适应屏幕的2D坐标。 第二部分把2D坐标转变为实际有颜色的像素。  顶点输入标准化设备坐标(">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190313142438112.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190313142516822.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190313142537709.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190313142608944.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190313142616373.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190313142627248.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190313142700714.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190313142707346.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190313142751582.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190313143001475.gif">
+<meta property="og:updated_time" content="2019-07-08T07:04:17.077Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="绘制简单三角形并利用ImGUI改变三角形颜色">
+<meta name="twitter:description" content="GUI and Draw simple graphics基础知识学习来源  learnOpenGL  重要概念 顶点数组对象(VAO) 顶点缓冲对象(VBO) 索引缓冲对象(EBO) 图形渲染管线3D坐标转为2D像素的处理过程是由OpenGL的图形渲染管线管理的，它分为两部分工作。  第一部分把3D坐标转为适应屏幕的2D坐标。 第二部分把2D坐标转变为实际有颜色的像素。  顶点输入标准化设备坐标(">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190313142438112.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="PerryWang🍎博客" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/07/08/绘制简单三角形并利用ImGUI改变三角形颜色/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>绘制简单三角形并利用ImGUI改变三角形颜色 | PerryWang🍎博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PerryWang🍎博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">分享软件开发中学到的点滴知识</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/WangPerryWPY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/08/绘制简单三角形并利用ImGUI改变三角形颜色/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/头像.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">绘制简单三角形并利用ImGUI改变三角形颜色
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-08 15:03:12 / 修改时间：15:04:17" itemprop="dateCreated datePublished" datetime="2019-07-08T15:03:12+08:00">2019-07-08</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/计算机图形学/" itemprop="url" rel="index"><span itemprop="name">计算机图形学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/08/绘制简单三角形并利用ImGUI改变三角形颜色/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/08/绘制简单三角形并利用ImGUI改变三角形颜色/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">8.5k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="GUI-and-Draw-simple-graphics"><a href="#GUI-and-Draw-simple-graphics" class="headerlink" title="GUI and Draw simple graphics"></a>GUI and Draw simple graphics</h1><h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p><strong>学习来源</strong></p>
+<ul>
+<li>learnOpenGL</li>
+</ul>
+<p><strong>重要概念</strong></p>
+<p>顶点数组对象(VAO)</p>
+<p>顶点缓冲对象(VBO)</p>
+<p>索引缓冲对象(EBO)</p>
+<h4 id="图形渲染管线"><a href="#图形渲染管线" class="headerlink" title="图形渲染管线"></a>图形渲染管线</h4><p>3D坐标转为2D像素的处理过程是由OpenGL的<strong>图形渲染管线</strong>管理的，它分为两部分工作。</p>
+<ul>
+<li>第一部分把3D坐标转为适应屏幕的2D坐标。</li>
+<li>第二部分把2D坐标转变为实际有颜色的像素。</li>
+</ul>
+<h4 id="顶点输入"><a href="#顶点输入" class="headerlink" title="顶点输入"></a>顶点输入</h4><p><strong>标准化设备坐标(NDC)</strong>，将输入的顶点定义在-1.0～1.0之间，接着通过<strong>视口变换</strong>将标准化设备坐标变为<strong>屏幕空间坐标</strong>。</p>
+<p>顶点着色器会在GPU上创建内存存储这些顶点数据并配置OpenGL如何解释这些内存并指定其如何发送给显卡。通过<strong>顶点缓冲对象(VBO)</strong>来管理这个内存，它会在显存种存储大量顶点。使用VBO的好处是能一次性的发送大批数据到显卡上。</p>
+<h4 id="着色器-Shader"><a href="#着色器-Shader" class="headerlink" title="着色器(Shader)"></a>着色器(Shader)</h4><p>着色器是使用一种为GLSL的类c语言写成的，GLSL是为图形计算量身定制的。</p>
+<ul>
+<li>顶点着色器：把一个单独的顶点作为输入。主要目的是把3D坐标转为另一种3D坐标，同时允许我们对顶点属性进行一些基本操作。</li>
+<li>图元装配：将顶点着色器输出的所有顶点作为输入(GL_POINTS、GL_TRIANGLES、GL_LINE_STRIP等来指定数据表示的渲染类型，这称为<strong>图元</strong>)，并将所有的点装配成指定图元的形状。</li>
+<li>几何着色器：将图元形式的一些列顶点的集合作为输入，它通过产生新顶点构造出新的（或是其他的）图元来生成其他形状。</li>
+<li>光栅化阶段：把图元映射为最终屏幕上相应的像素，生成供片段着色器使用的片段。同时在片段着色器运行前会执行<strong>裁切</strong>。裁切会丢弃超出视图外的所有像素来提升执行效率。</li>
+<li>片段着色器：计算一个像素的最终颜色，通常包含3D场景的数据（比如光照，阴影，光的颜色等等），这些数据可以被用来计算最终像素的颜色。</li>
+<li>Alpha测试和混合阶段：检测片段对应的深度(和模板)值，用他们来判断这个像素是其他物体的前面还是后面，决定是否应该丢弃。同时检测alpha值(这定义了一个物体的透明度)，并对物体进行<strong>混合</strong>。</li>
+</ul>
+<h4 id="链接顶点属性"><a href="#链接顶点属性" class="headerlink" title="链接顶点属性"></a>链接顶点属性</h4><p>设置顶点属性指针将其绑定到<strong>顶点数组对象VAO</strong>上，VAO上会存储以下内容：</p>
+<ul>
+<li>glEnableVertexAttribArray和glDisableVertexAttribArray的调用。</li>
+<li>通过glVertexAttribPointer设置的顶点属性配置。</li>
+<li>通过glVertexAttribPointer调用与顶点属性关联的顶点缓冲对象。</li>
+</ul>
+<p>之后再打算绘制一个物体的时候，我们只要在绘制物体前简单地把VAO绑定到希望使用的设定上就行了。</p>
+<h4 id="索引缓存对象-EBO"><a href="#索引缓存对象-EBO" class="headerlink" title="索引缓存对象(EBO)"></a>索引缓存对象(EBO)</h4><p>索引绘制：通过设置顶点，以索引的方式来绘制图形，这就避免了重复存储顶点。</p>
+<p><strong>总结以上流程理解并绘制如下</strong>：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190313142438112.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h2 id="Work"><a href="#Work" class="headerlink" title="Work"></a>Work</h2><h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><h5 id="操作系统："><a href="#操作系统：" class="headerlink" title="操作系统："></a>操作系统：</h5><ul>
+<li>Mac OS X</li>
+</ul>
+<h5 id="IDE："><a href="#IDE：" class="headerlink" title="IDE："></a>IDE：</h5><ul>
+<li>Xcode</li>
+</ul>
+<h5 id="引用库："><a href="#引用库：" class="headerlink" title="引用库："></a>引用库：</h5><ul>
+<li>glfw3+glad+ImGUI</li>
+</ul>
+<h3 id="Basic"><a href="#Basic" class="headerlink" title="Basic:"></a>Basic:</h3><h5 id="1-使用OpenGL-3-3及以上-GLFW或freeglut画一个简单的三角形。"><a href="#1-使用OpenGL-3-3及以上-GLFW或freeglut画一个简单的三角形。" class="headerlink" title="1. 使用OpenGL(3.3及以上)+GLFW或freeglut画一个简单的三角形。"></a>1. 使用OpenGL(3.3及以上)+GLFW或freeglut画一个简单的三角形。</h5><p><strong>顶点输入</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> vertices[] = &#123;</span><br><span class="line">        <span class="number">-1.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="comment">// 左</span></span><br><span class="line">        <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="comment">// 右</span></span><br><span class="line">        <span class="number">0.0f</span>,  <span class="number">1.0f</span>, <span class="number">0.0f</span>  <span class="comment">// 上</span></span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>编写着色器代码</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//顶点着色器</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *vertexShaderSource = <span class="string">"#version 330 core\n"</span></span><br><span class="line"><span class="string">"layout (location = 0) in vec3 aPos;\n"</span></span><br><span class="line"><span class="string">"out vec4 vertexColor;\n"</span></span><br><span class="line"><span class="string">"void main()\n"</span></span><br><span class="line"><span class="string">"&#123;\n"</span></span><br><span class="line"><span class="string">"   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"</span></span><br><span class="line"><span class="string">"   vertexColor = vec4(1.0f, 1.0f, 0.8f, 0.8f);\n"</span></span><br><span class="line"><span class="string">"&#125;\0"</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//片段着色器</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *fragmentShaderSource = <span class="string">"#version 330 core\n"</span></span><br><span class="line"><span class="string">"out vec4 FragColor;\n"</span></span><br><span class="line"><span class="string">"in vec4 vertexColor;\n"</span></span><br><span class="line"><span class="string">"void main()\n"</span></span><br><span class="line"><span class="string">"&#123;\n"</span></span><br><span class="line"><span class="string">"   FragColor = vertexColor;\n"</span></span><br><span class="line"><span class="string">"&#125;\n\0"</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>编译着色器代码</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 编译顶点着色器</span></span><br><span class="line">    <span class="keyword">int</span> vertexShader = glCreateShader(GL_VERTEX_SHADER);</span><br><span class="line">    glShaderSource(vertexShader, <span class="number">1</span>, &amp;vertexShaderSource, <span class="literal">NULL</span>);</span><br><span class="line">    glCompileShader(vertexShader);</span><br><span class="line">    <span class="comment">// 错误检查</span></span><br><span class="line">    <span class="keyword">int</span> success;</span><br><span class="line">    <span class="keyword">char</span> infoLog[<span class="number">512</span>];</span><br><span class="line">    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &amp;success);</span><br><span class="line">    <span class="keyword">if</span> (!success)</span><br><span class="line">    &#123;</span><br><span class="line">        glGetShaderInfoLog(vertexShader, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"</span> &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 编译片段着色器</span></span><br><span class="line">    <span class="keyword">int</span> fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);</span><br><span class="line">    glShaderSource(fragmentShader, <span class="number">1</span>, &amp;fragmentShaderSource, <span class="literal">NULL</span>);</span><br><span class="line">    glCompileShader(fragmentShader);</span><br><span class="line">    <span class="comment">// 错误检查</span></span><br><span class="line">    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &amp;success);</span><br><span class="line">    <span class="keyword">if</span> (!success)</span><br><span class="line">    &#123;</span><br><span class="line">        glGetShaderInfoLog(fragmentShader, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n"</span> &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>链接着色器</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个程序对象</span></span><br><span class="line">    <span class="keyword">int</span> shaderProgram = glCreateProgram();</span><br><span class="line">    <span class="comment">// 将编译好的着色器附着到程序上</span></span><br><span class="line">    glAttachShader(shaderProgram, vertexShader);</span><br><span class="line">    glAttachShader(shaderProgram, fragmentShader);</span><br><span class="line">    glLinkProgram(shaderProgram);</span><br><span class="line">    <span class="comment">// 链接错误检查</span></span><br><span class="line">    glGetProgramiv(shaderProgram, GL_LINK_STATUS, &amp;success);</span><br><span class="line">    <span class="keyword">if</span> (!success) &#123;</span><br><span class="line">        glGetProgramInfoLog(shaderProgram, <span class="number">512</span>, <span class="literal">NULL</span>, infoLog);</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"ERROR::SHADER::PROGRAM::LINKING_FAILED\n"</span> &lt;&lt; infoLog &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 链接完成，删除着色器对象</span></span><br><span class="line">    glDeleteShader(vertexShader);</span><br><span class="line">    glDeleteShader(fragmentShader);</span><br></pre></td></tr></table></figure>
+
+<p><strong>配置生成VAO</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> VBO, VAO;</span><br><span class="line">    glGenVertexArrays(<span class="number">1</span>, &amp;VAO);</span><br><span class="line">    glGenBuffers(<span class="number">1</span>, &amp;VBO);</span><br><span class="line">    <span class="comment">// bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).</span></span><br><span class="line">    glBindVertexArray(VAO);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 复制顶点数组到缓冲中供openGL使用</span></span><br><span class="line">    glBindBuffer(GL_ARRAY_BUFFER, VBO);</span><br><span class="line">    glBufferData(GL_ARRAY_BUFFER, <span class="keyword">sizeof</span>(vertices), vertices, GL_STATIC_DRAW);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置顶点属性指针, 告知openGL如何解析这些顶点数据</span></span><br><span class="line">    glVertexAttribPointer(<span class="number">0</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">3</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>), (<span class="keyword">void</span>*)<span class="number">0</span>);</span><br><span class="line">    glEnableVertexAttribArray(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>绘制三角形</strong>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//渲染</span></span><br><span class="line">       glClearColor(<span class="number">0.0f</span>, <span class="number">0.8f</span>, <span class="number">0.8f</span>, <span class="number">1.0f</span>);<span class="comment">//设置清空p屏幕所用的颜色</span></span><br><span class="line">       glClear(GL_COLOR_BUFFER_BIT);<span class="comment">//使用当前状态来获取应该清除为的颜色</span></span><br><span class="line">       </span><br><span class="line">       glUseProgram(shaderProgram);</span><br><span class="line">       glBindVertexArray(VAO); </span><br><span class="line">       glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>生成效果：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20190313142516822.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h5 id="2-对三角形的三个顶点分别改为红绿蓝，像下面这样。并解释为什么会出现这样的结果。"><a href="#2-对三角形的三个顶点分别改为红绿蓝，像下面这样。并解释为什么会出现这样的结果。" class="headerlink" title="2. 对三角形的三个顶点分别改为红绿蓝，像下面这样。并解释为什么会出现这样的结果。"></a>2. 对三角形的三个顶点分别改为红绿蓝，像下面这样。并解释为什么会出现这样的结果。</h5><ul>
+<li>比起第一问主要有以下更改：</li>
+</ul>
+<p><strong>在输入顶点中添加颜色属性：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> vertices[] = &#123;</span><br><span class="line">        <span class="comment">//位置               // 颜色</span></span><br><span class="line">        <span class="number">-1.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="comment">// 左</span></span><br><span class="line">        <span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="comment">// 右</span></span><br><span class="line">        <span class="number">0.0f</span>,  <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span> <span class="comment">// 上</span></span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>添加配置顶点颜色属性</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 颜色属性</span></span><br><span class="line">    glVertexAttribPointer(<span class="number">1</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="number">6</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>), (<span class="keyword">void</span>*)(<span class="number">3</span> * <span class="keyword">sizeof</span>(<span class="keyword">float</span>)));</span><br><span class="line">    glEnableVertexAttribArray(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>效果：</strong></p>
+<p><img src="https://img-blog.csdnimg.cn/20190313142537709.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><strong>现象解释：</strong></p>
+<blockquote>
+<p>这是在片段着色器中进行的片段插值(Fragment Interpolation)的结果。当渲染一个三角形时，光栅化(Rasterization)阶段通常会造成比原指定顶点更多的片段。光栅会根据每个片段在三角形形状上所处相对位置决定这些片段的位置。 </p>
+<p>基于这些位置，它会插值(Interpolate)所有片段着色器的输入变量。</p>
+</blockquote>
+<p>光栅化会把顶点数据映射为像素点，生成供片段着色器使用的片段，同时会裁切出超出视图外的所有像素。也就是说虽然我们只输入三个顶点但是光栅化会补充其他构成三角形的片段像素点。然后片段着色器会根据我们提供的三个点的颜色值对其他的像素点进行等比例插值。</p>
+<h5 id="3-给上述工作添加一个GUI，里面有一个菜单栏，使得可以选择并改变三角形的颜色。"><a href="#3-给上述工作添加一个GUI，里面有一个菜单栏，使得可以选择并改变三角形的颜色。" class="headerlink" title="3. 给上述工作添加一个GUI，里面有一个菜单栏，使得可以选择并改变三角形的颜色。"></a>3. 给上述工作添加一个GUI，里面有一个菜单栏，使得可以选择并改变三角形的颜色。</h5><p>比起前两步的工作：</p>
+<ul>
+<li>将着色器封装成一个类文件，将着色器代码写到单独的文件中去</li>
+<li>调用ImGUI做出一个图形界面</li>
+</ul>
+<p><strong>窗口初始化设置：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// imgui窗口设置</span></span><br><span class="line">    IMGUI_CHECKVERSION();</span><br><span class="line">    ImGui::CreateContext();</span><br><span class="line">    ImGuiIO &amp;io = ImGui::GetIO(); (<span class="keyword">void</span>)io;</span><br><span class="line">    <span class="comment">// 设置颜色主题</span></span><br><span class="line">    ImGui::StyleColorsLight();</span><br><span class="line">    <span class="comment">// Setup Platform/Renderer bindings</span></span><br><span class="line">    ImGui_ImplGlfw_InitForOpenGL(window, <span class="literal">true</span>);</span><br><span class="line">    ImGui_ImplOpenGL3_Init(<span class="string">"#version 330"</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>启动imGUI的框架并处理相应的IO事件</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">ImGui_ImplOpenGL3_NewFrame();</span><br><span class="line">        ImGui_ImplGlfw_NewFrame();</span><br><span class="line">        ImGui::NewFrame();</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="comment">//static float f = 0.0f;</span></span><br><span class="line">            ImGui::Begin(<span class="string">"HW2"</span>);</span><br><span class="line">            ImGui::Text(<span class="string">"change color"</span>);</span><br><span class="line">            <span class="comment">//ImGui::SliderFloat("float", &amp;f, 0.0f, 1.0f);</span></span><br><span class="line">            <span class="comment">// 将更改的颜色存入color中</span></span><br><span class="line">            ImGui::ColorEdit3(<span class="string">"choose one color"</span>, (<span class="keyword">float</span> *)&amp;color, <span class="number">1</span>);</span><br><span class="line">            <span class="comment">// 勾选框，选中则使三角形保持三色渐变色，取消勾选则课进行全局颜色设置</span></span><br><span class="line">            ImGui::Checkbox(<span class="string">"default color"</span>,  &amp;default_color);</span><br><span class="line">            <span class="keyword">if</span> (default_color)</span><br><span class="line">            &#123;</span><br><span class="line">                vertices[<span class="number">3</span>] = <span class="number">0.0f</span>; vertices[<span class="number">4</span>] = <span class="number">1.0f</span>; vertices[<span class="number">5</span>] = <span class="number">0.0f</span>;</span><br><span class="line">                vertices[<span class="number">9</span>] = <span class="number">0.0f</span>; vertices[<span class="number">10</span>] = <span class="number">0.0f</span>; vertices[<span class="number">11</span>] = <span class="number">1.0f</span>;</span><br><span class="line">                vertices[<span class="number">15</span>] = <span class="number">1.0f</span>; vertices[<span class="number">16</span>] = <span class="number">0.0f</span>; vertices[<span class="number">17</span>] = <span class="number">0.0f</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++) &#123;</span><br><span class="line">                    vertices[i * <span class="number">6</span> + <span class="number">3</span>] = color.x;</span><br><span class="line">                    vertices[i * <span class="number">6</span> + <span class="number">4</span>] = color.y;</span><br><span class="line">                    vertices[i * <span class="number">6</span> + <span class="number">5</span>] = color.z;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            ImGui::Text(<span class="string">"Application average %.3f ms/frame (%.1f FPS)"</span>, <span class="number">1000.0f</span> / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);</span><br><span class="line">            ImGui::End();</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>同时因为在每次IO操作都会改变三角形的属性，所以将VBO，VAO配置加入到窗口循环中，并用ImGUI进行渲染</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 渲染</span></span><br><span class="line">ImGui::Render();</span><br><span class="line">ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());</span><br></pre></td></tr></table></figure>
+
+<p><strong>最终clean up</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 清除GUI资源</span></span><br><span class="line">ImGui_ImplOpenGL3_Shutdown();</span><br><span class="line">ImGui_ImplGlfw_Shutdown();</span><br><span class="line">ImGui::DestroyContext();</span><br></pre></td></tr></table></figure>
+
+<p><strong>实现效果：</strong></p>
+<ul>
+<li>功能一：<ul>
+<li>勾选default  color三角形保持默认三原色渐变</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20190313142608944.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<ul>
+<li>功能二：<ul>
+<li>不勾选default  color，选择一个颜色，三角形变为选择的全局色</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20190313142616373.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20190313142627248.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="Bonus"><a href="#Bonus" class="headerlink" title="Bonus:"></a>Bonus:</h3><h5 id="1-绘制其他的图元，除了三角形，还有点、线等。"><a href="#1-绘制其他的图元，除了三角形，还有点、线等。" class="headerlink" title="1. 绘制其他的图元，除了三角形，还有点、线等。"></a>1. 绘制其他的图元，除了三角形，还有点、线等。</h5><p><strong>加入两条直线，6个点</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 直线1</span></span><br><span class="line"><span class="number">-0.5f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.9f</span>, <span class="number">0.9f</span>, <span class="number">0.666f</span>, <span class="comment">// 左下</span></span><br><span class="line"><span class="number">-1.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.9f</span>, <span class="number">0.9f</span>, <span class="number">0.666f</span>, <span class="comment">// 左上</span></span><br><span class="line"><span class="comment">// 直线2</span></span><br><span class="line"><span class="number">0.5f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.8f</span>, <span class="number">0.36f</span>, <span class="number">0.36f</span>, <span class="comment">// 右下</span></span><br><span class="line"><span class="number">1.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.8f</span>, <span class="number">0.36f</span>, <span class="number">0.36f</span>, <span class="comment">// 右上</span></span><br><span class="line"><span class="comment">// 点1</span></span><br><span class="line"><span class="number">0.75f</span>, <span class="number">0.05f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="comment">// 上</span></span><br><span class="line"><span class="comment">// 点2</span></span><br><span class="line"><span class="number">0.75f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="comment">// 中</span></span><br><span class="line"><span class="comment">// 点3</span></span><br><span class="line"><span class="number">0.75f</span>, <span class="number">-0.05f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="comment">// 下</span></span><br><span class="line"><span class="comment">// 点1</span></span><br><span class="line"><span class="number">0.8f</span>, <span class="number">0.05f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="comment">// 上</span></span><br><span class="line"><span class="comment">// 点2</span></span><br><span class="line"><span class="number">0.8f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="comment">// 中</span></span><br><span class="line"><span class="comment">// 点3</span></span><br><span class="line"><span class="number">0.8f</span>, <span class="number">-0.05f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span> <span class="comment">// 下</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>加入勾选框，选择则出现对应的图形</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ImGui::Checkbox(<span class="string">"default color"</span>,  &amp;default_color);</span><br><span class="line">ImGui::Checkbox(<span class="string">"draw lines"</span>, &amp;lines);</span><br><span class="line">ImGui::Checkbox(<span class="string">"draw points"</span>, &amp;points);</span><br></pre></td></tr></table></figure>
+
+<p><strong>绘制图形</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glDrawArrays(GL_LINES, <span class="number">3</span>, <span class="number">4</span>);</span><br><span class="line">glDrawArrays(GL_POINTS, <span class="number">7</span>, <span class="number">6</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>效果</strong></p>
+<ul>
+<li>直线：</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20190313142700714.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<ul>
+<li>点：</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20190313142707346.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h5 id="2-使用EBO-Element-Buffer-Object-绘制多个三角形。"><a href="#2-使用EBO-Element-Buffer-Object-绘制多个三角形。" class="headerlink" title="2. 使用EBO(Element Buffer Object)绘制多个三角形。"></a>2. 使用EBO(Element Buffer Object)绘制多个三角形。</h5><p><strong>五个顶点索引2个三角形</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 三角形</span></span><br><span class="line"><span class="number">-1.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="comment">// 左</span></span><br><span class="line"><span class="number">1.0f</span>, <span class="number">-1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="comment">// 右</span></span><br><span class="line"><span class="number">0.0f</span>,  <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="comment">// 上</span></span><br><span class="line"><span class="number">0.5f</span>,  <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="comment">// 第二个三角形</span></span><br><span class="line"><span class="number">0.5f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>, <span class="comment">//</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>绘制索引</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 索引绘制</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> indices[] = &#123;</span><br><span class="line">        <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="comment">// 第一个三角形</span></span><br><span class="line">        <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span> <span class="comment">// 第二个三角形</span></span><br><span class="line">    &#125;;</span><br></pre></td></tr></table></figure>
+
+<p><strong>生成EBO对象</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> VBO, VAO, EBO;</span><br><span class="line">    <span class="comment">// 生成对象</span></span><br><span class="line">    glGenVertexArrays(<span class="number">1</span>, &amp;VAO);</span><br><span class="line">    glGenBuffers(<span class="number">1</span>, &amp;VBO);</span><br><span class="line">    glGenBuffers(<span class="number">1</span>, &amp;EBO);</span><br></pre></td></tr></table></figure>
+
+<p><strong>将索引数组复制到索引缓冲中供openGL使用</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);</span><br><span class="line">glBufferData(GL_ELEMENT_ARRAY_BUFFER, <span class="keyword">sizeof</span>(indices), indices, GL_STATIC_DRAW);</span><br></pre></td></tr></table></figure>
+
+<p><strong>绘制</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glDrawElements(GL_TRIANGLES, <span class="number">6</span>, GL_UNSIGNED_INT, <span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/20190313142751582.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><strong>成品展示：</strong><br><img src="https://img-blog.csdnimg.cn/20190313143001475.gif" alt="在这里插入图片描述"><br>代码地址：<br><a href="https://github.com/WangPerryWPY/Computer_Graphics/tree/master/HW2" target="_blank" rel="noopener">https://github.com/WangPerryWPY/Computer_Graphics/tree/master/HW2</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>PerryWang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://yoursite.com/2019/07/08/绘制简单三角形并利用ImGUI改变三角形颜色/" title="绘制简单三角形并利用ImGUI改变三角形颜色">http://yoursite.com/2019/07/08/绘制简单三角形并利用ImGUI改变三角形颜色/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/c/" rel="tag"># c++</a>
+          
+            <a href="/tags/计算机图形学/" rel="tag"># 计算机图形学</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/08/CMD获取所有连接过的WIFI密码/" rel="next" title="CMD获取所有连接过的WIFI密码">
+                <i class="fa fa-chevron-left"></i> CMD获取所有连接过的WIFI密码
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/08/OpenGL中的线性代数-矩阵的变换/" rel="prev" title="openGL中的线性代数(矩阵的变换)">
+                openGL中的线性代数(矩阵的变换) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/头像.png" alt="PerryWang">
+            
+              <p class="site-author-name" itemprop="name">PerryWang</p>
+              <div class="site-description motion-element" itemprop="description">sysu-student</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">57</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/WangPerryWPY" title="GitHub &rarr; https://github.com/WangPerryWPY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/perry0528" title="CSDN &rarr; https://blog.csdn.net/perry0528" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:1731611872@qq.com" title="E-Mail &rarr; mailto:1731611872@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#GUI-and-Draw-simple-graphics"><span class="nav-number">1.</span> <span class="nav-text">GUI and Draw simple graphics</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基础知识"><span class="nav-number">1.1.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#图形渲染管线"><span class="nav-number">1.1.0.1.</span> <span class="nav-text">图形渲染管线</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#顶点输入"><span class="nav-number">1.1.0.2.</span> <span class="nav-text">顶点输入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#着色器-Shader"><span class="nav-number">1.1.0.3.</span> <span class="nav-text">着色器(Shader)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#链接顶点属性"><span class="nav-number">1.1.0.4.</span> <span class="nav-text">链接顶点属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#索引缓存对象-EBO"><span class="nav-number">1.1.0.5.</span> <span class="nav-text">索引缓存对象(EBO)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Work"><span class="nav-number">1.2.</span> <span class="nav-text">Work</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置"><span class="nav-number">1.2.1.</span> <span class="nav-text">环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#操作系统："><span class="nav-number">1.2.1.0.1.</span> <span class="nav-text">操作系统：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#IDE："><span class="nav-number">1.2.1.0.2.</span> <span class="nav-text">IDE：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#引用库："><span class="nav-number">1.2.1.0.3.</span> <span class="nav-text">引用库：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Basic"><span class="nav-number">1.2.2.</span> <span class="nav-text">Basic:</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-使用OpenGL-3-3及以上-GLFW或freeglut画一个简单的三角形。"><span class="nav-number">1.2.2.0.1.</span> <span class="nav-text">1. 使用OpenGL(3.3及以上)+GLFW或freeglut画一个简单的三角形。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-对三角形的三个顶点分别改为红绿蓝，像下面这样。并解释为什么会出现这样的结果。"><span class="nav-number">1.2.2.0.2.</span> <span class="nav-text">2. 对三角形的三个顶点分别改为红绿蓝，像下面这样。并解释为什么会出现这样的结果。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-给上述工作添加一个GUI，里面有一个菜单栏，使得可以选择并改变三角形的颜色。"><span class="nav-number">1.2.2.0.3.</span> <span class="nav-text">3. 给上述工作添加一个GUI，里面有一个菜单栏，使得可以选择并改变三角形的颜色。</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#Bonus"><span class="nav-number">1.2.3.</span> <span class="nav-text">Bonus:</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-绘制其他的图元，除了三角形，还有点、线等。"><span class="nav-number">1.2.3.0.1.</span> <span class="nav-text">1. 绘制其他的图元，除了三角形，还有点、线等。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-使用EBO-Element-Buffer-Object-绘制多个三角形。"><span class="nav-number">1.2.3.0.2.</span> <span class="nav-text">2. 使用EBO(Element Buffer Object)绘制多个三角形。</span></a></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Perry</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">323k</span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unjkp.com/valine/dist/Valine.min.js"></script>  
+  <script src="/js/src/Valine.min.js"></script> 
+
+    
+  
+  <script src="/js/src/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'SsAWGcn6CHm6Oif4CGFKBhVv-gzGzoHsz',
+        appKey: 'bniDOuxQuzVdGASyS3SyDFF8',
+        placeholder: '说点什么吧！',
+        avatar:'wavatar',
+        guest_info:['nick'] ,  
+        pageSize:'10' || 10,
+    });
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+  </script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

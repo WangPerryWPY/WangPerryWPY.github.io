@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1. CImg的配置 下载CImg的包到指定的文件夹下，解压 然后只需要在编写的cpp或hpp文件中加入  12#include &quot;XX/CImg.h&quot; // XX/是指CImg所在的路径using namespace cimg_library;   编译命令（环境为windows下的MinGW）  1g++ -o HelloWorld.exe HelloWorld.cpp -O2 -lgdi32">
+<meta name="keywords" content="c++,计算机视觉">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CImg库的配置以及简单使用">
+<meta property="og:url" content="http://yoursite.com/2019/07/05/CImg库的配置以及简单使用/index.html">
+<meta property="og:site_name" content="PerryWang🍎博客">
+<meta property="og:description" content="1. CImg的配置 下载CImg的包到指定的文件夹下，解压 然后只需要在编写的cpp或hpp文件中加入  12#include &quot;XX/CImg.h&quot; // XX/是指CImg所在的路径using namespace cimg_library;   编译命令（环境为windows下的MinGW）  1g++ -o HelloWorld.exe HelloWorld.cpp -O2 -lgdi32">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdn.net/20180911172504476?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180911172720226?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180911172703683?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180911173035507?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180911172642532?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180911173109345?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180911172622568?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180911173133358?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180911175307715?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180911175421770?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:updated_time" content="2019-07-05T14:37:21.544Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CImg库的配置以及简单使用">
+<meta name="twitter:description" content="1. CImg的配置 下载CImg的包到指定的文件夹下，解压 然后只需要在编写的cpp或hpp文件中加入  12#include &quot;XX/CImg.h&quot; // XX/是指CImg所在的路径using namespace cimg_library;   编译命令（环境为windows下的MinGW）  1g++ -o HelloWorld.exe HelloWorld.cpp -O2 -lgdi32">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20180911172504476?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="PerryWang🍎博客" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/07/05/CImg库的配置以及简单使用/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>CImg库的配置以及简单使用 | PerryWang🍎博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PerryWang🍎博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">分享软件开发中学到的点滴知识</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/WangPerryWPY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/CImg库的配置以及简单使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/头像.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CImg库的配置以及简单使用
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-05 16:56:02 / 修改时间：22:37:21" itemprop="dateCreated datePublished" datetime="2019-07-05T16:56:02+08:00">2019-07-05</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/计算机视觉/" itemprop="url" rel="index"><span itemprop="name">计算机视觉</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/05/CImg库的配置以及简单使用/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/05/CImg库的配置以及简单使用/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">7.2k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-CImg的配置"><a href="#1-CImg的配置" class="headerlink" title="1. CImg的配置"></a>1. CImg的配置</h2><ul>
+<li>下载CImg的包到指定的文件夹下，解压</li>
+<li>然后只需要在编写的cpp或hpp文件中加入</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"XX/CImg.h"</span> <span class="comment">// XX/是指CImg所在的路径</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cimg_library;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>编译命令（<strong>环境为windows下的MinGW</strong>）</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">g++ -o HelloWorld.exe HelloWorld.cpp -O2 -lgdi32</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-简单使用"><a href="#2-简单使用" class="headerlink" title="2.简单使用"></a>2.简单使用</h2><h3 id="1-读入1-bmp-文件"><a href="#1-读入1-bmp-文件" class="headerlink" title="1. 读入1.bmp 文件"></a>1. 读入1.bmp 文件</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CImg&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; SrcImg;</span><br><span class="line">SrcImg.load_bmp(<span class="string">"1.bmp"</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-用CImg-display-显示"><a href="#2-用CImg-display-显示" class="headerlink" title="2. 用CImg.display() 显示"></a>2. 用CImg.display() 显示</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test_display</span><span class="params">(CImg&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; SrcImg)</span> </span>&#123;</span><br><span class="line">	SrcImg.display(<span class="string">"work1"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdn.net/20180911172504476?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<h3 id="3-把1-bmp文件的白色区域变成红色，黑色区域变成绿色"><a href="#3-把1-bmp文件的白色区域变成红色，黑色区域变成绿色" class="headerlink" title="3. 把1.bmp文件的白色区域变成红色，黑色区域变成绿色"></a>3. 把1.bmp文件的白色区域变成红色，黑色区域变成绿色</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">test_change</span><span class="params">(CImg&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; SrcImg)</span> </span>&#123;</span><br><span class="line">	CImg&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; Img = SrcImg;</span><br><span class="line">	cimg_forXY(Img, x, y) &#123;</span><br><span class="line">		<span class="keyword">if</span> (Img(x,y,<span class="number">0</span>) == <span class="number">255</span> &amp;&amp; Img(x,y,<span class="number">1</span>) == <span class="number">255</span> &amp;&amp; Img(x,y,<span class="number">2</span>) == <span class="number">255</span>) &#123;</span><br><span class="line">			Img(x,y,<span class="number">0</span>) = <span class="number">255</span>;</span><br><span class="line">			Img(x,y,<span class="number">1</span>) = <span class="number">0</span>;</span><br><span class="line">			Img(x,y,<span class="number">2</span>) = <span class="number">0</span>;</span><br><span class="line"> 		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	cimg_forXY(Img, x, y) &#123;</span><br><span class="line">		<span class="keyword">if</span> (Img(x,y,<span class="number">0</span>) == <span class="number">0</span> &amp;&amp; Img(x,y,<span class="number">1</span>) == <span class="number">0</span> &amp;&amp; Img(x,y,<span class="number">2</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">			Img(x,y,<span class="number">0</span>) = <span class="number">0</span>;</span><br><span class="line">			Img(x,y,<span class="number">1</span>) = <span class="number">255</span>;</span><br><span class="line">			Img(x,y,<span class="number">2</span>) = <span class="number">0</span>;</span><br><span class="line"> 		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	Img.display(<span class="string">"work2"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdn.net/20180911172720226?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<h3 id="4-在图上绘制一个圆形区域，圆心坐标-50-50-，半径为30，填充颜色为蓝色"><a href="#4-在图上绘制一个圆形区域，圆心坐标-50-50-，半径为30，填充颜色为蓝色" class="headerlink" title="4. 在图上绘制一个圆形区域，圆心坐标(50,50)，半径为30，填充颜色为蓝色"></a>4. 在图上绘制一个圆形区域，圆心坐标(50,50)，半径为30，填充颜色为蓝色</h3><ul>
+<li><strong>未使用CImg的接口函数</strong><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DrawCircle_blue1</span><span class="params">(CImg &lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; TempImg)</span> </span>&#123;</span><br><span class="line">	CImg&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; SrcImg = TempImg;</span><br><span class="line">	cimg_forXY(SrcImg, x, y) &#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">pow</span>(<span class="built_in">pow</span>(x<span class="number">-50</span>,<span class="number">2</span>)+<span class="built_in">pow</span>(y<span class="number">-50</span>,<span class="number">2</span>),<span class="number">0.5</span>) &lt; <span class="number">30</span>) &#123;</span><br><span class="line">			SrcImg(x,y,<span class="number">0</span>) = <span class="number">0</span>;</span><br><span class="line">			SrcImg(x,y,<span class="number">1</span>) = <span class="number">0</span>;</span><br><span class="line">			SrcImg(x,y,<span class="number">2</span>) = <span class="number">255</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	SrcImg.display(<span class="string">"work3.1"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://img-blog.csdn.net/20180911172703683?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<ul>
+<li><strong>使用接口函数draw_circle()</strong><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DrawCircle_blue2</span><span class="params">(CImg &lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; TempImg)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> blue[] = &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>&#125;;</span><br><span class="line">	TempImg.draw_circle(<span class="number">50</span>, <span class="number">50</span>, <span class="number">30</span>, blue);</span><br><span class="line">	TempImg.display(<span class="string">"work3.2"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://img-blog.csdn.net/20180911173035507?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<h5 id="PS-这个感觉自己实现的算法和接口函数实现的效果差不多"><a href="#PS-这个感觉自己实现的算法和接口函数实现的效果差不多" class="headerlink" title="PS: 这个感觉自己实现的算法和接口函数实现的效果差不多"></a><em>PS: 这个感觉自己实现的算法和接口函数实现的效果差不多</em></h5><h3 id="5-在图上绘制一个圆形区域，圆心坐标-50-50-，半径为3，填充颜色为黄色"><a href="#5-在图上绘制一个圆形区域，圆心坐标-50-50-，半径为3，填充颜色为黄色" class="headerlink" title="5. 在图上绘制一个圆形区域，圆心坐标(50,50)，半径为3，填充颜色为黄色"></a>5. 在图上绘制一个圆形区域，圆心坐标(50,50)，半径为3，填充颜色为黄色</h3><ul>
+<li><strong>未使用CImg的接口函数</strong><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DrawCircle_yellow1</span><span class="params">(CImg &lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; TempImg)</span> </span>&#123;</span><br><span class="line">	CImg&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; SrcImg = TempImg;</span><br><span class="line">	cimg_forXY(SrcImg, x, y) &#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">pow</span>(<span class="built_in">pow</span>(x<span class="number">-50</span>,<span class="number">2</span>)+<span class="built_in">pow</span>(y<span class="number">-50</span>,<span class="number">2</span>),<span class="number">0.5</span>) &lt; <span class="number">3</span>) &#123;</span><br><span class="line">			SrcImg(x,y,<span class="number">0</span>) = <span class="number">200</span>;</span><br><span class="line">			SrcImg(x,y,<span class="number">1</span>) = <span class="number">155</span>;</span><br><span class="line">			SrcImg(x,y,<span class="number">2</span>) = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	SrcImg.display(<span class="string">"work4.1"</span>);</span><br><span class="line">&#125;</span><br><span class="line">![这里写图片描述](https:<span class="comment">//img-blog.csdn.net/20180911172544111?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><img src="https://img-blog.csdn.net/20180911172642532?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<ul>
+<li><strong>使用接口函数draw_circle()</strong></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DrawCircle_yellow2</span><span class="params">(CImg &lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; TempImg)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> yellow[] = &#123;<span class="number">200</span>, <span class="number">155</span>, <span class="number">0</span>&#125;;</span><br><span class="line">	TempImg.draw_circle(<span class="number">50</span>, <span class="number">50</span>, <span class="number">3</span>, yellow);</span><br><span class="line">	TempImg.display(<span class="string">"work4.2"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdn.net/20180911173109345?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<h5 id="PS-这个虽然接口函数的效果也并不是特别好，但是明显比我的要好很多，但是因为遍历图片的像素点是对图片进行采样所以点坐标为整数值，圆的半径越小意味着我们取的像素点范围越少，点越少，所以图片的效果会较差，甚至接近正方形，可能接口的函数有更好的实现方法，尝试去翻了翻源码没太看懂"><a href="#PS-这个虽然接口函数的效果也并不是特别好，但是明显比我的要好很多，但是因为遍历图片的像素点是对图片进行采样所以点坐标为整数值，圆的半径越小意味着我们取的像素点范围越少，点越少，所以图片的效果会较差，甚至接近正方形，可能接口的函数有更好的实现方法，尝试去翻了翻源码没太看懂" class="headerlink" title="PS: 这个虽然接口函数的效果也并不是特别好，但是明显比我的要好很多，但是因为遍历图片的像素点是对图片进行采样所以点坐标为整数值，圆的半径越小意味着我们取的像素点范围越少，点越少，所以图片的效果会较差，甚至接近正方形，可能接口的函数有更好的实现方法，尝试去翻了翻源码没太看懂"></a><em>PS: 这个虽然接口函数的效果也并不是特别好，但是明显比我的要好很多，但是因为遍历图片的像素点是对图片进行采样所以点坐标为整数值，圆的半径越小意味着我们取的像素点范围越少，点越少，所以图片的效果会较差，甚至接近正方形，可能接口的函数有更好的实现方法，尝试去翻了翻源码没太看懂</em></h5><h3 id="6-在图上绘制一条长为100的直线段，起点坐标为-0-0-，方向角为35度，直线的颜色为蓝色"><a href="#6-在图上绘制一条长为100的直线段，起点坐标为-0-0-，方向角为35度，直线的颜色为蓝色" class="headerlink" title="6. 在图上绘制一条长为100的直线段，起点坐标为(0, 0)，方向角为35度，直线的颜色为蓝色"></a>6. 在图上绘制一条长为100的直线段，起点坐标为(0, 0)，方向角为35度，直线的颜色为蓝色</h3><ul>
+<li><strong>未使用CImg的接口函数</strong><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DrawLine1</span><span class="params">(CImg &lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; TempImg)</span> </span>&#123;</span><br><span class="line">	CImg&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; SrcImg = TempImg;</span><br><span class="line">	<span class="keyword">double</span> x0 = <span class="number">100</span>*<span class="built_in">cos</span>(<span class="number">35</span>*pi/<span class="number">180</span>);</span><br><span class="line">	<span class="keyword">double</span> y0 = <span class="number">100</span>*<span class="built_in">sin</span>(<span class="number">35</span>*pi/<span class="number">180</span>);</span><br><span class="line">	cimg_forXY(SrcImg, x, y) &#123;</span><br><span class="line">		<span class="keyword">if</span> (x == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (y == <span class="number">0</span>) &#123;</span><br><span class="line">				SrcImg(x,y,<span class="number">0</span>) = <span class="number">0</span>;</span><br><span class="line">				SrcImg(x,y,<span class="number">1</span>) = <span class="number">0</span>;</span><br><span class="line">				SrcImg(x,y,<span class="number">2</span>) = <span class="number">255</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> (cmp((<span class="keyword">double</span>)y, (<span class="keyword">double</span>)x*<span class="built_in">tan</span>(<span class="number">35</span>*pi/<span class="number">180</span>)) &amp;&amp; (<span class="keyword">double</span>)x &lt;= x0 &amp;&amp; (<span class="keyword">double</span>)y &lt;= y0) &#123;</span><br><span class="line">				SrcImg(x,y,<span class="number">0</span>) = <span class="number">0</span>;</span><br><span class="line">				SrcImg(x,y,<span class="number">1</span>) = <span class="number">0</span>;</span><br><span class="line">				SrcImg(x,y,<span class="number">2</span>) = <span class="number">255</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	SrcImg.display(<span class="string">"work5.1"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//用于上面函数的一个辅助函数，来判断相等条件</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(<span class="keyword">double</span> x , <span class="keyword">double</span> y)</span> </span>&#123; <span class="comment">//compare x and y，如果差值小于一定范围则近似相等</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">abs</span>(x - y) &lt;= <span class="number">0.5</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdn.net/20180911172622568?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<ul>
+<li><strong>使用接口函数draw_line()</strong></li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">DrawLine2</span><span class="params">(CImg &lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; TempImg)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> blue[] = &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>&#125;;</span><br><span class="line">	TempImg.draw_line(<span class="number">0</span>,<span class="number">0</span>,<span class="number">100</span>*<span class="built_in">cos</span>(<span class="number">35</span>*pi/<span class="number">180</span>),<span class="number">100</span>*<span class="built_in">sin</span>(<span class="number">35</span>*pi/<span class="number">180</span>),blue);</span><br><span class="line">	TempImg.display(<span class="string">"work5.2"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdn.net/20180911173133358?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<h5 id="PS-这个比较效果感觉肉眼很难看出差距，但是因为遍历图片的像素点是对图片进行采样所以点坐标为整数值，所以不可能存在彻底等于所得的浮点数tan角要求的坐标，只能通过设置误差尽可能小，也就是直线的粗细，通过设置cmp函数调节几个值（0-1-0-3-0-5-1-0）发现0-5的效果是最好的。"><a href="#PS-这个比较效果感觉肉眼很难看出差距，但是因为遍历图片的像素点是对图片进行采样所以点坐标为整数值，所以不可能存在彻底等于所得的浮点数tan角要求的坐标，只能通过设置误差尽可能小，也就是直线的粗细，通过设置cmp函数调节几个值（0-1-0-3-0-5-1-0）发现0-5的效果是最好的。" class="headerlink" title="PS: 这个比较效果感觉肉眼很难看出差距，但是因为遍历图片的像素点是对图片进行采样所以点坐标为整数值，所以不可能存在彻底等于所得的浮点数tan角要求的坐标，只能通过设置误差尽可能小，也就是直线的粗细，通过设置cmp函数调节几个值（0.1, 0.3, 0.5, 1.0）发现0.5的效果是最好的。"></a><em>PS: 这个比较效果感觉肉眼很难看出差距，但是因为遍历图片的像素点是对图片进行采样所以点坐标为整数值，所以不可能存在彻底等于所得的浮点数tan角要求的坐标，只能通过设置误差尽可能小，也就是直线的粗细，通过设置cmp函数调节几个值（0.1, 0.3, 0.5, 1.0）发现0.5的效果是最好的。</em></h5><h3 id="7-把上面的操作结果保存为-2-bmp"><a href="#7-把上面的操作结果保存为-2-bmp" class="headerlink" title="7. 把上面的操作结果保存为 2.bmp"></a>7. 把上面的操作结果保存为 2.bmp</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SrcImg.save(<span class="string">"2.bmp"</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="3-将上述实现的函数封装为c-的一个类"><a href="#3-将上述实现的函数封装为c-的一个类" class="headerlink" title="3. 将上述实现的函数封装为c++的一个类"></a>3. 将上述实现的函数封装为c++的一个类</h2><h3 id="ex-hpp"><a href="#ex-hpp" class="headerlink" title="ex.hpp:"></a>ex.hpp:</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _EX_HPP_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _EX_HPP_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"../CImg.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;cmath&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> cimg_library;</span><br><span class="line"><span class="function"><span class="keyword">const</span> <span class="keyword">double</span> <span class="title">pi</span><span class="params">(<span class="number">3.14159265</span>)</span></span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Test</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	<span class="keyword">public</span>:</span><br><span class="line">		Test();</span><br><span class="line">		~Test();</span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">Todisplay</span><span class="params">()</span></span>;</span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">change</span><span class="params">()</span></span>; <span class="comment">//把1.bmp文件的白色区域变成红色，黑色区域变成绿色</span></span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">DrawCircle_blue1</span><span class="params">()</span></span>; <span class="comment">//不使用CImg函数在图上绘制一个圆形区域，圆心坐标(50,50)，半径为30，填充颜色为蓝色</span></span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">DrawCircle_yellow1</span><span class="params">()</span></span>;<span class="comment">//不使用CImg函数在图上绘制一个圆形区域，圆心坐标(50,50)，半径为3，填充颜色为黄色</span></span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">DrawLine1</span><span class="params">()</span></span>;<span class="comment">//不使用CImg函数 在图上绘制一条长为100的直线段，起点坐标为(0, 0)，方向角为35度，直线的颜色为蓝色。 </span></span><br><span class="line">		<span class="comment">//下面三个函数分别对应使用CImg函数的上述三个操作</span></span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">DrawCircle_blue2</span><span class="params">()</span></span>;</span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">DrawCircle_yellow2</span><span class="params">()</span></span>;</span><br><span class="line">		<span class="function"><span class="keyword">void</span> <span class="title">DrawLine2</span><span class="params">()</span></span>;</span><br><span class="line">		CImg&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; getSrcImg();</span><br><span class="line">	<span class="keyword">private</span>:</span><br><span class="line">		<span class="comment">//string name; //图片的名称</span></span><br><span class="line">		CImg&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; SrcImg; <span class="comment">//定义一副图片</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<h3 id="ex-cpp"><a href="#ex-cpp" class="headerlink" title="ex.cpp"></a>ex.cpp</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ex.hpp"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(<span class="keyword">double</span> x , <span class="keyword">double</span> y)</span></span>;</span><br><span class="line"></span><br><span class="line">Test::Test() &#123;</span><br><span class="line">	<span class="comment">//name = "work1";</span></span><br><span class="line">	SrcImg.load_bmp(<span class="string">"1.bmp"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Test::~Test() &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Test::Todisplay() &#123;</span><br><span class="line">	<span class="comment">//string t = name;</span></span><br><span class="line">	SrcImg.display(<span class="string">"homework"</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CImg&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; Test::getSrcImg() &#123;</span><br><span class="line">	<span class="keyword">return</span> SrcImg;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Test::change() &#123;</span><br><span class="line">	<span class="comment">//name = "work2";</span></span><br><span class="line">	<span class="comment">//CImg&lt;unsigned char&gt; Img = SrcImg;</span></span><br><span class="line">	cimg_forXY(SrcImg, x, y) &#123;</span><br><span class="line">		<span class="keyword">if</span> (SrcImg(x,y,<span class="number">0</span>) == <span class="number">255</span> &amp;&amp; SrcImg(x,y,<span class="number">1</span>) == <span class="number">255</span> &amp;&amp; SrcImg(x,y,<span class="number">2</span>) == <span class="number">255</span>) &#123;</span><br><span class="line">			SrcImg(x,y,<span class="number">0</span>) = <span class="number">255</span>;</span><br><span class="line">			SrcImg(x,y,<span class="number">1</span>) = <span class="number">0</span>;</span><br><span class="line">			SrcImg(x,y,<span class="number">2</span>) = <span class="number">0</span>;</span><br><span class="line"> 		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	cimg_forXY(SrcImg, x, y) &#123;</span><br><span class="line">		<span class="keyword">if</span> (SrcImg(x,y,<span class="number">0</span>) == <span class="number">0</span> &amp;&amp; SrcImg(x,y,<span class="number">1</span>) == <span class="number">0</span> &amp;&amp; SrcImg(x,y,<span class="number">2</span>) == <span class="number">0</span>) &#123;</span><br><span class="line">			SrcImg(x,y,<span class="number">0</span>) = <span class="number">0</span>;</span><br><span class="line">			SrcImg(x,y,<span class="number">1</span>) = <span class="number">255</span>;</span><br><span class="line">			SrcImg(x,y,<span class="number">2</span>) = <span class="number">0</span>;</span><br><span class="line"> 		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Test::DrawCircle_blue1() &#123;</span><br><span class="line">	cimg_forXY(SrcImg, x, y) &#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">pow</span>(<span class="built_in">pow</span>(x<span class="number">-50</span>,<span class="number">2</span>)+<span class="built_in">pow</span>(y<span class="number">-50</span>,<span class="number">2</span>),<span class="number">0.5</span>) &lt; <span class="number">30</span>) &#123;</span><br><span class="line">			SrcImg(x,y,<span class="number">0</span>) = <span class="number">0</span>;</span><br><span class="line">			SrcImg(x,y,<span class="number">1</span>) = <span class="number">0</span>;</span><br><span class="line">			SrcImg(x,y,<span class="number">2</span>) = <span class="number">255</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Test::DrawCircle_yellow1() &#123;</span><br><span class="line">	cimg_forXY(SrcImg, x, y) &#123;</span><br><span class="line">		<span class="keyword">if</span> (<span class="built_in">pow</span>(<span class="built_in">pow</span>(x<span class="number">-50</span>,<span class="number">2</span>)+<span class="built_in">pow</span>(y<span class="number">-50</span>,<span class="number">2</span>),<span class="number">0.5</span>) &lt; <span class="number">3</span>) &#123;</span><br><span class="line">			SrcImg(x,y,<span class="number">0</span>) = <span class="number">200</span>;</span><br><span class="line">			SrcImg(x,y,<span class="number">1</span>) = <span class="number">155</span>;</span><br><span class="line">			SrcImg(x,y,<span class="number">2</span>) = <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Test::DrawLine1() &#123;</span><br><span class="line">	<span class="keyword">double</span> x0 = <span class="number">100</span>*<span class="built_in">cos</span>(<span class="number">35</span>*pi/<span class="number">180</span>);</span><br><span class="line">	<span class="keyword">double</span> y0 = <span class="number">100</span>*<span class="built_in">sin</span>(<span class="number">35</span>*pi/<span class="number">180</span>);</span><br><span class="line">	cimg_forXY(SrcImg, x, y) &#123;</span><br><span class="line">		<span class="keyword">if</span> (x == <span class="number">0</span>) &#123;</span><br><span class="line">			<span class="keyword">if</span> (y == <span class="number">0</span>) &#123;</span><br><span class="line">				SrcImg(x,y,<span class="number">0</span>) = <span class="number">0</span>;</span><br><span class="line">				SrcImg(x,y,<span class="number">1</span>) = <span class="number">0</span>;</span><br><span class="line">				SrcImg(x,y,<span class="number">2</span>) = <span class="number">255</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> (cmp((<span class="keyword">double</span>)y, (<span class="keyword">double</span>)x*<span class="built_in">tan</span>(<span class="number">35</span>*pi/<span class="number">180</span>)) &amp;&amp; (<span class="keyword">double</span>)x &lt;= x0 &amp;&amp; (<span class="keyword">double</span>)y &lt;= y0) &#123;</span><br><span class="line">				SrcImg(x,y,<span class="number">0</span>) = <span class="number">0</span>;</span><br><span class="line">				SrcImg(x,y,<span class="number">1</span>) = <span class="number">0</span>;</span><br><span class="line">				SrcImg(x,y,<span class="number">2</span>) = <span class="number">255</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Test::DrawCircle_blue2() &#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> blue[] = &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>&#125;;</span><br><span class="line">	SrcImg.draw_circle(<span class="number">50</span>, <span class="number">50</span>, <span class="number">30</span>, blue);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> Test::DrawCircle_yellow2() &#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> yellow[] = &#123;<span class="number">200</span>, <span class="number">155</span>, <span class="number">0</span>&#125;;</span><br><span class="line">	SrcImg.draw_circle(<span class="number">50</span>, <span class="number">50</span>, <span class="number">3</span>, yellow);</span><br><span class="line">&#125;</span><br><span class="line">		</span><br><span class="line"><span class="keyword">void</span> Test::DrawLine2() &#123;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">char</span> blue[] = &#123;<span class="number">0</span>,<span class="number">0</span>,<span class="number">255</span>&#125;;</span><br><span class="line">	SrcImg.draw_line(<span class="number">0</span>,<span class="number">0</span>,<span class="number">100</span>*<span class="built_in">cos</span>(<span class="number">35</span>*pi/<span class="number">180</span>),<span class="number">100</span>*<span class="built_in">sin</span>(<span class="number">35</span>*pi/<span class="number">180</span>),blue);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">cmp</span><span class="params">(<span class="keyword">double</span> x , <span class="keyword">double</span> y)</span> </span>&#123; <span class="comment">//compare x and y，如果差值小于一定范围则近似相等</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">abs</span>(x - y) &lt;= <span class="number">0.5</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="main-cpp"><a href="#main-cpp" class="headerlink" title="main.cpp"></a>main.cpp</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"ex.hpp"</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span> <span class="keyword">const</span> *argv[])</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	Test pic;</span><br><span class="line">	Test pic1;</span><br><span class="line">	pic.change();</span><br><span class="line">	pic.DrawCircle_blue1();</span><br><span class="line">	pic.DrawCircle_yellow1();</span><br><span class="line">	pic.DrawLine1();</span><br><span class="line">	pic.Todisplay();</span><br><span class="line">	CImg&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; temp = pic.getSrcImg();</span><br><span class="line">	temp.save(<span class="string">"2.bmp"</span>);</span><br><span class="line">	pic1.change();</span><br><span class="line">	pic1.DrawCircle_blue2();</span><br><span class="line">	pic1.DrawCircle_yellow2();</span><br><span class="line">	pic1.DrawLine2();</span><br><span class="line">	pic1.Todisplay();</span><br><span class="line">	CImg&lt;<span class="keyword">unsigned</span> <span class="keyword">char</span>&gt; temp1 = pic1.getSrcImg();</span><br><span class="line">	temp1.save(<span class="string">"2.1.bmp"</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>运行并存储后实现的整体效果图如下所示：</strong><br>(1) 未使用接口函数：<br><img src="https://img-blog.csdn.net/20180911175307715?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"><br>(2) 使用接口函数：<br><img src="https://img-blog.csdn.net/20180911175421770?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<p><strong>完整代码参见：</strong><br><a href="https://github.com/WangPerryWPY/Computer-Version/tree/master/EX1" target="_blank" rel="noopener">https://github.com/WangPerryWPY/Computer-Version/tree/master/EX1</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>PerryWang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://yoursite.com/2019/07/05/CImg库的配置以及简单使用/" title="CImg库的配置以及简单使用">http://yoursite.com/2019/07/05/CImg库的配置以及简单使用/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/c/" rel="tag"># c++</a>
+          
+            <a href="/tags/计算机视觉/" rel="tag"># 计算机视觉</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/05/c-树的实现-适用于一般的🌲/" rel="next" title="c++树的实现(适用于一般的🌲)">
+                <i class="fa fa-chevron-left"></i> c++树的实现(适用于一般的🌲)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/05/哈夫曼树及哈夫曼编码的实现/" rel="prev" title="哈夫曼树及哈夫曼编码的实现">
+                哈夫曼树及哈夫曼编码的实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/头像.png" alt="PerryWang">
+            
+              <p class="site-author-name" itemprop="name">PerryWang</p>
+              <div class="site-description motion-element" itemprop="description">sysu-student</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">57</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/WangPerryWPY" title="GitHub &rarr; https://github.com/WangPerryWPY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/perry0528" title="CSDN &rarr; https://blog.csdn.net/perry0528" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:1731611872@qq.com" title="E-Mail &rarr; mailto:1731611872@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-CImg的配置"><span class="nav-number">1.</span> <span class="nav-text">1. CImg的配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-简单使用"><span class="nav-number">2.</span> <span class="nav-text">2.简单使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-读入1-bmp-文件"><span class="nav-number">2.1.</span> <span class="nav-text">1. 读入1.bmp 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-用CImg-display-显示"><span class="nav-number">2.2.</span> <span class="nav-text">2. 用CImg.display() 显示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-把1-bmp文件的白色区域变成红色，黑色区域变成绿色"><span class="nav-number">2.3.</span> <span class="nav-text">3. 把1.bmp文件的白色区域变成红色，黑色区域变成绿色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-在图上绘制一个圆形区域，圆心坐标-50-50-，半径为30，填充颜色为蓝色"><span class="nav-number">2.4.</span> <span class="nav-text">4. 在图上绘制一个圆形区域，圆心坐标(50,50)，半径为30，填充颜色为蓝色</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#PS-这个感觉自己实现的算法和接口函数实现的效果差不多"><span class="nav-number">2.4.0.1.</span> <span class="nav-text">PS: 这个感觉自己实现的算法和接口函数实现的效果差不多</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-在图上绘制一个圆形区域，圆心坐标-50-50-，半径为3，填充颜色为黄色"><span class="nav-number">2.5.</span> <span class="nav-text">5. 在图上绘制一个圆形区域，圆心坐标(50,50)，半径为3，填充颜色为黄色</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#PS-这个虽然接口函数的效果也并不是特别好，但是明显比我的要好很多，但是因为遍历图片的像素点是对图片进行采样所以点坐标为整数值，圆的半径越小意味着我们取的像素点范围越少，点越少，所以图片的效果会较差，甚至接近正方形，可能接口的函数有更好的实现方法，尝试去翻了翻源码没太看懂"><span class="nav-number">2.5.0.1.</span> <span class="nav-text">PS: 这个虽然接口函数的效果也并不是特别好，但是明显比我的要好很多，但是因为遍历图片的像素点是对图片进行采样所以点坐标为整数值，圆的半径越小意味着我们取的像素点范围越少，点越少，所以图片的效果会较差，甚至接近正方形，可能接口的函数有更好的实现方法，尝试去翻了翻源码没太看懂</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#6-在图上绘制一条长为100的直线段，起点坐标为-0-0-，方向角为35度，直线的颜色为蓝色"><span class="nav-number">2.6.</span> <span class="nav-text">6. 在图上绘制一条长为100的直线段，起点坐标为(0, 0)，方向角为35度，直线的颜色为蓝色</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#PS-这个比较效果感觉肉眼很难看出差距，但是因为遍历图片的像素点是对图片进行采样所以点坐标为整数值，所以不可能存在彻底等于所得的浮点数tan角要求的坐标，只能通过设置误差尽可能小，也就是直线的粗细，通过设置cmp函数调节几个值（0-1-0-3-0-5-1-0）发现0-5的效果是最好的。"><span class="nav-number">2.6.0.1.</span> <span class="nav-text">PS: 这个比较效果感觉肉眼很难看出差距，但是因为遍历图片的像素点是对图片进行采样所以点坐标为整数值，所以不可能存在彻底等于所得的浮点数tan角要求的坐标，只能通过设置误差尽可能小，也就是直线的粗细，通过设置cmp函数调节几个值（0.1, 0.3, 0.5, 1.0）发现0.5的效果是最好的。</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-把上面的操作结果保存为-2-bmp"><span class="nav-number">2.7.</span> <span class="nav-text">7. 把上面的操作结果保存为 2.bmp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-将上述实现的函数封装为c-的一个类"><span class="nav-number">3.</span> <span class="nav-text">3. 将上述实现的函数封装为c++的一个类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ex-hpp"><span class="nav-number">3.1.</span> <span class="nav-text">ex.hpp:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ex-cpp"><span class="nav-number">3.2.</span> <span class="nav-text">ex.cpp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#main-cpp"><span class="nav-number">3.3.</span> <span class="nav-text">main.cpp</span></a></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Perry</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">323k</span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unjkp.com/valine/dist/Valine.min.js"></script>  
+  <script src="/js/src/Valine.min.js"></script> 
+
+    
+  
+  <script src="/js/src/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'SsAWGcn6CHm6Oif4CGFKBhVv-gzGzoHsz',
+        appKey: 'bniDOuxQuzVdGASyS3SyDFF8',
+        placeholder: '说点什么吧！',
+        avatar:'wavatar',
+        guest_info:['nick'] ,  
+        pageSize:'10' || 10,
+    });
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+  </script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

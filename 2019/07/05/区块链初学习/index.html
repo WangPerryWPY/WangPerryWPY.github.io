@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="阅读自区块链技术发展现状与展望（袁勇 王飞跃）的报告并节选其中内容  区块链简介 区块链定义：   区块链是以比特币为代表的数字加密货币体系的核心支撑技术。区块链技术的核心优势是去中心化，能够通过运用数据加密、时间戳、分布式共识和经济激励等手段，在节点无需互相信任的分布式系统中实现基于去中心化信用的点对点交易、协调与协作，从而为解决中心化机构普遍存在的高成本、低效率和数据存储不安全等问题提供了解">
+<meta name="keywords" content="区块链">
+<meta property="og:type" content="article">
+<meta property="og:title" content="区块链初学习">
+<meta property="og:url" content="http://yoursite.com/2019/07/05/区块链初学习/index.html">
+<meta property="og:site_name" content="PerryWang🍎博客">
+<meta property="og:description" content="阅读自区块链技术发展现状与展望（袁勇 王飞跃）的报告并节选其中内容  区块链简介 区块链定义：   区块链是以比特币为代表的数字加密货币体系的核心支撑技术。区块链技术的核心优势是去中心化，能够通过运用数据加密、时间戳、分布式共识和经济激励等手段，在节点无需互相信任的分布式系统中实现基于去中心化信用的点对点交易、协调与协作，从而为解决中心化机构普遍存在的高成本、低效率和数据存储不安全等问题提供了解">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdn.net/2018091215470988?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180912155416859?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180912160025981?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:image" content="https://img-blog.csdn.net/20180913160026238?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta property="og:updated_time" content="2019-07-05T14:39:36.251Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="区块链初学习">
+<meta name="twitter:description" content="阅读自区块链技术发展现状与展望（袁勇 王飞跃）的报告并节选其中内容  区块链简介 区块链定义：   区块链是以比特币为代表的数字加密货币体系的核心支撑技术。区块链技术的核心优势是去中心化，能够通过运用数据加密、时间戳、分布式共识和经济激励等手段，在节点无需互相信任的分布式系统中实现基于去中心化信用的点对点交易、协调与协作，从而为解决中心化机构普遍存在的高成本、低效率和数据存储不安全等问题提供了解">
+<meta name="twitter:image" content="https://img-blog.csdn.net/2018091215470988?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="PerryWang🍎博客" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/07/05/区块链初学习/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>区块链初学习 | PerryWang🍎博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PerryWang🍎博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">分享软件开发中学到的点滴知识</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/WangPerryWPY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/区块链初学习/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/头像.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">区块链初学习
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-05 22:38:53 / 修改时间：22:39:36" itemprop="dateCreated datePublished" datetime="2019-07-05T22:38:53+08:00">2019-07-05</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/区块链/" itemprop="url" rel="index"><span itemprop="name">区块链</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/05/区块链初学习/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/05/区块链初学习/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">16k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ul>
+<li>阅读自区块链技术发展现状与展望（袁勇 王飞跃）的报告并节选其中内容</li>
+</ul>
+<h2 id="区块链简介"><a href="#区块链简介" class="headerlink" title="区块链简介"></a>区块链简介</h2><ol>
+<li>区块链定义：</li>
+</ol>
+<ul>
+<li>区块链是以比特币为代表的数字加密货币体系的核心支撑技术。区块链技术的核心优势是去中心化，能够通过运用数据加密、时间戳、分布式共识和经济激励等手段，在节点无需互相信任的分布式系统中实现基于去中心化信用的点对点交易、协调与协作，从而为解决中心化机构普遍存在的高成本、低效率和数据存储不安全等问题提供了解决方案。</li>
+</ul>
+<ol start="2">
+<li>区块链特点：</li>
+</ol>
+<ul>
+<li>去中心化、时序数据、集体维护、可编程和安全可信等特点。</li>
+<li>去中心化：区块链数据的验证、记账、存储、维护和传输等过程均是基于分布式系统结构, 采用纯数学方法而不是中心机构来建立分布式节点间的信任关系, 从而形成去中心化的可信任的分布式系统。</li>
+<li>时序数据：: 区块链采用带有时间戳的链式区块结构存储数据, 从而为数据增加了时间维度, 具有极强的可验证性和可追溯性。</li>
+<li>集体维护：区块链系统采用特定的经济激励机制来保证分布式系统中所有节点均可参与数据区块的验证过程 (如比特币的 “挖矿” 过程), 并通过共识算法来选择特定的节点将新区块添加到区块链。</li>
+<li>可编程： 区块链技术可提供灵活的脚本代码系统, 支持用户创建高级的智能合约、货币或其他去中心化应用.。例如, 以太坊 (Ethereum) 平台即提供了图灵完备的脚本语言以供用户来构建任何可以精确定义的智能合约或交易类型。</li>
+<li>安全可信：区块链技术采用非对称密码学原理对数据进行加密, 同时借助分布式系统各节点的工作量证明等共识算法形成的强大算力来抵御外部攻击、保证区块链数据不可篡改和不可伪造, 因而具有较高的安全性。</li>
+</ul>
+<ol start="3">
+<li>区块链技术的未来发展脉络：</li>
+</ol>
+<ul>
+<li>区块链技术将会经历以可编程数字加密货币体系为主要特征的区块链 1.0 模式、以可编程金融系统为主要特征的区块链 2.0 模式和以可编程社会为主要特征的区块链 3.0 模式。</li>
+</ul>
+<ol start="4">
+<li>比特币现状：</li>
+</ol>
+<ul>
+<li>目前, 一般认为区块链技术正处于2.0 模式的初期, 股权众筹和 P2P 借贷等各类基于区块链技术的互联网金融应用相继涌现. 然而, 上述模式实际上是平行而非演进式发展的, 区块链 1.0模式的数字加密货币体系仍然远未成熟, 距离其全球货币一体化的愿景实际上更远、更困难. 目前, 区块链领域已经呈现出明显的技术和产业创新驱动的发展态势, 相关学术研究严重滞后、亟待跟进。(截止到 2016 年 2 月, 以万方数据知识服务平台为中文数据源、以 Web of Science 和 EI Village 为英文数据源的文献检索显示, 目前篇名包含关键词 “区块链/blockchain” 的仅有 2 篇中文和 9 篇英文文献. )</li>
+</ul>
+<h2 id="比特币与区块链概述"><a href="#比特币与区块链概述" class="headerlink" title="比特币与区块链概述"></a>比特币与区块链概述</h2><ol>
+<li>比特币本质：</li>
+</ol>
+<ul>
+<li><p>由分布式网络系统生成的数字货币, 其发行过程不依赖特定的中心化机构, 而是依赖于分布式网络节点共同参与一种称为工作量证明(Proof of work, PoW) 的共识过程以完成比特币交易的验证与记录。</p>
+</li>
+<li><p>PoW 共识过程 (俗称挖矿, 每个节点称为矿工) 通常是各节点贡献自己的计算资源来竞争解决一个难度可动态调整的数学问题, 成功解决该数学问题的矿工将获得区块的记账权, 并将当前时间段的所有比特币交易打包记入一个新的区块、按照时间顺序链接到比特币主链上. 比特币系统同时会发行一定数量的比特币以奖励该矿工, 并激励其他矿工继续贡献算力。</p>
+</li>
+<li><p>比特币的流通过程依靠密码学方法保障安全. 每一次比特币交易都会经过特殊算法处理和全体矿工验证后记入区块链, 同时可以附带具有一定灵活性的脚本代码 (智能合约)以实现可编程的自动化货币流通。</p>
+</li>
+</ul>
+<ol start="2">
+<li><p>比特币和区块链具有的五个关键要素</p>
+<ul>
+<li>即公共的区块链账本、分布式的点对点网络系统、去中心化的共识算法、适度的经济激励机制以及可编程的脚本代码</li>
+</ul>
+</li>
+<li><p>数字加密货币面临的两个重要问题</p>
+<ul>
+<li>双重支付问题和拜占庭问题</li>
+<li>双重支付问题：双重支付问题又称为 “双花”, 即利用货币的数字特性两次或多次使用“同一笔钱” 完成支付. 传统金融和货币体系中, 现金因是物理实体, 能够自然地避免双重支付;其他数字形式的货币则需要可信的第三方中心机构(如银行) 来保证。 区块链技术的贡献是在没有第三方机构的情况下, 通过分布式节点的验证和共识机制解决了去中心化系统的双重支付问题, 在信息传输的过程同时完成了价值转移。</li>
+<li>拜占庭问题：拜占庭将军问题是分布式系统交互过程普遍面临的难题, 即在缺少可信任的中央节点的情况下, 分布式节点如何达成共识和建立互信。区块链通过数字加密技术和分布式共识算法, 实现了在无需信任单个节点的情况下构建一个去中心化的可信任系统. 与传统中心机构(如中央银行) 的信用背书机制不同的是, 比特币区块链形成的是软件定义的信用, 这标志着中心化的国家信用向去中心化的算法信用的根本性变革.</li>
+</ul>
+</li>
+<li><p>比特币的流通过程</p>
+</li>
+</ol>
+<ul>
+<li>比特币凭借其先发优势, 目前已经形成体系完备的涵盖发行、流通和金融衍生市场的生态圈与产业链 (如图 1 所示), 这也是其长期占据绝大多数数字加密货币市场份额的主要原因. 比特币的开源特性吸引了大量开发者持续性地贡献其创新技术、方法和机制; 比特币各网络节点 (矿工) 提供算力以保证比特币的稳定共识和安全性, 其算力大多来自于设备商销售的专门用于 PoW 共识算法的专业设备(矿机). 比特币网络为每个新发现的区块发行一定数量的比特币以奖励矿工, 部分矿工可能会相互合作建立收益共享的矿池, 以便汇集算力来提高获得比特币的概率. 比特币经发行进入流通环节后, 持币人可以通过特定的软件平台 (如比特币钱包) 向商家支付比特币来购买商品或服务, 这体现了比特币的货币属性; 同时由于比特币价格的涨跌机制使其完全具备金融衍生品的所有属性, 因此出现了比特币交易平台以方便持币人投资或者投机比特币. 在流通环节和金融市场中, 每一笔比特币交易都会由比特币网络的全体矿工验证并记入区块链。</li>
+</ul>
+<p><img src="https://img-blog.csdn.net/2018091215470988?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<h2 id="区块链的基础模型和关键技术"><a href="#区块链的基础模型和关键技术" class="headerlink" title="区块链的基础模型和关键技术"></a>区块链的基础模型和关键技术</h2><p>1.区块链基础架构模型：</p>
+<ul>
+<li>区块链技术的基础架构模型如图 2 所示. 一般说来, 区块链系统由数据层、网络层、共识层、激励层、合约层和应用层组成. 其中, 数据层封装了底层数据区块以及相关的数据加密和时间戳等技术; 网络层则包括分布式组网机制、数据传播机制和数据验证机制等; 共识层主要封装网络节点的各类共识算法; 激励层将经济因素集成到区块链技术体系中来, 主要包括经济激励的发行机制和分配机制等; 合约层主要封装各类脚本、算法和智能合约, 是区块链可编程特性的基础; 应用层则封装了区块链的各种应用场景和案例. 该模型中, 基于时间戳的链式区块结构、分布式节点的共识机制、基于共识算力的经济激励和灵活可编程的智能合约是区块链技术最具代表性的创新点。</li>
+</ul>
+<p><img src="https://img-blog.csdn.net/20180912155416859?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<p><img src="https://img-blog.csdn.net/20180912160025981?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<p>2.数据层：</p>
+<ul>
+<li><p>数据区块：如图 3 所示, 每个数据区块一般包含区块头 (Header) 和区块体 (Body) 两部分. 区块头封装了当前版本号 (Version)、前一区块地址(Prev-block)、当前区块的目标哈希值(Bits)、当前区块PoW共识过程的解随机数 (Nonce)、Merkle根(Merkle-root)以及时间戳(Timestamp) 等信息. 比特币网络可以动态调整 PoW 共识过程的难度值, 最先找到正确的解随机数 Nonce 并经过全体矿工验证的矿工将会获得当前区块的记账权. 区块体则包括当前区块的交易数量以及经过验证的、区块创建过程中生成的所有交易记录. 这些记录通过 Merkle 树的哈希过程生成唯一的 Merkle 根并记入区块头。</p>
+</li>
+<li><p>链式结构：取得记账权的矿工将当前区块链接到前一区块, 形成最新的区块主链. 各个区块依次环环相接, 形成从创世区块到当前区块的一条最长主链, 从而记录了区块链数据的完整历史, 能够提供区块链数据的溯源和定位功能, 任意数据都可以通过此链式结构顺藤摸瓜、追本溯源. 需要说明的是, 如果短时间内有两个矿工同时 “挖出” 两个新的区块加以链接的话, 区块主链可能会出现暂时的 “分叉”现象, 其解决方法是约定矿工总是选择延长累计工作量证明最大的区块链. 因此, 当主链分叉后, 后续区块的矿工将通过计算和比较, 将其区块链接到当前累计工作量证明最大化的备选链上, 形成更长的新主链, 从而解决分叉问题。</p>
+</li>
+<li><p>时间戳：区块链技术要求获得记账权的节点必须在当前数据区块头中加盖时间戳, 表明区块数据的写入时间. 因此, 主链上各区块是按照时间顺序依次排列的. 时间戳技术本身并不复杂, 但其在区块链技术中的应用是具有重要意义的创新. 时间戳可以作为区块数据的存在性证明 (Proof of existence),有助于形成不可篡改和不可伪造的区块链数据库,从而为区块链应用于公证、知识产权注册等时间敏感的领域奠定了基础. 更为重要的是, 时间戳为未来基于区块链的互联网和大数据增加了时间维度, 使得通过区块数据和时间戳来重现历史成为可能。</p>
+</li>
+<li><p>哈希函数：区块链通常并不直接保存原始数据或交易记录, 而是保存其哈希函数值, 即将原始数据编码为特定长度的由数字和字母组成的字符串后记入区块链. 哈希函数 (也称散列函数) 具有诸多优良特点, 因而特别适合用于存储区块链数据. 例如, 通过哈希输出几乎不能反推输入值 (单向性), 不同长度输入的哈希过程消耗大约相同的时间 (定时性) 且产生固定长度的输出 (定长性), 即使输入仅相差一个字节也会产生显著不同的输出值 (随机性) 等. 比特币区块链通常采用双 SHA256 哈希函数, 即将任意长度的原始数据经过两次 SHA256 哈希运算后转换为长度为 256 位 (32 字节) 的二进制数字来统一存储和识别. 除上述特点外, SHA256 算法还具有巨大的散列空间 (2256) 和抗碰撞 (避免不同输入值产生相同哈希值) 等特性, 可满足比特币的任何相关标记需要而不会出现冲突。</p>
+</li>
+<li><p>Merkle树：Merkle 树是区块链的重要数据结构, 其作用是快速归纳和校验区块数据的存在性和完整性. Merkle 树通常包含区块体的底层 (交易) 数据库, 区块头的根哈希值 (即Merkle 根) 以及所有沿底层区块数据到根哈希的分支. Merkle 树运算过程一般是将区块体的数据进行分组哈希, 并将生成的新哈希值插入到 Merkle 树中, 如此递归直到只剩最后一个根哈希值并记为区块头的 Merkle 根. 最常见的 Merkle 树是比特币采用的二叉 Merkle 树, 其每个哈希节点总是包含两个相邻的数据块或其哈希值, 其他变种则包括以太坊的 Merkle patricia tree 等. Merkle 树有诸多优点: 首先是极大地提高了区块链的运行效率和可扩展性, 使得区块头只需包含根哈希值而不必封装所有底层数据, 这使得哈希运算可以高效地运行在智能手机甚至物联网设备上; 其次是 Merkle 树可支持 “简化支付验证” 协议, 即在不运行完整区块链网络节点的情况下, 也能够对 (交易) 数据进行检验.例如, 为验证图 3 中交易 6, 一个没有下载完整区块链数据的客户端可以通过向其他节点索要包括从交易 6 哈希值沿 Merkle 树上溯至区块头根哈希处的哈希序列 (即哈希节点 6, 5, 56, 78, 5 678, 1 234) 来快速确认交易的存在性和正确性. 一般说来, 在 N个交易组成的区块体中确认任一交易的算法复杂度仅为 log2N. 这将极大地降低区块链运行所需的带宽和验证时间, 并使得仅保存部分相关区块链数据的轻量级客户端成为可能。</p>
+</li>
+<li><p>非对称加密：非对称加密是为满足安全性需求和所有权验证需求而集成到区块链中的加密技术,常见算法包括 RSA、Elgamal、Rabin、D-H、ECC(即椭圆曲线加密算法) 等. 非对称加密通常在加密和解密过程中使用两个非对称的密码, 分别称为公钥和私钥. 非对称密钥对具有两个特点, 首先是用其中一个密钥 (公钥或私钥) 加密信息后, 只有另一个对应的密钥才能解开; 其次是公钥可向其他人公开、私钥则保密, 其他人无法通过该公钥推算出相应的私钥. 非对称加密技术在区块链的应用场景主要包括信息加密、数字签名和登录认证等, 其中信息加密场景主要是由信息发送者 (记为 A) 使用接受者 (记为 B) 的公钥对信息加密后再发送给 B, B 利用自己的私钥对信息解密. 比特币交易的加密即属于此场景; 数字签名场景则是由发送者 A 采用自己的私钥加密信息后发送给 B, B 使用 A 的公钥对信息解密、从而可确保信息是由 A 发送的; 登录认证场景则是由客户端使用私钥加密登录信息后发送给服务器, 后者接收后采用该客户端的公钥解密并认证登录信息。</p>
+</li>
+</ul>
+<p>3.网络层：</p>
+<ul>
+<li><p>组网方式：区块链系统的节点一般具有分布式、自治性、开放可自由进出等特性, 因而一般采用对等式网络 (Peer-to-peer network, P2P 网络) 来组织散布全球的参与数据验证和记账的节点. P2P 网络中的每个节点均地位对等且以扁平式拓扑结构相互连通和交互, 不存在任何中心化的特殊节点和层级结构, 每个节点均会承担网络路由、验证区块数据、传播区块数据、发现新节点等功能. 按照节点存储数据量的不同, 可以分为全节点和轻量级节点. 前者保存有从创世区块到当前最新区块为止的完整区块链数据, 并通过实时参与区块数据的校验和记账来动态更新主链. 全节点的优势在于不依赖任何其他节点而能够独立地实现任意区块数据的校验、查询和更新, 劣势则是维护全节点的空间成本较高。轻量级节点则仅保存一部分区块链数据，并通过简易支付验证方式向其相邻节点请求所需的数据来完成数据校验。</p>
+</li>
+<li><p>数据传播协议：任一区块数据生成后, 将由生成该数据的节点广播到全网其他所有的节点来加以验证. 现有的区块链系统一般根据实际应用需求设计比特币传播协议的变种, 例如以太坊区块链集成了所谓的 “幽灵协议” 以解决因区块数据确认速度快而导致的高区块作废率和随之而来的安全性风险. 根据中本聪的设计, 比特币系统的交易数据传播协议包括如下步骤而导致的高区块作废率和随之而来的安全性风险. 根据中本聪的设计, 比特币系统的交易数据传播协议包括如下步骤: </p>
+<ul>
+<li>1) 比特币交易节点将新生成的交易数据向全网所有节点进行广播;</li>
+<li>2) 每个节点都将收集到的交易数据存储到一个区块中;</li>
+<li>3) 每个节点基于自身算力在区块中找到一个具有足够难度的工作量证明;</li>
+<li>4) 当节点找到区块的工作量证明后, 就向全网所有节点广播此区块;</li>
+<li>5) 仅当包含在区块中的所有交易都是有效的且之前未存在过的, 其他节点才认同该区块的有效性;</li>
+<li>6) 其他节点接受该数据区块, 并在该区块的末尾制造新的区块以延长该链条, 而将被接受区块的随机哈希值视为先于新区块的随机哈希值。</li>
+</ul>
+</li>
+<li><p>数据验证机制：P2P 网络中的每个节点都时刻监听比特币网络中广播的数据与新区块. 节点接收到邻近节点发来的数据后, 将首先验证该数据的有效性. 如果数据有效, 则按照接收顺序为新数据建立存储池以暂存尚未记入区块的有效数据, 同时继续向邻近节点转发; 如果数据无效, 则立即废弃该数据, 从而保证无效数据不会在区块链网络继续传播. 以比特币为例, 比特币的矿工节点会收集和验证P2P 网络中广播的尚未确认的交易数据, 并对照预定义的标准清单, 从数据结构、语法规范性、输入输出和数字签名等各方面校验交易数据的有效性, 并将有效交易数据整合到当前区块中; 同理, 当某矿工“挖” 到新区块后, 其他矿工节点也会按照预定义标准来校验该区块是否包含足够工作量证明, 时间戳是否有效等; 如确认有效, 其他矿工节点会将该区块链接到主区块链上, 并开始竞争下一个新区块.</p>
+</li>
+</ul>
+<p>4.共识层</p>
+<ul>
+<li>区块链技术的核心优势之一就是能够在决策权高度分散的去中心化系统中使得各节点高效地针对区块数据的有效性达成共识。</li>
+</ul>
+<p><strong>下面将介绍一下PoW、PoS和DPOS三种共识机制</strong></p>
+<ul>
+<li><p><strong>PoW共识：</strong>其核心思想是通过引入分布式节点的算力竞争来保证数据一致性和共识的安全性. 比特币系统中, 各节点 (即矿工) 基于各自的计算机算力相互竞争来共同解决一个求解复杂但验证容易的 SHA256 数学难题 (即挖矿), 最快解决该难题的节点将获得区块记账权和系统自动生成的比特币奖励. 该数学难题可表述为: 根据当前难度值, 通过搜索求解一个合适的随机数 (Nonce) 使得区块各元数据的双 SHA256 哈希值小于或等于目标哈 希值. 比特币系统通过灵活调整随机数搜索的难度值来控制区块的平均生成时间为10分钟左右. 一般说来, PoW共识的随机数搜索过程如下：</p>
+<ul>
+<li>步骤 1. 搜集当前时间段的全网未确认交易, 并增加一个用于发行新比特币奖励的 Coinbase 交易,形成当前区块体的交易集合; </li>
+<li>步骤 2. 计算区块体交易集合的 Merkle 根记 入区块头, 并填写区块头的其他元数据, 其中随机数 Nonce 置零; </li>
+<li>步骤 3. 随机数 Nonce 加 1; 计算当前区块头的双 SHA256 哈希值, 如果小于或等于目标哈希值, 则成功搜索到合适的随机数并获得该区块的记账权; 否则继续步骤3直到任一节点搜索到合适的随机数为止; </li>
+<li>步骤 4. 如果一定时间内未成功, 则更新时间戳和未确认交易集合、重新计算 Merkle 根后继续搜索.</li>
+</ul>
+</li>
+<li><p>符合要求的区块头哈希值通常由多个前导零构成, 目标哈希值越小, 区块头哈希值的前导零越多, 成功找到合适的随机数并“挖”出新区块的难度越大. 据区块链实时监测网站Blockchain.info显示, 截止到2016年2月, 符合要求的区块头哈希值一般有17个前导零, 例如第398346号区块哈希值为“0000000000000000077f754f22f21629a7975cf···”. 按照概率计算, 每 16 次随机数搜索将会有找到一 个含有一个前导零的区块哈希值, 因而比特币目前 17 位前导零哈希值要求 1617 次随机数搜索才能找 到一个合适的随机数并生成一个新的区块. 由此可 见, 比特币区块链系统的安全性和不可篡改性是由 PoW 共识机制的强大算力所保证的, 任何对于区块数据的攻击或篡改都必须重新计算该区块以及其后所有区块的SHA256难题, 并且计算速度必须使得伪造链长度超过主链, 这种攻击难度导致的成本将远超其收益。</p>
+</li>
+<li><p><strong>PoS共识机制:</strong> PoS 共识是为解决PoW共识机制的资源浪费和安全性缺陷而提出的替代方案. PoS 共识本质上是采用权益证明来代替PoW中的基于哈希算力的工作量证明, 是由系统中具有最高权益而非最高算力的节点获得区块记账权. 权益体现为节点对特定数量货币的所有权, 称为币龄或币天数 (Coin days). 币龄是特定数量的币与其最后一次交易的时间长度的乘积, 每次交易都将会消耗掉特定数量的币龄. 例如, 某人在一笔交易中收到10个币后并持有10天, 则获得100币龄; 而后其花掉5个币后, 则消耗掉 50 币龄. 显然, 采用PoS共识机制的系统在特定时间点上的币龄总数是有限的, 长期持币者更倾向于拥有更多币龄, 因此币龄可视为其在PoS系统中的权益. 此外, PoW共识过程中各节点挖矿难度相同, 而 PoS 共识过程中的难度与交易输入的币龄成反比, 消耗币龄越多则挖矿难度越低. 节点判断主链的标准也由 PoW 共识的最高累计难度转变为最高消耗币龄, 每个区块的交易都会将其消耗的币龄提交给该区块, 累计消耗币龄最高的区块将被链接到主链. 由此可见, PoS 共识过程仅依靠内部币龄和权益而不需要消耗外部算力和资源, 从根本上解决了PoW共识算力浪费的问题, 并且能够在一定程度上缩短达成共识的时间, 因而比特币之后的许多竞争币均采用PoS共识机制。</p>
+</li>
+<li><p><strong>DPoS 共识机制:</strong>  DPoS 共识机制的基本思路类似于“董事会决策”, 即系统中每个股东节点可以将其持有的股份权益作为选票授予一个代表, 获得票数最多且愿意成为代表的前101个节点将进入“董事会”, 按照既定的时间表轮流对交易进行打包结算并且签署 (即生产) 一个新区块. 每个区块被签署之前, 必须先验证前一个区块已经被受信任的代表节点所签署. “董事会” 的授权代表节点可以从每笔交易的手续费中获得收入, 同时要成为授权代表节点必须缴纳一定量的保证金, 其金额相当于生产一个区块收入的100倍. 授权代表节点必须对其他股东节点负责, 如果其错过签署相对应的区块, 则股东将会收回选票从而将该节点 “投出” 董事会. 因此, 授权代表节点通常必须保证 99% 以上的在线时间以实现盈利目标. 显然, 与 PoW 共识机制必须信任最高算力节点和 PoS 共识机制必须信任最高权益节点不同的是, DPoS 共识机制中每个节点都能够自主决定其信任的授权节点且由这些节点轮流记账生成新区块, 因而大幅减少了参与验证和记账的节点数量, 可以实现快速共识验证。</p>
+</li>
+</ul>
+<p>5.激励层：</p>
+<ul>
+<li>区块链共识过程通过汇聚大规模共识节点的算力资源来实现共享区块链账本的数据验证和记账工作, 因而其本质上是一种共识节点间的任务众包过程. 去中心化系统中的共识节点本身是自利的, 最大化自身收益是其参与数据验证和记账的根本目标. 因此, 必须设计激励相容的合理众包机制, 使得共识节点最大化自身收益的个体理性行为与保障去中心化区块链系统的安全和有效性的整体目标相吻合. 区块链系统通过设计适度的经济激励机制并与共识过程相集成, 从而汇聚大规模的节点参与并形成了对区块链历史的稳定共识. </li>
+<li>以比特币为例, 比特币PoW 共识中的经济激励由新发行比特币奖励和交易流通过程中的手续费两部分组成, 奖励给PoW共识过程中成功搜索到该区块的随机数并记录该区块的节点. 因此, 只有当各节点通过合作共同构建共享和可信的区块链历史记录、并维护比特币系统的有效性, 其获得的比特币奖励和交易手续费才会有价值. 比特币已经形成成熟的挖矿生态圈, 大量配备专业矿机设备的矿工积极参与基于挖矿的PoW共识过程, 其根本目的就是通过获取比特币奖励并转换为相应法币来实现盈利. </li>
+<li><strong>发行机制:</strong> 比特币系统中每个区块发行比特币的数量是随着时间阶梯性递减的. 创世区块起的每个区块将发行 50 个比特币奖励给该区块的记账者, 此后每隔约4年 (21 万个区块) 每区块发行比特币的数量降低一半, 依此类推, 一直到比特币的数量稳定在上限 2100 万为止。比特币交易过程中会产生手续费, 目前默认手续费是万分之一个比特币, 这部分费用也会记入区块并奖励给记账者. 这两部分费用将会封装在每个区块的第一个交易 (称为 Coinbase 交易) 中. 虽然现在每个区块的总手续费相对于新发行比特币来说规模很小 (通常不会超过 1 个比特币), 但随着未来比特币发行数量的逐步减少甚至停止发行, 手续费将逐渐成为驱动节点共识和记账的主要动力. 同时, 手续费还可以防止大量微额交易对比特币网络发起的 “粉尘” 攻击, 起到保障安 全的作用. </li>
+<li><strong>分配机制:</strong> 比特币系统中, 大量的小算力节点通常会选择加入矿池, 通过相互合作汇集算力来提高 “挖” 到新区块的概率, 并共享该区块的比特币和手续费奖励. 据Bitcoinmining.com统计, 目前 已经存在13种不同的分配机制. 主流矿池通常采用PPLNS(Pay per last N shares)、PPS(Pay per share)和PROP(PROPortionately)等机制. 矿池将各节点贡献的算力按比例划分成不同的股份 (Share), 其中 PPLNS 机制是指发现区块后, 各合 作节点根据其在最后 N 个股份内贡献的实际股份 比例来分配区块中的比特币; PPS 则直接根据股份 比例为各节点估算和支付一个固定的理论收益, 采用此方式的矿池将会适度收取手续费来弥补其为各节点承担的收益不确定性风险; PROP 机制则根据节点贡献的股份按比例地分配比特币. <em>矿池的出现是对比特币和区块链去中心化趋势的潜在威胁, 如何设计合理的分配机制引导各节点合理地合作、避免出现因算力过度集中而导致的安全性问题是亟待解决的研究问题.</em> </li>
+</ul>
+<p>6.合约层：</p>
+<ul>
+<li>合约层封装区块链系统的各类脚本代码、算法 以及由此生成的更为复杂的智能合约. 如果说数据、 网络和共识三个层次作为区块链底层 “虚拟机” 分别承担数据表示、数据传播和数据验证功能的话, 合约层则是建立在区块链虚拟机之上的商业逻辑和算法, 是实现区块链系统灵活编程和操作数据的基础. 包括比特币在内的数字加密货币大多采用非图灵完备的简单脚本代码来编程控制交易过程, 这也是智能合约的雏形; 随着技术的发展, 目前已经出现以太坊等图灵完备的可实现更为复杂和灵活的智能合约的脚本语言, 使得区块链能够支持宏观金融和社会系统的诸多应用. </li>
+<li>比特币采用一种简单的、基于堆栈的、从左向右处理的脚本语言, 而一个脚本本质上是附着在比特币交易上的一组指令的列表. 比特币交易依赖于两类脚本来加以验证, 即锁定脚本和解锁脚本, 二者的不同组合可在比特币交易中衍生出无限数量的控制条件. 其中, 锁定脚本是附着在交易输出值上的 “障碍”, 规定以后花费这笔交易输出的条件; 解锁脚本则是满足被锁定脚本在一个输出上设定的花费条件的脚本, 同时它将允许输出被消费.举例来说, 大多数比特币交易均是采用接受者的公钥加密和私钥解密, 因而其对应的 P2PKH (Pay to public key hash) 标准交易脚本中的锁定脚本即是使用接受者的公钥实现阻止输出功能, 而使用私钥对应的数字签名来加以解锁. </li>
+<li>比特币脚本系统可以实现灵活的交易控制. 例如, 通过规定某个时间段 (如一周) 作为解锁条件, 可以实现延时支付; 通过规定接受者和担保人必须共同私钥签名才能支配一笔比特币, 可以实现担保交易; 通过设计一种可根据外部信息源核查某概率事件是否发生的规则并作为解锁脚本附着在一定数量的比特币交易上, 即可实现博彩和预测市场等类型的应用; 通过设定 N 个私钥集合中至少提供 M 个私钥才可解锁, 可实现 M −N 型多重签名, 即 N 个潜在接受者中至少有 M 个同意签名才可实现支付. 多重签名可广泛应用于公司决策、财务监督、中介担保甚至遗产分配等场景.</li>
+<li>比特币脚本是智能合约的雏形, 催生了人类历史上第一种可编程的全球性货币. 然而, 比特币脚本系统是非图灵完备的, 其中不存在复杂循环和流控制, 这在损失一定灵活性的同时能够极大地降低复杂性和不确定性, 并能够避免因无限循环等逻辑炸弹而造成拒绝服务等类型的安全性攻击. 为提高脚本系统的灵活性和可扩展性, 研究者已经尝试在比特币协议之上叠加新的协议, 以满足在区块链上构建更为复杂的智能合约的需求. 以太坊已经研发出一套图灵完备的脚本语言, 用户可基于以太坊构建任意复杂和精确定义的智能合约与去中心化应用, 从而为基于区块链构建可编程的金融与社会系统奠 定了基础.</li>
+</ul>
+<h2 id="区块链的应用场景"><a href="#区块链的应用场景" class="headerlink" title="区块链的应用场景"></a>区块链的应用场景</h2><p><strong>区块链主要应用于数字货币、数据存储、数据鉴证、金融交易、资产管理和选举投票共六个场景</strong></p>
+<ul>
+<li><strong>数据存储：</strong>区块链的高冗余存储 (每个节点存储一份数据)、去中心化、高安全性和隐私保护等特点使其特别适合存储和保护重要隐私数据, 以避免因中心化机构遭受攻击或权限管理不当而造成的大规模数据丢失或泄露. 与比特币交易数据类似地, 任意数据均可通过哈希运算生成相应的Merkle树并打包记入区块链, 通过系统内共识节点的算力和非对称加密技术来保证安全性. 区块链的多重签名技术可以灵活配置数据访问的权限, 例如必须获得指定 5 个人中 3 个人的私钥授权才可获得访问权限. 目前, 利用区块链来存储个人健康数据 (如电子病历、基因数据等) 是极具前景的应用领域, 此外存储各类重要 电子文件 (视频、图片、文本等) 乃至人类思想和意识等也有一定应用空间. </li>
+<li><strong>数据鉴定：</strong>区块链数据带有时间戳、由共识节 点共同验证和记录、不可篡改和伪造, 这些特点使得区块链可广泛应用于各类数据公证和审计场景. 例如, 区块链可以永久地安全存储由政府机构核发的各类许可证、登记表、执照、证明、认证和记录等, 并可在任意时间点方便地证明某项数据的存在性和一定程度上的真实性. 包括德勤在内的多家专业审计公司已经部署区块链技术来帮助其审计师实现低成本和高效地实时审计; Factom 公司则基于区块链设计了一套准确的、可核查的和不可更改的审计公 证流程与方法. </li>
+<li><strong>金融交易：</strong>区块链技术与金融市场应用有非常 高的契合度. 区块链可以在去中心化系统中自发地产生信用, 能够建立无中心机构信用背书的金融市场, 从而在很大程度上实现了 “金融脱媒”, 这对第三方支付、资金托管等存在中介机构的商业模式来说是颠覆性的变革; 在互联网金融领域, 区块链特别适合或者已经应用于股权众筹、P2P网络借贷和互联网保险等商业模式; 证券和银行业务也是区块链的重要应用领域, 传统证券交易需要经过中央结算机构、银行、证券公司和交易所等中心机构的多重协调, 而利用区块链自动化智能合约和可编程的特点, 能够极大地降低成本和提高效率, 避免繁琐的中心化清算交割过程, 实现方便快捷的金融产品交易; 同时, 区块链和比特币的即时到帐的特点可使得银行实现比 SWIFT 代码体系更为快捷、经济和安全的跨境转账; 这也是目前 R3CEV 和纳斯达克等各大银行、证券商和金融机构相继投入区块链技术研发的重要原因.</li>
+<li><strong>资产管理：</strong>区块链在资产管理领域的应用具有 广泛前景, 能够实现有形和无形资产的确权、授权和实时监控. 对于无形资产来说, 基于时间戳技术和不可篡改等特点, 可以将区块链技术应用于知识产权保护、域名管理、积分管理等领域; 而对有形资产来说, 通过结合物联网技术为资产设计唯一标识并部署到区块链上, 能够形成 “数字智能资产”, 实现基于区块链的分布式资产授权和控制. 例如, 通过对房屋、车辆等实物资产的区块链密钥授权, 可以基于特定权限来发放和回收资产的使用权, 有助于 Airbnb 等房屋租赁或车辆租赁等商业模式实现自动化的资产交接; 通过结合物联网的资产标记和识别技术, 还可以利用区块链实现灵活的供应链管理和产品溯源等功能. </li>
+<li><strong>选举投票：</strong>投票是区块链技术在政治事务中的代表性应用. 基于区块链的分布式共识验证、不可篡改等特点, 可以低成本高效地实现政治选举、企业股东投票等应用; 同时, 区块链也支持用户个体对特定议题的投票. 例如, 通过记录用户对特定事件是否发生的投票, 可以将区块链应用于博彩和预测市场等场景; 通过记录用户对特定产品的投票评分与建议, 可以实现大规模用户众包设计产品的 “社会制造” 模式等.</li>
+</ul>
+<p>*<em>根据实际应用场景和需求, 区块链技术已经演化出三种应用模式, 即公共链(Public blockchain)、联盟链(Consortiumblockchain) 和私有链(Private blockchain). *</em></p>
+<ul>
+<li>公共链是完全去中心化的区块链, 分布式系统的任何节点均可参与链上数据的读写、验证和共识过程, 并根据其 PoW 或 PoS 贡献获得相应的经济激励. 比特币是公共链的典型代表. </li>
+<li>联盟链则是部分去中心化 (或称多中心化) 的区块链, 适用于多个实体构成的组织或联盟, 其共识过程受到预定义的一组节点控制, 例如生成区块需要获得10个预选的共识节点中的5个节点确认; </li>
+<li>私有链则是完全中心化的区块链, 适用于特定机构的内部数据管理与审计等, 其写入权限由中心机构控制, 而读取权限可视需求有选择性地对外开放. </li>
+</ul>
+<h2 id="区块链的现存问题"><a href="#区块链的现存问题" class="headerlink" title="区块链的现存问题"></a>区块链的现存问题</h2><ul>
+<li><p>安全问题：</p>
+<ul>
+<li>, 基于 PoW 共识过程的区块链主要面临的是 51% 攻击问题, 即节点通过掌握全网超过 51% 的算力就有能力成功篡改和伪造区块链数据. 以比特币为例, 据统计中国大型矿池的算力已占全网总算力的 60% 以上, 理论上这些矿池可以通过合作实施 51% 攻击, 从而实现比特币的双重支付. 虽然实际系统中为掌握全网 51% 算力所需的成本投入远超成功实施攻击后的收益, 但 51% 攻击的安全性威胁始终存在. 基于 PoS 共识过程在一定程度上解决了 51% 攻击问题, 但同时也引入了区块分叉时的 N@S (Nothing at stake) 攻击问题. </li>
+<li>区块链的非对称加密机制也将随着数学、密码学和计算技术的发展而变的越来越脆弱. 据估计, 以目前天河二号的算力来说, 产生比特币 SHA256 哈希算法的一个哈希碰撞大约需要 248 年, 但随着量子计算机等新计算技术的发展, 未来非对称加密算法具有一定的破解可能性, 这也是区块链技术面临的潜在安全威胁. </li>
+<li>区块链的隐私保护也存在安全性风险. 区块链系统内各节点并非完全匿名, 而是通过类似电子邮件地址的地址标识 (例如比特币公钥地址) 来实现数据传输. 虽然地址标识并未直接与真实世界的人物身份相关联, 但区块链数据是完全公开透明的, 随着各类反匿名身份甄别技术的发展, 实现部分重点目标的定位和识别仍是有可能的.</li>
+</ul>
+</li>
+<li><p>效率问题：</p>
+<ul>
+<li>区块膨胀问题：区块链要求系统内每个节点保存一份数据备份, 这对于日益增长的海量数据存储来说是极为困难的. 以比特币为例, 完全同步自创世区块至今的区块数据需要约 60GB 存储空间.</li>
+<li>交易效率问题：比特币区块链目前每秒仅能处理 7 笔交易, 这极大地限制了区块链在大多数金融系统高频交易场景中的应用 (例如 VISA 信用卡每秒最多可处理 10000 笔交易).</li>
+<li>交易确认时间问题: 比特币区块生成时间为10分钟, 因而交易确认时间一般为10分钟, 这在一定程度上限制了比特币在小额交易和时间敏感交易中的应用. </li>
+</ul>
+</li>
+<li><p>资源问题：</p>
+<ul>
+<li>PoW 共识过程高度依赖区块链网络节点贡献的算力, 这些算力主要用于解决 SHA256 哈希和随机数搜索, 除此之外并不产生任何实际社会价值, 因而一般意义上认为这些算力资源是被 “浪费” 掉了, 同时被浪费掉的还有大量的电力资源. 随着比特币的日益普及和专业挖矿设备的出现, 比特币生态圈已经在资本和设备方面呈现出明显的军备竞赛态势, 逐渐成为高耗能的资本密集型行业, 进一步凸显资源消耗问题的重要性.</li>
+</ul>
+</li>
+<li><p>博弈问题：</p>
+<ul>
+<li>区块链网络作为去中心化的分布式系统, 其各节点在交互过程中不可避免地会存在相互竞争与合作的博弈关系, 这在比特币挖矿过程中尤为明显. 通常来说, 比特币矿池间可以通过相互合作保持各自稳定的收益. 然而, 矿池可以通过称为区块截留攻击 (Block withholding attacks) 的方式、通过伪装为对手矿池的矿工、享受对手矿池的收益但不实际贡献完整工作量证明来攻击其他矿池, 从而降低对手矿池的收益. 如果矿池相互攻击, 则双方获得的收益均少于不攻击对方的收益. 当矿池收益函数满足特定条件时, 这种攻击和竞争将会造成 “<a href="https://zh.wikipedia.org/wiki/%E5%9B%9A%E5%BE%92%E5%9B%B0%E5%A2%83" target="_blank" rel="noopener">囚徒困境</a>”博弈结局.  </li>
+<li>此外, 正如前文提到的, 区块链共识过程本质上是<a href="https://zh.wikipedia.org/wiki/%E4%BC%97%E5%8C%85" target="_blank" rel="noopener">众包</a>过程, 如何设计激励相容的共识机制, 使得去中心化系统中的自利节点能够自发地实施区块数据的验证和记账工作, 并提高系统内非理性行为的成本以抑制安全性攻击和威胁, 是区块链有待解决的重要科学问题.</li>
+</ul>
+</li>
+</ul>
+<h2 id="基于区块链的智能合约"><a href="#基于区块链的智能合约" class="headerlink" title="基于区块链的智能合约"></a>基于区块链的智能合约</h2><ul>
+<li><p>智能合约是区块链的核心构成要素 (合约层), 是由事件驱动的、具有状态的、运行在可复制的共享区块链数据账本上的计算机程序, 能够实现主动或被动的处理数据, 接受、储存和发送价值, 以及控制和管理各类链上智能资产等功能.  </p>
+</li>
+<li><p>智能合约作为一种嵌入式程序化合约, 可以内置在任何区块链数据、交易、 有形或无形资产上, 形成可编程控制的软件定义的系统、市场和资产. 智能合约不仅为传统金融资产的发行、交易、创造和管理提供了创新性的解决方案, 同时能够在社会系统中的资产管理、合同管理、监管执法等事务中发挥重要作用.</p>
+</li>
+<li><p>智能合约的运作机理如图 5 所示: 通常情况下, 智能合约经各方签署后, 以程序代码的形式附着在区块链数据 (例如一笔比特币交易) 上, 经 P2P 网络传播和节点验证后记入区块链的特定区块中. 智能合约封装了预定义的若干状态及转换规则、触发合约执行的情景 (如到达特定时间或发生特定事件等)、特定情景下的应对行动等. 区块链可实时监控智能合约的状态, 并通过核查外部数据源、确认满足特定触发条件后激活并执行合约.</p>
+</li>
+</ul>
+<p><img src="https://img-blog.csdn.net/20180913160026238?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="这里写图片描述"></p>
+<ul>
+<li><p><strong>智能合约的应用举例</strong>：</p>
+<ul>
+<li>互联网金融领域的股权众筹或 P2P 网络借贷等商业模式可以通过区块链和智能合约加以实现. 传统方式是通过股权众筹或 P2P 借贷的交易所或网络平台作为中心机构完成资金募集、管理和投资, 实际操作过程中容易出现因中心机构的信用缺失而导致的资金风险. 利用智能合约, 这些功能均可以封装在去中心化可信的区块链上自动执行. 区块链可记录每一笔融资, 当成功达到特定融资额度时计算每个投资人的股权份额, 或在一段时间内未达到融资额度时自动将资金退还给投资人. </li>
+<li>再如, 通过将房屋和车辆等实体资产进行非对称加密, 并嵌入含有特定访问控制规则的智能合约后部署在区块链上, 使用者符合特定的访问权限或执行特定操作 (如付款) 后就可使用这些资产, 这能够有效解决房屋或车辆租赁商业模式中资产交接和使用许可方面的痛点. </li>
+</ul>
+</li>
+<li><p><strong>智能合约特点及意义</strong>：</p>
+<ul>
+<li>智能合约具有自治、自足和去中心化等特征. 自 表示合约一旦启动就会自动运行, 而不需要其他签署方进行任何干预; 自足则意味着合约能够通过提供服务或发行资产来获取资金, 并在需要时使用这些资金; 去中心化则意味着智能合约是由去中心化存储和验证的程序代码而非中心化实体来保障执行的合约, 能在很大程度上保证合约的公平和公正性. </li>
+<li>智能合约对于区块链技术来说具有重要的意义. 一方面, 智能合约是区块链的激活器, 为静态的底层区块链数据赋予了灵活可编程的机制和算法, 并为构建区块链 2.0 和 3.0 时代的可编程金融系统与社会系统奠定了基础; 另一方面, 智能合约的自动化和可编程特性使其可封装分布式区块链系统中各节点的复杂行为, 成为区块链构成的虚拟世界中的软件代理机器人, 这有助于促进区块链技术在各类分布式人工智能系统中的应用, 使得基于区块链技 术构建各类去中心化应用 (Decentralized application, Dapp)、去中心化自治组织(Decentralized autonomous organization, DAO)、去中心化自治公司 (Decentralized autonomous corporation, DAC) 甚至去中心化自治社会 (Decentralized autonomous society, DAS) 成为可能. </li>
+<li>就现状而言, 区块链和智能合约技术的主要发展趋势是由自动化向智能化方向演化. 现存的各类智能合约及其应用的本质逻辑大多仍是根据预定义场景的 “IF-THEN” 类型的条件响应规则, 能够满足目前自动化交易和数据处理的需求. 未来的智能合约应具备根据未知场景的 “WHAT-IF” 推演、计算实验和一定程度上的自主决策功能, 从而实现由目前 “自动化” 合约向真正的 “智能” 合约的飞跃.</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>PerryWang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://yoursite.com/2019/07/05/区块链初学习/" title="区块链初学习">http://yoursite.com/2019/07/05/区块链初学习/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/区块链/" rel="tag"># 区块链</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/05/图像缩放的c++实现/" rel="next" title="图像缩放的c++实现">
+                <i class="fa fa-chevron-left"></i> 图像缩放的c++实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/05/区块链认识与看法/" rel="prev" title="区块链认识与看法">
+                区块链认识与看法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/头像.png" alt="PerryWang">
+            
+              <p class="site-author-name" itemprop="name">PerryWang</p>
+              <div class="site-description motion-element" itemprop="description">sysu-student</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">57</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/WangPerryWPY" title="GitHub &rarr; https://github.com/WangPerryWPY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/perry0528" title="CSDN &rarr; https://blog.csdn.net/perry0528" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:1731611872@qq.com" title="E-Mail &rarr; mailto:1731611872@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#区块链简介"><span class="nav-number">1.</span> <span class="nav-text">区块链简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#比特币与区块链概述"><span class="nav-number">2.</span> <span class="nav-text">比特币与区块链概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区块链的基础模型和关键技术"><span class="nav-number">3.</span> <span class="nav-text">区块链的基础模型和关键技术</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区块链的应用场景"><span class="nav-number">4.</span> <span class="nav-text">区块链的应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#区块链的现存问题"><span class="nav-number">5.</span> <span class="nav-text">区块链的现存问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于区块链的智能合约"><span class="nav-number">6.</span> <span class="nav-text">基于区块链的智能合约</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Perry</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">323k</span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unjkp.com/valine/dist/Valine.min.js"></script>  
+  <script src="/js/src/Valine.min.js"></script> 
+
+    
+  
+  <script src="/js/src/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'SsAWGcn6CHm6Oif4CGFKBhVv-gzGzoHsz',
+        appKey: 'bniDOuxQuzVdGASyS3SyDFF8',
+        placeholder: '说点什么吧！',
+        avatar:'wavatar',
+        guest_info:['nick'] ,  
+        pageSize:'10' || 10,
+    });
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+  </script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

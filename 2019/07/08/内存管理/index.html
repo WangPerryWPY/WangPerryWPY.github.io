@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="内存管理的层次 内存管理的目标 抽象： 逻辑地址空间（不考虑底层细节，只需访问一个连续的地址空间）   保护： 独立地址空间（不会被别的进程破坏）   共享 访问相同内存（进程间数据传递）   虚拟化 更多的地址空间（把最需要的数据放入内存，暂时不需要的数据放到磁盘）    地址空间 &amp;amp; 地址生成 物理地址空间 逻辑地址空间  地址空间定义：物理地址空间：主存和磁盘等硬件直接管理的地址空间">
+<meta name="keywords" content="操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内存管理||物理内存">
+<meta property="og:url" content="http://yoursite.com/2019/07/08/内存管理/index.html">
+<meta property="og:site_name" content="PerryWang🍎博客">
+<meta property="og:description" content="内存管理的层次 内存管理的目标 抽象： 逻辑地址空间（不考虑底层细节，只需访问一个连续的地址空间）   保护： 独立地址空间（不会被别的进程破坏）   共享 访问相同内存（进程间数据传递）   虚拟化 更多的地址空间（把最需要的数据放入内存，暂时不需要的数据放到磁盘）    地址空间 &amp;amp; 地址生成 物理地址空间 逻辑地址空间  地址空间定义：物理地址空间：主存和磁盘等硬件直接管理的地址空间">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190708143143780.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190708143056309.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-07-08T06:55:50.166Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="内存管理||物理内存">
+<meta name="twitter:description" content="内存管理的层次 内存管理的目标 抽象： 逻辑地址空间（不考虑底层细节，只需访问一个连续的地址空间）   保护： 独立地址空间（不会被别的进程破坏）   共享 访问相同内存（进程间数据传递）   虚拟化 更多的地址空间（把最需要的数据放入内存，暂时不需要的数据放到磁盘）    地址空间 &amp;amp; 地址生成 物理地址空间 逻辑地址空间  地址空间定义：物理地址空间：主存和磁盘等硬件直接管理的地址空间">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190708143143780.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="PerryWang🍎博客" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/07/08/内存管理/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>内存管理||物理内存 | PerryWang🍎博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PerryWang🍎博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">分享软件开发中学到的点滴知识</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/WangPerryWPY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/08/内存管理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/头像.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">内存管理||物理内存
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-08 14:54:30 / 修改时间：14:55:50" itemprop="dateCreated datePublished" datetime="2019-07-08T14:54:30+08:00">2019-07-08</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/08/内存管理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/08/内存管理/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">2k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="内存管理的层次"><a href="#内存管理的层次" class="headerlink" title="内存管理的层次"></a>内存管理的层次</h3><p><img src="https://img-blog.csdnimg.cn/20190708143143780.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="内存管理的目标"><a href="#内存管理的目标" class="headerlink" title="内存管理的目标"></a>内存管理的目标</h3><ul>
+<li>抽象：<ul>
+<li>逻辑地址空间（不考虑底层细节，只需访问一个连续的地址空间）</li>
+</ul>
+</li>
+<li>保护：<ul>
+<li>独立地址空间（不会被别的进程破坏）</li>
+</ul>
+</li>
+<li>共享<ul>
+<li>访问相同内存（进程间数据传递）</li>
+</ul>
+</li>
+<li>虚拟化<ul>
+<li>更多的地址空间（把最需要的数据放入内存，暂时不需要的数据放到磁盘）</li>
+</ul>
+</li>
+</ul>
+<h3 id="地址空间-amp-地址生成"><a href="#地址空间-amp-地址生成" class="headerlink" title="地址空间 &amp; 地址生成"></a>地址空间 &amp; 地址生成</h3><ul>
+<li>物理地址空间</li>
+<li>逻辑地址空间</li>
+</ul>
+<h4 id="地址空间定义："><a href="#地址空间定义：" class="headerlink" title="地址空间定义："></a>地址空间定义：</h4><p>物理地址空间：主存和磁盘等硬件直接管理的地址空间</p>
+<p>逻辑地址空间：运行的应用程序直接看到一维的线性地址空间</p>
+<p>操作系统将逻辑地址空间映射到实际的地址空间</p>
+<h4 id="逻辑地址空间的生成："><a href="#逻辑地址空间的生成：" class="headerlink" title="逻辑地址空间的生成："></a>逻辑地址空间的生成：</h4><p>c语言–<strong>编译</strong>–&gt;汇编语言–<strong>汇编</strong>–&gt;机器语言(.o文件)–<strong>链接</strong>–&gt;可执行文件(.exe)–<strong>载入(loader)</strong>/<strong>程序重定位</strong>–&gt;加载到内存中去运行</p>
+<p>c/汇编语言内的变量名和函数名实际就是地址，是名字</p>
+<p>机器语言内已将变量符号名和函数符号名等转化为相应的相对连续的地址空间(逻辑地址空间)，是地址的二进制</p>
+<h4 id="逻辑地址和物理地址的对应："><a href="#逻辑地址和物理地址的对应：" class="headerlink" title="逻辑地址和物理地址的对应："></a>逻辑地址和物理地址的对应：</h4><p>CPU的内存管理单元(MMU)中有物理地址和逻辑地址的对应关系表，当CPU要取指或数据是则根据逻辑地址查表前往对应的物理地址去取出</p>
+<p>操作系统负责建立物理地址空间和逻辑地址空间的映射关系(建表)，存在内存中，为了加快访问放在CPU中进行缓存。</p>
+<h3 id="连续内存分配："><a href="#连续内存分配：" class="headerlink" title="连续内存分配："></a>连续内存分配：</h3><h4 id="内存碎片："><a href="#内存碎片：" class="headerlink" title="内存碎片："></a>内存碎片：</h4><p>空闲内存不能被利用</p>
+<ul>
+<li>外部碎片：在分配单元之间的未使用的内存</li>
+<li>内部碎片：在分配单元内未使用的内存</li>
+</ul>
+<h4 id="分区的动态分配："><a href="#分区的动态分配：" class="headerlink" title="分区的动态分配："></a>分区的动态分配：</h4><ul>
+<li>将应用程序加载到内存时，需要为应用程序分配内存空间</li>
+<li>应用程序在运行时，需要访问数据，要给这些数据分配内存空间</li>
+</ul>
+<h5 id="分配策略："><a href="#分配策略：" class="headerlink" title="分配策略："></a>分配策略：</h5><ul>
+<li>首次适配：简单，产生外部碎片，大的内存块集中在内存尾部</li>
+<li>最佳适配：重分配慢，和应用程序所需内存差值最小的内存块，产生小的外部碎片，不易于后续的回收</li>
+<li>最差适配：重分配慢，寻找和所需内存差值最大的内存块，对大块的请求造成影响</li>
+</ul>
+<h4 id="减少内存碎片的方法："><a href="#减少内存碎片的方法：" class="headerlink" title="减少内存碎片的方法："></a>减少内存碎片的方法：</h4><p>压缩式碎片整理</p>
+<p>交换式碎片整理(换入换出)</p>
+<ul>
+<li>充分应用硬盘，抢占正在等待的程序，将等待的程序载入硬盘上去，并回收他们的内存。</li>
+</ul>
+<h4 id="伙伴系统："><a href="#伙伴系统：" class="headerlink" title="伙伴系统："></a>伙伴系统：</h4><ul>
+<li>整个可分配的分区大小 2^U</li>
+<li>需要的分区大小为 2^(U-1) &lt; s &lt;= 2^U 时，把整个块分配给该进程<ul>
+<li>如 s &lt;= 2^(i-1) ，将大小为 2i 的当前空闲分区划分成两个大小为 2^(i-1) 的空闲分区</li>
+<li>重复划分过程，直到 2^(i-1) &lt; s &lt;= 2^i ，并把一个空闲分区分配给该进程</li>
+</ul>
+</li>
+</ul>
+<h5 id="伙伴系统的实现"><a href="#伙伴系统的实现" class="headerlink" title="伙伴系统的实现"></a>伙伴系统的实现</h5><ul>
+<li>数据结构<ul>
+<li>空闲块按大小和起始地址组织成二维数组</li>
+<li>初始状态：只有一个大小为 2^U 的空闲块</li>
+</ul>
+</li>
+<li>分配过程<ul>
+<li>由小到大在空闲块数组中找最小的可用空闲块</li>
+<li>如空闲块过大，对可用空闲块进行二等分，知道得到合适的可用空闲块</li>
+</ul>
+</li>
+<li>释放过程<ul>
+<li>把释放的块放入空闲块数组</li>
+<li>合并满足合并条件的空闲块</li>
+</ul>
+</li>
+<li>合并条件<ul>
+<li>大小相同 2^i</li>
+<li>地址相邻</li>
+<li>起始地址较小的块的起始地址必须是 2^(i+1) 的倍数</li>
+</ul>
+</li>
+</ul>
+<h3 id="非连续的内存分配："><a href="#非连续的内存分配：" class="headerlink" title="非连续的内存分配："></a>非连续的内存分配：</h3><p>非连续内存分配方法：</p>
+<ul>
+<li>一个程序的物理地址空间是非连续的</li>
+<li>更好的内存利用和利用，减少内碎片和外碎片</li>
+<li>允许共享代码和数据(共享库等…)</li>
+<li>支持动态加载和动态链接</li>
+</ul>
+<h4 id="分段"><a href="#分段" class="headerlink" title="分段"></a>分段</h4><p>将程序的不同段分散到多个物理地址中去</p>
+<ul>
+<li><p>连续的逻辑地址映射到不连续的物理地址中去</p>
+</li>
+<li><p>例如c程序中栈段，堆段，代码段，数据段</p>
+</li>
+</ul>
+<h5 id="寻址方案的实现："><a href="#寻址方案的实现：" class="headerlink" title="寻址方案的实现："></a>寻址方案的实现：</h5><p>段访问机制：</p>
+<ul>
+<li>段号<ul>
+<li>查询段表查找所对应物理内存的起始地址</li>
+<li>通过段表还可以查询到段的长度限制</li>
+</ul>
+</li>
+<li>段内偏移<ul>
+<li>段偏移和段长度进行比较，若偏移超出段长，则该逻辑地址无效，抛出异常</li>
+</ul>
+</li>
+</ul>
+<p>PS：分段机制类似之前的动态分区，也会产生外部碎片，但是因为程序分布在不连续的物理地址空间，所以产生的外部碎片大大减小了。</p>
+<h4 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h4><p>分页分为页寻址和页帧寻址两部分</p>
+<ul>
+<li>页帧(物理地址的寻址)</li>
+<li>页(逻辑地址的寻址)</li>
+</ul>
+<p>分页寻址机制：</p>
+<ul>
+<li>页映射到帧</li>
+<li>页是连续的虚拟内存</li>
+<li>帧是非连续的物理内存</li>
+<li>不是所有的页都有对应的帧</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20190708143056309.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>根据逻辑地址获取页号p–&gt;查询页表根据页号查到帧号f—&gt;f和逻辑地址中的偏移量o结合为物理地址–&gt;[2^(o的位数，例如图中为9)*f+o] 即为所需要数据所在的物理地址</p>
+<p>PS：采用分页机制类似之前的固定分区，但分页技术的分区相当小，一个程序可以占据不连续的多个分区，因而大大减小了内部碎片，提高了内存利用率。</p>
+<h4 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h4><ul>
+<li>每个进程有一个页表<ul>
+<li>页表岁进程运行状态的变化而动态变化</li>
+<li>页表基址寄存器存储页表在内存中的地址</li>
+</ul>
+</li>
+</ul>
+<h5 id="页存储管理机制存在性能问题："><a href="#页存储管理机制存在性能问题：" class="headerlink" title="页存储管理机制存在性能问题："></a>页存储管理机制存在性能问题：</h5><ul>
+<li>访问一个内存单元需要访问2次内存（访问页表项，访问数据）</li>
+<li>页表可能非常大</li>
+</ul>
+<p><strong>解决方法：</strong></p>
+<ul>
+<li>建立快表(TLB)</li>
+<li>多级页表</li>
+<li>反向页表</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>PerryWang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://yoursite.com/2019/07/08/内存管理/" title="内存管理||物理内存">http://yoursite.com/2019/07/08/内存管理/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/08/求连通图的关节点/" rel="next" title="求连通图的关节点">
+                <i class="fa fa-chevron-left"></i> 求连通图的关节点
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/08/图中两点的最短路径-迪杰斯特拉算法/" rel="prev" title="图中两点的最短路径-迪杰斯特拉算法">
+                图中两点的最短路径-迪杰斯特拉算法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/头像.png" alt="PerryWang">
+            
+              <p class="site-author-name" itemprop="name">PerryWang</p>
+              <div class="site-description motion-element" itemprop="description">sysu-student</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">57</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/WangPerryWPY" title="GitHub &rarr; https://github.com/WangPerryWPY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/perry0528" title="CSDN &rarr; https://blog.csdn.net/perry0528" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:1731611872@qq.com" title="E-Mail &rarr; mailto:1731611872@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理的层次"><span class="nav-number">1.</span> <span class="nav-text">内存管理的层次</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理的目标"><span class="nav-number">2.</span> <span class="nav-text">内存管理的目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#地址空间-amp-地址生成"><span class="nav-number">3.</span> <span class="nav-text">地址空间 &amp; 地址生成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#地址空间定义："><span class="nav-number">3.1.</span> <span class="nav-text">地址空间定义：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑地址空间的生成："><span class="nav-number">3.2.</span> <span class="nav-text">逻辑地址空间的生成：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑地址和物理地址的对应："><span class="nav-number">3.3.</span> <span class="nav-text">逻辑地址和物理地址的对应：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连续内存分配："><span class="nav-number">4.</span> <span class="nav-text">连续内存分配：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内存碎片："><span class="nav-number">4.1.</span> <span class="nav-text">内存碎片：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分区的动态分配："><span class="nav-number">4.2.</span> <span class="nav-text">分区的动态分配：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#分配策略："><span class="nav-number">4.2.1.</span> <span class="nav-text">分配策略：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#减少内存碎片的方法："><span class="nav-number">4.3.</span> <span class="nav-text">减少内存碎片的方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#伙伴系统："><span class="nav-number">4.4.</span> <span class="nav-text">伙伴系统：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#伙伴系统的实现"><span class="nav-number">4.4.1.</span> <span class="nav-text">伙伴系统的实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非连续的内存分配："><span class="nav-number">5.</span> <span class="nav-text">非连续的内存分配：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分段"><span class="nav-number">5.1.</span> <span class="nav-text">分段</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#寻址方案的实现："><span class="nav-number">5.1.1.</span> <span class="nav-text">寻址方案的实现：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分页"><span class="nav-number">5.2.</span> <span class="nav-text">分页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页表"><span class="nav-number">5.3.</span> <span class="nav-text">页表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#页存储管理机制存在性能问题："><span class="nav-number">5.3.1.</span> <span class="nav-text">页存储管理机制存在性能问题：</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Perry</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">323k</span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unjkp.com/valine/dist/Valine.min.js"></script>  
+  <script src="/js/src/Valine.min.js"></script> 
+
+    
+  
+  <script src="/js/src/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'SsAWGcn6CHm6Oif4CGFKBhVv-gzGzoHsz',
+        appKey: 'bniDOuxQuzVdGASyS3SyDFF8',
+        placeholder: '说点什么吧！',
+        avatar:'wavatar',
+        guest_info:['nick'] ,  
+        pageSize:'10' || 10,
+    });
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+  </script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
