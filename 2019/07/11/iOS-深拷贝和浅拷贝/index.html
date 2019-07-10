@@ -94,18 +94,17 @@
 
 
 
-  <meta name="description" content="我们想定义一个全局变量，能够在多个文件中使用，举例说明比如说三个文件main.c hello.c hello.h想在main.c和hello.c中使用一个名字为a的变量，可能大家会简单地想直接在hello.h里面定义一个变量unsigned int a;然后在main.c和hello.c中引用”hello.h”就可以直接使用了，但这是编译器会报重复定义变量的错误，我们可以怎么做呢？  方法很简单，">
-<meta name="keywords" content="c,c++">
+  <meta name="description" content="浅拷贝：不拷贝对象本身，仅仅是拷贝指向对象的指针(copy)  深拷贝：直接拷贝整个对象的内存到另一块内存上去(mutableCopy)   以下特殊情况：  不可变情况下被拷贝指针重新赋值。1234567891011NSString *str1 = @&quot;str1&quot;;NSString *str2 = [str1 copy];str1 = @&quot;asdf&quot;;NSLog(@&quot;\nstr1 = %@ s">
 <meta property="og:type" content="article">
-<meta property="og:title" content="c&#x2F;c++定义全局变量的方法">
-<meta property="og:url" content="http://yoursite.com/2019/07/05/c-c-定义全局变量的方法/index.html">
+<meta property="og:title" content="assign">
+<meta property="og:url" content="http://yoursite.com/2019/07/11/iOS-深拷贝和浅拷贝/index.html">
 <meta property="og:site_name" content="PerryWang🍎博客">
-<meta property="og:description" content="我们想定义一个全局变量，能够在多个文件中使用，举例说明比如说三个文件main.c hello.c hello.h想在main.c和hello.c中使用一个名字为a的变量，可能大家会简单地想直接在hello.h里面定义一个变量unsigned int a;然后在main.c和hello.c中引用”hello.h”就可以直接使用了，但这是编译器会报重复定义变量的错误，我们可以怎么做呢？  方法很简单，">
+<meta property="og:description" content="浅拷贝：不拷贝对象本身，仅仅是拷贝指向对象的指针(copy)  深拷贝：直接拷贝整个对象的内存到另一块内存上去(mutableCopy)   以下特殊情况：  不可变情况下被拷贝指针重新赋值。1234567891011NSString *str1 = @&quot;str1&quot;;NSString *str2 = [str1 copy];str1 = @&quot;asdf&quot;;NSLog(@&quot;\nstr1 = %@ s">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-07-05T14:32:12.615Z">
+<meta property="og:updated_time" content="2019-07-10T16:06:04.477Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="c&#x2F;c++定义全局变量的方法">
-<meta name="twitter:description" content="我们想定义一个全局变量，能够在多个文件中使用，举例说明比如说三个文件main.c hello.c hello.h想在main.c和hello.c中使用一个名字为a的变量，可能大家会简单地想直接在hello.h里面定义一个变量unsigned int a;然后在main.c和hello.c中引用”hello.h”就可以直接使用了，但这是编译器会报重复定义变量的错误，我们可以怎么做呢？  方法很简单，">
+<meta name="twitter:title" content="assign">
+<meta name="twitter:description" content="浅拷贝：不拷贝对象本身，仅仅是拷贝指向对象的指针(copy)  深拷贝：直接拷贝整个对象的内存到另一块内存上去(mutableCopy)   以下特殊情况：  不可变情况下被拷贝指针重新赋值。1234567891011NSString *str1 = @&quot;str1&quot;;NSString *str2 = [str1 copy];str1 = @&quot;asdf&quot;;NSLog(@&quot;\nstr1 = %@ s">
 
 
 
@@ -115,7 +114,7 @@
 
   
   
-  <link rel="canonical" href="http://yoursite.com/2019/07/05/c-c-定义全局变量的方法/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/11/iOS-深拷贝和浅拷贝/">
 
 
 
@@ -125,7 +124,7 @@
   };
 </script>
 
-  <title>c/c++定义全局变量的方法 | PerryWang🍎博客</title>
+  <title>assign | PerryWang🍎博客</title>
   
 
 
@@ -347,7 +346,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/c-c-定义全局变量的方法/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/11/iOS-深拷贝和浅拷贝/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="PerryWang">
@@ -364,7 +363,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">c/c++定义全局变量的方法
+          <h1 class="post-title" itemprop="name headline">assign
 
               
             
@@ -390,7 +389,7 @@
                 
               
 
-              <time title="创建时间：2019-07-05 16:43:52 / 修改时间：22:32:12" itemprop="dateCreated datePublished" datetime="2019-07-05T16:43:52+08:00">2019-07-05</time>
+              <time title="创建时间：2019-07-11 00:04:27 / 修改时间：00:06:04" itemprop="dateCreated datePublished" datetime="2019-07-11T00:04:27+08:00">2019-07-11</time>
             </span>
           
 
@@ -400,21 +399,6 @@
             
           
 
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -427,8 +411,8 @@
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/05/c-c-定义全局变量的方法/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/05/c-c-定义全局变量的方法/" itemprop="commentCount"></span>
+                <a href="/2019/07/11/iOS-深拷贝和浅拷贝/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/11/iOS-深拷贝和浅拷贝/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -456,7 +440,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">814</span>
+              <span title="本文字数">2.1k</span>
             </span>
           
 
@@ -477,32 +461,42 @@
       
 
       
-        <p>我们想定义一个全局变量，能够在多个文件中使用，举例说明比如说三个文件main.c hello.c hello.h<br>想在main.c和hello.c中使用一个名字为a的变量，可能大家会简单地想直接在hello.h里面定义一个变量unsigned int a;<br>然后在main.c和hello.c中引用”hello.h”就可以直接使用了，但这是编译器会报重复定义变量的错误，我们可以怎么做呢？</p>
-<ul>
-<li><p><strong>方法很简单，直接举例说明：</strong></p>
+        <ul>
+<li><p>浅拷贝：不拷贝对象本身，仅仅是拷贝指向对象的指针(copy)</p>
 </li>
-<li><p><em>hello.h</em></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> HELLO_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> HELLO_H_</span></span><br><span class="line"><span class="keyword">extern</span> <span class="keyword">int</span> a;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span> <span class="params">()</span></span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p><em>hello.c</em></p>
+<li><p>深拷贝：直接拷贝整个对象的内存到另一块内存上去(mutableCopy)</p>
 </li>
 </ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"hello.h"</span></span></span><br><span class="line"><span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fun</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">	a = <span class="number">1</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以下特殊情况：</p>
+<ol>
+<li>不可变情况下被拷贝指针重新赋值。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">NSString *str1 = @<span class="string">"str1"</span>;</span><br><span class="line">NSString *str2 = [str1 copy];</span><br><span class="line"></span><br><span class="line">str1 = @<span class="string">"asdf"</span>;</span><br><span class="line"></span><br><span class="line">NSLog(@<span class="string">"\nstr1 = %@ str1P = %p \n str2 = %@ str2P = %p"</span>, str1, str1, str2, str2);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*输出结果,修改str2 同理</span></span><br><span class="line"><span class="comment">   str1 = asdf str1P = 0x10776b1a0</span></span><br><span class="line"><span class="comment">   str2 = str1 str2P = 0x10776b180</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><em>main.c</em></li>
-</ul>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"hello.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">	fun();</span><br><span class="line">	a = <span class="number">10</span>;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"%d\n"</span>,a);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<a id="more"></a>
 
-<p>输出结果为1，10；<br>extern关键字来声明变量为外部变量，而为什么要在hello.h文件中已经extern int a了还要再在hello.c文件中定义int a呢？</p>
+<p>开始时str1和str2指向的是相同的内存空间，且两者都是不可变的所以系统只会生成一个指向同一内存空间的指针，但是如果重新给给str1或者str2赋值，之前内容不可变而且双方应互不影响，所以只能重新开出一块内存空间。</p>
+<ol start="2">
+<li>可变情况下的浅拷贝</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">NSMutableArray *mArr1 = [@[@<span class="string">"123"</span>, @<span class="string">"456"</span>, @<span class="string">"asd"</span>] mutableCopy];</span><br><span class="line">NSMutableArray *mArr2 = [mArr1 copy];</span><br><span class="line">   </span><br><span class="line">   NSLog(@<span class="string">"\n mArr1 = %@ mArr1P = %p mArr1 class = %@ \n\n mArr2 = %@ mArr2P = %p mArr2 class = %@"</span>, mArr1, mArr1, [mArr1 class], mArr2, mArr2, [mArr2 class]);</span><br><span class="line"></span><br><span class="line">     <span class="comment">/*输出结果</span></span><br><span class="line"><span class="comment">       mArr1 = (</span></span><br><span class="line"><span class="comment">                   123,</span></span><br><span class="line"><span class="comment">                   456,</span></span><br><span class="line"><span class="comment">                   asd</span></span><br><span class="line"><span class="comment">                   )</span></span><br><span class="line"><span class="comment">       mArr1P = 0x60400025db20</span></span><br><span class="line"><span class="comment">       mArr1 class = __NSArrayM</span></span><br><span class="line"><span class="comment">    </span></span><br><span class="line"><span class="comment">       mArr2 = (</span></span><br><span class="line"><span class="comment">                   123,</span></span><br><span class="line"><span class="comment">                   456,</span></span><br><span class="line"><span class="comment">                   asd</span></span><br><span class="line"><span class="comment">                   )</span></span><br><span class="line"><span class="comment">       mArr2P = 0x60400025dd30</span></span><br><span class="line"><span class="comment">       mArr2 class = __NSArrayI</span></span><br><span class="line"><span class="comment">      */</span></span><br></pre></td></tr></table></figure>
+
+<p>此时mArr1指向的内存空间是可变的，如果对mArr1进行修改，同一内存空间的内容就会发生<br>变化。遵循互不影响的原则，加上mArr2是不可变的(虽然指针类型是NSMutable但是是copy拷贝所以不可变，同时如果给mArr2增删元素系统会崩，因为是用copy拷贝则意味着其不可变)，所以copy会开辟新的内存空间。</p>
+<ol start="3">
+<li>用copy修饰一个属性后就限制了他是不可变数组(因为copy就是复制一个不可变内存的数组)，mutableCopy是深拷贝重新赋内存，而如果调用copy或直接指向arr则不会。（但如果arr是mutable类型则仍是第二个问题，无论如何都是地址都是不同的，因为arr可变）</li>
+</ol>
+<p>注：copy属性修饰符是深拷贝，即为成员变量复制一块新的对象实例在别的内存并让成员变量持有它。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//</span></span><br><span class="line">@property (nonatomic, copy) NSMutableArray *<span class="built_in">array</span>;</span><br><span class="line"><span class="comment">//</span></span><br><span class="line"> NSArray *arr = @[@<span class="string">"123"</span>, @<span class="string">"456"</span>, @<span class="string">"asd"</span>];</span><br><span class="line"> self.mArr = [arr mutableCopy];</span><br><span class="line"> NSLog(@<span class="string">"\n arrP = %p \n self.mArrP = %p, self.mArr class = %@"</span>, arr, self.mArr, [self.mArr class]);</span><br><span class="line"> <span class="comment">/* 输出结果</span></span><br><span class="line"><span class="comment"> arrP = 0x600000eed530 </span></span><br><span class="line"><span class="comment"> self.mArrP = 0x600000eee520</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
+<p> 总结：</p>
 <ul>
-<li>这是因为extern仅仅是作为一个声明，声明我要定义一个外部全局变量a可以在其他文件和模块中使用，但此时并为给a分配空间。</li>
-<li>而int a = 0；则才是真正对a的定义，为其分配空间。</li>
+<li>用copy修饰的 或者赋值的 变量肯定是不可变的。</li>
+<li>用copy赋值，要看源对象是否是可变的，来决定只拷贝指针，还是也拷贝对象到另一块内存空间</li>
+<li>对象之间mutableCopy赋值，肯定会拷贝整个对象内存到另一块内存中</li>
+<li>对象之间赋值之后，再改变，遵循互不影响的原则</li>
 </ul>
-<p>那么问题又来了，我们为什么不写成extern int a = 0;的形式不是更简单吗？</p>
-<ul>
-<li>这就涉及到c的一个基本知识点了也就是extern int a = 0和int a = 0同样都是对a的定义，只不过第二种是省略了extern而已。</li>
-</ul>
+<p><strong>PS</strong>：同时在加一点assign的用法：<br>assign修饰属性只能修饰基本变量类型以及基本的oc类型，不能修饰对象！！！</p>
+<p>如果用assign修饰对象，当对象释放后（因为不存在强引用，离开作用域对象内存可能被回收），指针的地址还是存在的，也就是说指针并没有被置为nil,下次再访问该对象就会造成野指针异常。对象是分配在堆上的，堆上的内存由程序员手动释放。<br>所以assign修饰的是存在栈上的基本类型，系统会自动回收。</p>
 
       
     </div>
@@ -537,7 +531,7 @@
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
     
-    <a href="http://yoursite.com/2019/07/05/c-c-定义全局变量的方法/" title="c/c++定义全局变量的方法">http://yoursite.com/2019/07/05/c-c-定义全局变量的方法/</a>
+    <a href="http://yoursite.com/2019/07/11/iOS-深拷贝和浅拷贝/" title="assign">http://yoursite.com/2019/07/11/iOS-深拷贝和浅拷贝/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
@@ -559,17 +553,6 @@
 
     <footer class="post-footer">
       
-        
-          
-        
-        <div class="post-tags">
-          
-            <a href="/tags/c/" rel="tag"># c</a>
-          
-            <a href="/tags/c/" rel="tag"># c++</a>
-          
-        </div>
-      
 
       
       
@@ -579,8 +562,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/04/二叉树的层序遍历/" rel="next" title="二叉树的层序遍历">
-                <i class="fa fa-chevron-left"></i> 二叉树的层序遍历
+              <a href="/2019/07/11/iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定/" rel="next" title="iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定">
+                <i class="fa fa-chevron-left"></i> iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定
               </a>
             
           </div>
@@ -589,8 +572,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/07/05/二叉树的创建销毁遍历，计算叶子数、深度以及对二叉树进行拷贝等操作/" rel="prev" title="二叉树的创建销毁遍历，计算叶子数、深度以及对二叉树进行拷贝等操作">
-                二叉树的创建销毁遍历，计算叶子数、深度以及对二叉树进行拷贝等操作 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/07/11/iOS-内存管理-MRC和ARC的区别以及实现/" rel="prev" title="iOS || 内存管理(MRC和ARC的区别以及实现)">
+                iOS || 内存管理(MRC和ARC的区别以及实现) <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -657,7 +640,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">59</span>
+                    <span class="site-state-item-count">89</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -700,7 +683,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -751,7 +738,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">17</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -861,7 +854,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">328k</span>
+    <span title="站点总字数">515k</span>
   
 
   

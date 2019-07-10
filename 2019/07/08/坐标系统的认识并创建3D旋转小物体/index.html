@@ -105,7 +105,7 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190315164819796.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190315164837795.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190315165150812.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2019-07-08T07:07:25.238Z">
+<meta property="og:updated_time" content="2019-07-10T14:38:37.821Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="坐标系统的认识并创建3D旋转小物体">
 <meta name="twitter:description" content="坐标系统（coordinate system) 局部空间（物体空间）局部空间是指物体所在的坐标空间，即对象最开始所在的地方。想象你在一个建模软件（比如说Blender，Blender中通过移动浮标来决定新建物体的局部坐标）中创建了一个立方体。你创建的立方体的原点有可能位于(0, 0, 0)，即便它有可能最后在程序中处于完全不同的位置。甚至有可能你创建的所有模型都以(0, 0, 0)为初始位置（译注">
@@ -394,13 +394,23 @@
                 
               
 
-              <time title="创建时间：2019-07-08 15:06:25 / 修改时间：15:07:25" itemprop="dateCreated datePublished" datetime="2019-07-08T15:06:25+08:00">2019-07-08</time>
+              <time title="创建时间：2019-07-08 15:06:25" itemprop="dateCreated datePublished" datetime="2019-07-08T15:06:25+08:00">2019-07-08</time>
             </span>
           
 
           
             
 
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-10 22:38:37" itemprop="dateModified" datetime="2019-07-10T22:38:37+08:00">2019-07-10</time>
+              </span>
             
           
 
@@ -484,6 +494,8 @@
         <h2 id="坐标系统"><a href="#坐标系统" class="headerlink" title="坐标系统"></a>坐标系统</h2><p>（coordinate system)</p>
 <h3 id="局部空间（物体空间）"><a href="#局部空间（物体空间）" class="headerlink" title="局部空间（物体空间）"></a>局部空间（物体空间）</h3><p>局部空间是指物体所在的坐标空间，即对象最开始所在的地方。想象你在一个建模软件（比如说Blender，Blender中通过移动浮标来决定新建物体的局部坐标）中创建了一个立方体。你创建的立方体的原点有可能位于(0, 0, 0)，即便它有可能最后在程序中处于完全不同的位置。甚至有可能你创建的所有模型都以(0, 0, 0)为初始位置（译注：然而它们会最终出现在世界的不同位置）。所以，你的模型的所有顶点都是在<strong>局部</strong>空间中：它们相对于你的物体来说都是局部的。</p>
 <p>我们一直使用的那个箱子的顶点是被设定在-0.5到0.5的坐标范围中，(0, 0)是它的原点。这些都是局部坐标。</p>
+<a id="more"></a>
+
 <h3 id="世界空间"><a href="#世界空间" class="headerlink" title="世界空间"></a>世界空间</h3><p>如果我们将我们所有的物体导入到程序当中，它们有可能会全挤在世界的原点(0, 0, 0)上，而我们想为每一个物体定义一个位置，从而能在更大的世界当中放置它们。世界空间中的坐标正如其名：是指顶点相对于（游戏）世界的坐标。如果你希望将物体分散在世界上摆放（特别是非常真实的那样），这就是你希望物体变换到的空间。物体的坐标将会从局部变换到世界空间；该变换是由<strong>模型矩阵(Model Matrix)</strong>实现的。</p>
 <p>模型矩阵是一种变换矩阵，它能通过对物体进行位移、缩放、旋转来将它置于它本应该在的位置或朝向。你可以将它想像为变换一个房子，你需要先将它缩小（它在局部空间中太大了），并将其位移至郊区的一个小镇，然后在y轴上往左旋转一点以搭配附近的房子。</p>
 <h3 id="观察空间（视觉空间）"><a href="#观察空间（视觉空间）" class="headerlink" title="观察空间（视觉空间）"></a>观察空间（视觉空间）</h3><p>观察空间经常被人们称之OpenGL的<strong>摄像机(Camera)</strong>（所以有时也称为<strong>摄像机空间</strong>(Camera Space)或<strong>视觉空间</strong>(Eye Space)）。观察空间是将世界空间坐标转化为用户视野前方的坐标而产生的结果。因此观察空间就是从摄像机的视角所观察到的空间。而这通常是由一系列的<strong>位移和旋转</strong>的组合来完成，平移/旋转场景从而使得特定的对象被变换到摄像机的前方。这些组合在一起的变换通常存储在一个<strong>观察矩阵(View Matrix)</strong>里，它被用来将世界坐标变换到观察空间。</p>
@@ -703,7 +715,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">59</span>
+                    <span class="site-state-item-count">89</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -746,7 +758,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -797,7 +813,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">17</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -924,7 +946,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">328k</span>
+    <span title="站点总字数">515k</span>
   
 
   

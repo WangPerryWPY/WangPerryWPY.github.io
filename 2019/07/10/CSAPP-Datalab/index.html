@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="1. bitXor bitXor - x^y using only ~ and &amp;amp;  Example: bitXor(4, 5) = 1 Legal ops: ~ &amp;amp; Max ops: 14 Rating: 1">
+<meta name="keywords" content="CSAPP,c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSAPP||Datalab">
+<meta property="og:url" content="http://yoursite.com/2019/07/10/CSAPP-Datalab/index.html">
+<meta property="og:site_name" content="PerryWang🍎博客">
+<meta property="og:description" content="1. bitXor bitXor - x^y using only ~ and &amp;amp;  Example: bitXor(4, 5) = 1 Legal ops: ~ &amp;amp; Max ops: 14 Rating: 1">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-07-10T15:32:50.791Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSAPP||Datalab">
+<meta name="twitter:description" content="1. bitXor bitXor - x^y using only ~ and &amp;amp;  Example: bitXor(4, 5) = 1 Legal ops: ~ &amp;amp; Max ops: 14 Rating: 1">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="PerryWang🍎博客" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/07/10/CSAPP-Datalab/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>CSAPP||Datalab | PerryWang🍎博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PerryWang🍎博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">分享软件开发中学到的点滴知识</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/WangPerryWPY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/10/CSAPP-Datalab/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/头像.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CSAPP||Datalab
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-10 23:31:27 / 修改时间：23:32:50" itemprop="dateCreated datePublished" datetime="2019-07-10T23:31:27+08:00">2019-07-10</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/10/CSAPP-Datalab/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/10/CSAPP-Datalab/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">6.5k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-bitXor"><a href="#1-bitXor" class="headerlink" title="1. bitXor"></a>1. bitXor</h3><ul>
+<li>bitXor - x^y using only ~ and &amp; </li>
+<li>Example: bitXor(4, 5) = 1</li>
+<li>Legal ops: ~ &amp;</li>
+<li>Max ops: 14</li>
+<li>Rating: 1</li>
+</ul>
+<a id="more"></a>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">bitXor</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> ~(x &amp; y) &amp; ~(~x &amp; ~y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-tmin"><a href="#2-tmin" class="headerlink" title="2. tmin"></a>2. tmin</h3><ul>
+<li>tmin - return minimum two’s complement integer <ul>
+<li>Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;</li>
+<li>Max ops: 4</li>
+<li>Rating: 1<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">int</span> <span class="title">tmin</span><span class="params">(<span class="keyword">void</span>)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span> &lt;&lt; <span class="number">31</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="3-isTmax"><a href="#3-isTmax" class="headerlink" title="3. isTmax"></a>3. isTmax</h3><ul>
+<li>isTmax - returns 1 if x is the maximum, two’s complement number,<ul>
+<li>and 0 otherwise </li>
+<li>Legal ops: ! ~ &amp; ^ | +</li>
+<li>Max ops: 10</li>
+<li>Rating: 1</li>
+</ul>
+</li>
+</ul>
+<p>解题思路：Tmax = ~(Tmax+1), 排除同样满足此条件的0xffffffff</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">int</span> <span class="title">isTmax</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123; </span><br><span class="line">		<span class="keyword">return</span> !(x ^ (~(x + <span class="number">1</span>))) &amp; !!(~x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 同理， Tmin = ~Tim + 1, 排除同样满足此条件的0x0<br> <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">isTmin</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span>  !(x ^ (~x + <span class="number">1</span>)) &amp; !!(x);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-allOddBits"><a href="#4-allOddBits" class="headerlink" title="4. allOddBits"></a>4. allOddBits</h3><ul>
+<li>allOddBits - return 1 if all odd-numbered bits in word set to 1<ul>
+<li>where bits are numbered from 0 (least significant) to 31 (most significant)</li>
+<li>Examples allOddBits(0xFFFFFFFD) = 0, allOddBits(0xAAAAAAAA) = 1</li>
+<li>Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;</li>
+<li>Max ops: 12</li>
+<li>Rating: 2</li>
+</ul>
+</li>
+</ul>
+<p>解题思路：</p>
+<ul>
+<li>x &amp; 0xAAAAAAAA = 0xAAAAAAAA。</li>
+<li>构造0xAAAAAAAA<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">allOddBits</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a = <span class="number">0xAA</span> | <span class="number">0xAA</span> &lt;&lt; <span class="number">8</span>;</span><br><span class="line">	a = a | <span class="number">0xAA</span> &lt;&lt; <span class="number">16</span>;</span><br><span class="line">	a = a | <span class="number">0xAA</span> &lt;&lt; <span class="number">24</span>;</span><br><span class="line">	<span class="keyword">return</span> !((a&amp;x)^a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="5-negate"><a href="#5-negate" class="headerlink" title="5. negate"></a>5. negate</h3><ul>
+<li>negate - return -x <ul>
+<li>Example: negate(1) = -1.</li>
+<li>Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;</li>
+<li>Max ops: 5</li>
+<li>Rating: 2</li>
+</ul>
+</li>
+</ul>
+<p>解题思路：</p>
+<p>-x = x的补码，补码=反码+1</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">negate</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (~x+<span class="number">1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="6-isAsciiDigit"><a href="#6-isAsciiDigit" class="headerlink" title="6. isAsciiDigit"></a>6. isAsciiDigit</h3><ul>
+<li>isAsciiDigit - return 1 if 0x30 &lt;= x &lt;= 0x39 (ASCII codes for characters ‘0’ to ‘9’)</li>
+<li>Example: isAsciiDigit(0x35) = 1.</li>
+<li>isAsciiDigit(0x3a) = 0.</li>
+<li>isAsciiDigit(0x05) = 0.</li>
+<li>Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;</li>
+<li>Max ops: 15</li>
+<li>Rating: 3</li>
+</ul>
+<p><strong>解题思路：</strong></p>
+<p>依据两个原理：</p>
+<ul>
+<li>计算机的减运算等于加补码，补码=反码+1</li>
+<li>对于32位int来说，若一个数&gt;=0，右移31位为0；若为负数，右移31位为1。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">isAsciiDigit</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> left = x + (~(<span class="number">0x30</span>)+<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">int</span> right = (~x+<span class="number">1</span>) + <span class="number">0x39</span>;</span><br><span class="line">	<span class="keyword">return</span> !(left &gt;&gt; <span class="number">31</span>) &amp; !(right &gt;&gt; <span class="number">31</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="7-conditional"><a href="#7-conditional" class="headerlink" title="7. conditional"></a>7. conditional</h3><ul>
+<li>conditional - same as x ? y : z <ul>
+<li>Example: conditional(2,4,5) = 4</li>
+<li>Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;</li>
+<li>Max ops: 16</li>
+<li>Rating: 3</li>
+</ul>
+</li>
+</ul>
+<p>解题思路：</p>
+<ul>
+<li>当x只取0x00000000或0xFFFFFFFF时，结果为(x &amp; y) | (~x &amp; z)。</li>
+<li>只需要排除当x != 0时，x = 0xFFFFFFFF。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">conditional</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y, <span class="keyword">int</span> z)</span> </span>&#123;</span><br><span class="line">	x = (!!x) &lt;&lt; <span class="number">31</span> &gt;&gt; <span class="number">31</span>;</span><br><span class="line">	<span class="keyword">return</span> ((x &amp; y) | (~x &amp; z)); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="8-isLessOrEqual"><a href="#8-isLessOrEqual" class="headerlink" title="8. isLessOrEqual"></a>8. isLessOrEqual</h3><ul>
+<li>isLessOrEqual - if x &lt;= y  then return 1, else return 0 <ul>
+<li>Example: isLessOrEqual(4,5) = 1.</li>
+<li>Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;</li>
+<li>Max ops: 24</li>
+<li>Rating: 3</li>
+</ul>
+</li>
+</ul>
+<p>解题思路：</p>
+<ul>
+<li>理论上y-x &gt;= 0即可。</li>
+<li>但是如果x, y正负不同，相减可能会溢出。</li>
+<li>所以分两种情况讨论，如果两个数符号相等，判断相减；如果两个数符号不同，判断符号。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">isLessOrEqual</span><span class="params">(<span class="keyword">int</span> x, <span class="keyword">int</span> y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a = !((x &gt;&gt; <span class="number">31</span>) ^ (y &gt;&gt; <span class="number">31</span>));</span><br><span class="line">	<span class="keyword">return</span> (a &amp; !((y + (~x + <span class="number">1</span>)) &gt;&gt; <span class="number">31</span>)) | (~a &amp; !(y &gt;&gt; <span class="number">31</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="9-logicalNeg"><a href="#9-logicalNeg" class="headerlink" title="9. logicalNeg"></a>9. logicalNeg</h3><ul>
+<li>logicalNeg - implement the ! operator, using all of <ul>
+<li>the legal operators except !</li>
+<li>Examples: logicalNeg(3) = 0, logicalNeg(0) = 1</li>
+<li>Legal ops: ~ &amp; ^ | + &lt;&lt; &gt;&gt;</li>
+<li>Max ops: 12</li>
+<li>Rating: 4 </li>
+</ul>
+</li>
+</ul>
+<p>解题思路：</p>
+<p>0和-0的最高位为0，将正数转化为负数，那么只有0的最高位为0</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">logicalNeg</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">  	<span class="keyword">return</span> ~((x | (~x + <span class="number">1</span>)) &gt;&gt; <span class="number">31</span>) &amp; <span class="number">0x1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-howManyBits"><a href="#10-howManyBits" class="headerlink" title="10. howManyBits"></a>10. howManyBits</h3><ul>
+<li>howManyBits - return the minimum number of bits required to represent x in two’s complement<ul>
+<li>Examples: howManyBits(12) = 5<ul>
+<li>howManyBits(298) = 10<ul>
+<li>howManyBits(-5) = 4</li>
+<li>howManyBits(0)  = 1</li>
+<li>howManyBits(-1) = 1</li>
+<li>howManyBits(0x80000000) = 32</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Legal ops: ! ~ &amp; ^ | + &lt;&lt; &gt;&gt;</li>
+<li>Max ops: 90</li>
+<li>Rating: 4</li>
+</ul>
+</li>
+</ul>
+<p>解题思路：</p>
+<ul>
+<li>补码的最高表示位前面的所有数字应该都是全0(正数)或是全1(负数)。</li>
+<li>将原数与左移一位后的数字异或则最高的不同的那个位置为1，我们只需要找到这个最高的不同位即可。<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">howManyBits</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> temp = x ^ (x &lt;&lt; <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">int</span> bit_16,bit_8,bit_4,bit_2,bit_1;</span><br><span class="line">	bit_16 = !!(temp &gt;&gt; <span class="number">16</span>) &lt;&lt; <span class="number">4</span>;</span><br><span class="line">	temp = temp &gt;&gt; bit_16;</span><br><span class="line">	bit_8 = !!(temp &gt;&gt; <span class="number">8</span>) &lt;&lt; <span class="number">3</span>;</span><br><span class="line">	temp = temp &gt;&gt; bit_8;</span><br><span class="line">	bit_4 = !!(temp &gt;&gt; <span class="number">4</span>) &lt;&lt; <span class="number">2</span>;</span><br><span class="line">	temp = temp &gt;&gt; bit_4;</span><br><span class="line">	bit_2 = !!(temp &gt;&gt; <span class="number">2</span>) &lt;&lt; <span class="number">1</span>;</span><br><span class="line">	temp = temp &gt;&gt; bit_2;</span><br><span class="line">	bit_1 = !!(temp &gt;&gt; <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span> + bit_1 + bit_2 + bit_4 + bit_8 + bit_16;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="11-floatScale2"><a href="#11-floatScale2" class="headerlink" title="11. floatScale2"></a>11. floatScale2</h3><ul>
+<li>floatScale2 - Return bit-level equivalent of expression 2*f for<ul>
+<li>floating point argument f.</li>
+<li>Both the argument and result are passed as unsigned int’s, but</li>
+<li>they are to be interpreted as the bit-level representation of</li>
+<li>single-precision floating point values.</li>
+<li>When argument is NaN, return argument</li>
+<li>Legal ops: Any integer/unsigned operations incl. ||, &amp;&amp;. also if, while</li>
+<li>Max ops: 30</li>
+<li>Rating: 4</li>
+</ul>
+</li>
+</ul>
+<p>解题思路：</p>
+<ul>
+<li>IEEE浮点数格式一共分为三种形式，弱规范数，NAN以及一般的数。</li>
+<li>NAN直接返回</li>
+<li>弱规范数直接左移1位但要保留符号位。</li>
+<li>一般数的话尾数不变，只移动指数位并保持符号位不变。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="title">floatScale2</span><span class="params">(<span class="keyword">unsigned</span> uf)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">unsigned</span> a = (uf &gt;&gt; <span class="number">23</span>) &amp; <span class="number">0xff</span>;</span><br><span class="line">	<span class="keyword">unsigned</span> flag = uf &gt;&gt; <span class="number">31</span> &lt;&lt; <span class="number">31</span>;</span><br><span class="line">	<span class="keyword">int</span> temp = uf;</span><br><span class="line">	<span class="keyword">if</span> (a == <span class="number">0xff</span>) </span><br><span class="line">		<span class="keyword">return</span> uf;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (a == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		temp = uf &lt;&lt; <span class="number">1</span>;</span><br><span class="line">		<span class="comment">//temp = temp &amp; (~(0xff &lt;&lt; 23));</span></span><br><span class="line">		temp = temp | flag;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">	&#123;</span><br><span class="line">		temp = temp + (<span class="number">0x1</span>&lt;&lt;<span class="number">23</span>);</span><br><span class="line">		temp =  temp | flag;</span><br><span class="line">	&#125;</span><br><span class="line">		</span><br><span class="line">	<span class="keyword">return</span> temp;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="12-floatFloat2Int"><a href="#12-floatFloat2Int" class="headerlink" title="12. floatFloat2Int"></a>12. floatFloat2Int</h3><ul>
+<li>floatFloat2Int - Return bit-level equivalent of expression (int) f<ul>
+<li>for floating point argument f.</li>
+<li>Argument is passed as unsigned int, but</li>
+<li>it is to be interpreted as the bit-level representation of a</li>
+<li>single-precision floating point value.</li>
+<li>Anything out of range (including NaN and infinity) should return</li>
+<li>0x80000000u.</li>
+<li>Legal ops: Any integer/unsigned operations incl. ||, &amp;&amp;. also if, while</li>
+<li>Max ops: 30</li>
+<li>Rating: 4</li>
+</ul>
+</li>
+</ul>
+<p>解题思路：</p>
+<ul>
+<li>此题的解题关键在于分几种情况，先将符号位拿出单独讨论，当指数位-127&gt;=32位时，溢出，返回0x80000000u，当指数位-127 &lt; 0时，是小于1的小数，返回0即可。</li>
+<li>剩下的情况一种是指数位-127&gt;=23位时，将尾数位左移多出的位；当&lt;23时，尾数位右移缺失的位。</li>
+<li>再将最后的结果根据符号位的判断加上正负。</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">floatFloat2Int</span><span class="params">(<span class="keyword">unsigned</span> uf)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> a = ((uf &gt;&gt; <span class="number">23</span>) &amp; <span class="number">0xff</span>) - <span class="number">127</span>;</span><br><span class="line">	<span class="keyword">int</span> flag = uf &gt;&gt; <span class="number">31</span>;</span><br><span class="line">	<span class="keyword">if</span> (a &gt;= <span class="number">32</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0x80000000</span>u;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (a &lt; <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">else</span> </span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">int</span> temp = (uf | <span class="number">0x800000</span>) &amp; <span class="number">0xffffff</span>;</span><br><span class="line">		<span class="keyword">if</span> (a &gt;= <span class="number">23</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> e = a - <span class="number">23</span>;</span><br><span class="line">			temp = temp &lt;&lt; e;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> </span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">int</span> e = <span class="number">23</span> - a;</span><br><span class="line">			temp = temp &gt;&gt; e;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> flag ? -temp : temp;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="13-floatPower2"><a href="#13-floatPower2" class="headerlink" title="13.  floatPower2"></a>13.  floatPower2</h3><ul>
+<li>floatPower2 - Return bit-level equivalent of the expression 2.0^x<ul>
+<li>(2.0 raised to the power x) for any 32-bit integer x.</li>
+<li>The unsigned value that is returned should have the identical bit</li>
+<li>representation as the single-precision floating-point number 2.0^x.</li>
+<li>If the result is too small to be represented as a denorm, return</li>
+<li>0.If too large, return +INF.</li>
+<li>Legal ops: Any integer/unsigned operations incl. ||, &amp;&amp;. Also if, while </li>
+<li>Max ops: 30 </li>
+<li>Rating: 4</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">unsigned</span> <span class="title">floatPower2</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">    	<span class="keyword">if</span> (x &gt; <span class="number">127</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0x7f800000</span>;	</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (x &lt; <span class="number">-127</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0x0</span>;	</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> (x + <span class="number">127</span>) &lt;&lt; <span class="number">23</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>PerryWang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://yoursite.com/2019/07/10/CSAPP-Datalab/" title="CSAPP||Datalab">http://yoursite.com/2019/07/10/CSAPP-Datalab/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/CSAPP/" rel="tag"># CSAPP</a>
+          
+            <a href="/tags/c/" rel="tag"># c</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/10/计算机图形学-Camera/" rel="next" title="计算机图形学 || Camera">
+                <i class="fa fa-chevron-left"></i> 计算机图形学 || Camera
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/10/iOS应用生命周期/" rel="prev" title="iOS应用生命周期">
+                iOS应用生命周期 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/头像.png" alt="PerryWang">
+            
+              <p class="site-author-name" itemprop="name">PerryWang</p>
+              <div class="site-description motion-element" itemprop="description">sysu-student</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">89</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/WangPerryWPY" title="GitHub &rarr; https://github.com/WangPerryWPY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/perry0528" title="CSDN &rarr; https://blog.csdn.net/perry0528" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:1731611872@qq.com" title="E-Mail &rarr; mailto:1731611872@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-bitXor"><span class="nav-number">1.</span> <span class="nav-text">1. bitXor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-tmin"><span class="nav-number">2.</span> <span class="nav-text">2. tmin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-isTmax"><span class="nav-number">3.</span> <span class="nav-text">3. isTmax</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-allOddBits"><span class="nav-number">4.</span> <span class="nav-text">4. allOddBits</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-negate"><span class="nav-number">5.</span> <span class="nav-text">5. negate</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-isAsciiDigit"><span class="nav-number">6.</span> <span class="nav-text">6. isAsciiDigit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-conditional"><span class="nav-number">7.</span> <span class="nav-text">7. conditional</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-isLessOrEqual"><span class="nav-number">8.</span> <span class="nav-text">8. isLessOrEqual</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-logicalNeg"><span class="nav-number">9.</span> <span class="nav-text">9. logicalNeg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-howManyBits"><span class="nav-number">10.</span> <span class="nav-text">10. howManyBits</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-floatScale2"><span class="nav-number">11.</span> <span class="nav-text">11. floatScale2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-floatFloat2Int"><span class="nav-number">12.</span> <span class="nav-text">12. floatFloat2Int</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-floatPower2"><span class="nav-number">13.</span> <span class="nav-text">13.  floatPower2</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Perry</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">515k</span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unjkp.com/valine/dist/Valine.min.js"></script>  
+  <script src="/js/src/Valine.min.js"></script> 
+
+    
+  
+  <script src="/js/src/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'SsAWGcn6CHm6Oif4CGFKBhVv-gzGzoHsz',
+        appKey: 'bniDOuxQuzVdGASyS3SyDFF8',
+        placeholder: '说点什么吧！',
+        avatar:'wavatar',
+        guest_info:['nick'] ,  
+        pageSize:'10' || 10,
+    });
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+  </script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

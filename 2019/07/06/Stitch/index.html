@@ -514,7 +514,7 @@
 
 <h3 id="K-d-Tree最近邻搜索进行特征点匹配："><a href="#K-d-Tree最近邻搜索进行特征点匹配：" class="headerlink" title="K-d Tree最近邻搜索进行特征点匹配："></a>K-d Tree最近邻搜索进行特征点匹配：</h3><h4 id="k-d树算法可以分为两大部分，一部分是有关k-d树本身这种数据结构建立的算法，另一部分是在建立的k-d树上如何进行最邻近查找的算法。"><a href="#k-d树算法可以分为两大部分，一部分是有关k-d树本身这种数据结构建立的算法，另一部分是在建立的k-d树上如何进行最邻近查找的算法。" class="headerlink" title="k-d树算法可以分为两大部分，一部分是有关k-d树本身这种数据结构建立的算法，另一部分是在建立的k-d树上如何进行最邻近查找的算法。"></a>k-d树算法可以分为两大部分，一部分是有关k-d树本身这种数据结构建立的算法，另一部分是在建立的k-d树上如何进行最邻近查找的算法。</h4><p><strong>构建k-d树：</strong></p>
 <p>构造kd树的方法：首先构造根节点，根节点对应于整个k维空间，包含所有的实例点，（至于如何选取划分点，有不同的策略。最常用的是一种方法是：对于所有的样本点，统计它们在每个维上的方差，挑选出方差中的最大值，对应的维就是要进行数据切分的维度。数据方差最大表明沿该维度数据点分散得比较开，这个方向上进行数据分割可以获得最好的分辨率；然后再将所有样本点按切分维度的值进行排序，位于正中间的那个数据点选为分裂结点。）。然后利用递归的方法，分别构造k-d树根节点的左右子树。在超矩形区域上选择一个坐标轴（切分维度）和一个分裂结点，以通过此分裂结点且垂直于切分方向坐标轴的直线作为分隔线，将当前超矩形区域分隔成左右或者上下两个子超矩形区域，对应于分裂结点的左右子树的根节点。实例也就被分到两个不相交的区域中。重复此过程直到子区域内没有实例点时终止。终止时的结点为叶结点。</p>
-<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">算法：createKDTree 构建一棵k-d tree </span><br><span class="line"> </span><br><span class="line">输入：exm_<span class="keyword">set</span> 样本集 </span><br><span class="line"> </span><br><span class="line">输出 : Kd, 类型为kd-tree </span><br><span class="line"> </span><br><span class="line">1. 如果exm_<span class="keyword">set</span>是空的，则返回空的kd-tree </span><br><span class="line"> </span><br><span class="line">2.调用分裂结点选择程序（输入是exm_<span class="keyword">set</span>），返回两个值 </span><br><span class="line"> </span><br><span class="line">       dom_elt:= exm_<span class="keyword">set</span>中的一个样本点 </span><br><span class="line"> </span><br><span class="line">       split := 分裂维的序号 </span><br><span class="line"> </span><br><span class="line">3.exm_<span class="keyword">set</span>_left = &#123;exm∈exm_<span class="keyword">set</span> – dom_elt &amp;&amp; exm[split] &lt;= dom_elt[split]&#125; </span><br><span class="line"> </span><br><span class="line">   exm_<span class="keyword">set</span>_right = &#123;exm∈exm_<span class="keyword">set</span> – dom_elt &amp;&amp; exm[split] &gt; dom_elt[split]&#125; </span><br><span class="line"> </span><br><span class="line">4.left = createKDTree<span class="params">(exm_set_left)</span> </span><br><span class="line"> </span><br><span class="line">right = createKDTree<span class="params">(exm_set_right)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">算法：createKDTree 构建一棵k-d tree </span><br><span class="line"> </span><br><span class="line">输入：exm_set 样本集 </span><br><span class="line"> </span><br><span class="line">输出 : Kd, 类型为kd-tree </span><br><span class="line"> </span><br><span class="line">1. 如果exm_set是空的，则返回空的kd-tree </span><br><span class="line"> </span><br><span class="line">2.调用分裂结点选择程序（输入是exm_set），返回两个值 </span><br><span class="line"> </span><br><span class="line">       dom_elt:= exm_set中的一个样本点 </span><br><span class="line"> </span><br><span class="line">       split := 分裂维的序号 </span><br><span class="line"> </span><br><span class="line">3.exm_set_left = &#123;exm∈exm_set – dom_elt &amp;&amp; exm[split] &lt;= dom_elt[split]&#125; </span><br><span class="line"> </span><br><span class="line">   exm_set_right = &#123;exm∈exm_set – dom_elt &amp;&amp; exm[split] &gt; dom_elt[split]&#125; </span><br><span class="line"> </span><br><span class="line">4.left = createKDTree(exm_set_left) </span><br><span class="line"> </span><br><span class="line">right = createKDTree(exm_set_right)</span><br></pre></td></tr></table></figure>
 
 <p><strong>k-d tree最近邻搜索算法</strong></p>
 <p>在k-d tree树中进行数据的k近邻搜索是特征匹配的重要环节，其目的是检索在k-d tree中与待查询点距离最近的k个数据点。</p>
@@ -707,7 +707,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">59</span>
+                    <span class="site-state-item-count">89</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -750,7 +750,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -801,7 +805,13 @@
                     
                       
                     
-                    <span class="site-state-item-count">17</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -928,7 +938,7 @@
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">328k</span>
+    <span title="站点总字数">515k</span>
   
 
   

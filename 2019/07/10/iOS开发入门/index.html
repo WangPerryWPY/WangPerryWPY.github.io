@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="开发一个应用程序看起来复杂，实际上我们可以分为以下几个方面来看：  设计用户界面 定义交互 实现行为 整合数据  我们这里需要先提一种典型的软件设计典范，也就是我们常说的MVC模式。((业务模型)Model-(用户界面)View-(页面业务逻辑)Controller) 目的：将M和V实现代码分离，从而使同一个程序可以用不同的表示形式。">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS开发入门">
+<meta property="og:url" content="http://yoursite.com/2019/07/10/iOS开发入门/index.html">
+<meta property="og:site_name" content="PerryWang🍎博客">
+<meta property="og:description" content="开发一个应用程序看起来复杂，实际上我们可以分为以下几个方面来看：  设计用户界面 定义交互 实现行为 整合数据  我们这里需要先提一种典型的软件设计典范，也就是我们常说的MVC模式。((业务模型)Model-(用户界面)View-(页面业务逻辑)Controller) 目的：将M和V实现代码分离，从而使同一个程序可以用不同的表示形式。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190324143548594.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190324144739178.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190324145339689.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190327163158501.gif">
+<meta property="og:updated_time" content="2019-07-10T14:55:30.078Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS开发入门">
+<meta name="twitter:description" content="开发一个应用程序看起来复杂，实际上我们可以分为以下几个方面来看：  设计用户界面 定义交互 实现行为 整合数据  我们这里需要先提一种典型的软件设计典范，也就是我们常说的MVC模式。((业务模型)Model-(用户界面)View-(页面业务逻辑)Controller) 目的：将M和V实现代码分离，从而使同一个程序可以用不同的表示形式。">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190324143548594.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="PerryWang🍎博客" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/07/10/iOS开发入门/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>iOS开发入门 | PerryWang🍎博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PerryWang🍎博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">分享软件开发中学到的点滴知识</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/WangPerryWPY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/10/iOS开发入门/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/头像.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS开发入门
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-10 22:53:31 / 修改时间：22:55:30" itemprop="dateCreated datePublished" datetime="2019-07-10T22:53:31+08:00">2019-07-10</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/10/iOS开发入门/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/10/iOS开发入门/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">5.3k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>开发一个应用程序看起来复杂，实际上我们可以分为以下几个方面来看：</p>
+<ul>
+<li>设计用户界面</li>
+<li>定义交互</li>
+<li>实现行为</li>
+<li>整合数据</li>
+</ul>
+<p>我们这里需要先提一种典型的软件设计典范，也就是我们常说的MVC模式。((业务模型)Model-(用户界面)View-(页面业务逻辑)Controller)</p>
+<p><strong>目的</strong>：将M和V实现代码分离，从而使同一个程序可以用不同的表示形式。</p>
+<a id="more"></a>
+
+<h3 id="1-设计用户界面"><a href="#1-设计用户界面" class="headerlink" title="1. 设计用户界面"></a>1. 设计用户界面</h3><h5 id="视图层次："><a href="#视图层次：" class="headerlink" title="视图层次："></a>视图层次：</h5><p>视图层次定义了视图相对于其他视图的布局。视图层次顶部的是窗口对象(用UIWindow类的实例表示)，它作为基本的容器，将在屏幕上显示的视图对象添加到其中。</p>
+<h5 id="使用视图构建界面："><a href="#使用视图构建界面：" class="headerlink" title="使用视图构建界面："></a>使用视图构建界面：</h5><p>使用<strong>UIKit</strong>视图可以快速组装一个基本界面。其常见类型有以下几种：<br><img src="https://img-blog.csdnimg.cn/20190324143548594.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h5 id="使用串联图来布局视图："><a href="#使用串联图来布局视图：" class="headerlink" title="使用串联图来布局视图："></a>使用串联图来布局视图：</h5><p>串联图由场景组成，每个场景有关联的视图层次。通过将视图拖出对象 库并将其放在串联图场景中，可以自动将它添加到该场景的视图层次。视图在该层次中的位置由您放置 的位置决定。将视图添加到场景后，您可以在画布上对其进行大小调整、操控、配置和移动操作。</p>
+<h5 id="使用检查器来配置视图："><a href="#使用检查器来配置视图：" class="headerlink" title="使用检查器来配置视图："></a>使用检查器来配置视图：</h5><p> 每个检查器都提供了配置界面中元素的重要选项。选择串联图中的对象(例如视图)后，可以使用各个检查器来自定义该对象的不同属性。<br> <img src="https://img-blog.csdnimg.cn/20190324144739178.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<ul>
+<li>File：让您指定串联图的常规信息。</li>
+<li>Quick Help：提供有关对象的实用文稿。 Identity。让您指定对象的自定类并定义其辅助功能属性。</li>
+<li>Attributes：让您自定对象的可视化属性。</li>
+<li>Size：让您指定对象的大小以及 Auto Layout 属性。 </li>
+<li>Connections：让您创建界面和源代码之间的连接。</li>
+</ul>
+<p><strong>PS</strong>：关于视图对象与代码的绑定我们一般使用(Ctrl+选中空间拖动到类的相应位置创建绑定)。</p>
+<h5 id="使用Auto-Layout来定位视图："><a href="#使用Auto-Layout来定位视图：" class="headerlink" title="使用Auto Layout来定位视图："></a>使用Auto Layout来定位视图：</h5><p>Auto Layout 是一 种用来表示应用程序的用户界面中各种视图之间关系的体系。它可让您基于单个视图或视图组之间的约束来定义这些关系。<br>Auto Layout 菜单位于画布的右下角，有四个部分。您可以使用该菜单来各种类型的约束添加到画布上 的视图中，解决布局问题以及确定约束调整大小行为。</p>
+<h3 id="2-定义交互"><a href="#2-定义交互" class="headerlink" title="2. 定义交互"></a>2. 定义交互</h3><p>对用户界面进行布局后，接下来就需要让用户与界面进行交互。这时就要使用控制器了。控制器能响应用户操作并使用内容填充视图，从而支持您的视图。控制器对象是一个管道，通过它，视图能了解数据模型的修改，反之亦然。应用程序的控制器会通知视图有关模型数据中的修改，之后控制器会将用户发起的修改(例如，在文本栏中输入的文本)传达到模型对象。不论模型对象是响应用户操作，还是定义浏览，控制器都会实现应用程序的行为。</p>
+<h5 id="视图控制器"><a href="#视图控制器" class="headerlink" title="视图控制器"></a>视图控制器</h5><p>构建了基本的视图层次后，下一步就需要控制可视元素并响应用户输入。在 iOS 应用程序中，可以使用视图控制器(UIViewController)来管理内容视图及其分视图层次。<br><img src="https://img-blog.csdnimg.cn/20190324145339689.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>视图控制器并不是视图层次的一部分，也不是界面中的元素。相反，它管理着层次中的视图对象，并为它们提供行为。在串联图中构建的每个内容视图层次，都需要一个对应的视图控制器来管理界面元素， 并执行任务来响应用户的交互操作。通常，这意味着需要为每个内容视图层次编写一个自定 <code>UIViewController</code>子类。如果应用程序有多个内容视图，那么就需要为每个内容视图使用不同的自定视图控制器类。<br>视图控制器扮演着多种角色。它们负责<strong>协调应用程序的数据模型与显示该数据的视图之间的信息传输</strong>， <strong>管理应用程序的内容视图的生命周期</strong>，并<strong>处理设备旋转时方向的更改</strong>。但其最主要的作用可能是响应<strong>用户输入</strong>。<br>您还可以使用视图控制器来转换各种类型的内容。由于 iOS 应用程序显示内容的空间很有限，因此视图控制器提供了所需要的基础结构，可让您移除一个视图控制器的视图，替换为另一个视图控制器中的视图。<br>通过让视图控制器文件与串联图中的视图进行通信，可以定义应用程序中的交互方式。方法是通过 Action 与 Outlet 来定义串联图与源代码文件之间的连接。</p>
+<h5 id="操作-Action"><a href="#操作-Action" class="headerlink" title="操作(Action)"></a>操作(Action)</h5><p><strong>操作</strong>是一段代码，它与应用程序中可能会发生的某类事件相链接。该事件发生后，代码就会执行。可以定义操作来完成任何事情:从操控数据到更新用户界面。操作可驱动应用程序的流程来响应用户事件或者系统事件。<br>可采用如下方法来定义:使用 IBAction 返回类型和 sender 参数来创建并实现方法。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (IBAction)restoreDefaults:(id)sender;</span><br></pre></td></tr></table></figure>
+
+<p><strong>sender</strong> 参数指向负责触发操作的对象。<strong>IBAction</strong> 返回类型是个特殊的关键词。它与 void 关键词类似，但它表示该方法是一种操作。</p>
+<h5 id="Outlet："><a href="#Outlet：" class="headerlink" title="Outlet："></a>Outlet：</h5><p><strong>Outlet</strong>可让您从源代码文件引用界面中的对象(添加到串联图的对象)。您可以按住 Control 键，并将串联图中的特定对象拖移至视图控制器文件来创建Outlet。这就为视图控制器文件中的对象创建了属性，通过该属性，您可以在运行时通过代码来访问并操控该对象。<br>Outlet 被定义为 IBOutlet 属性。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@property (weak, nonatomic) IBOutlet UITextField *textField;</span><br></pre></td></tr></table></figure>
+
+<h5 id="控制（Control）："><a href="#控制（Control）：" class="headerlink" title="控制（Control）："></a>控制（Control）：</h5><p>控制是用户界面对象(例如按钮、滑块或者开关)，用户可以操控它们来与内容进行交互、提供输入、在应用程序内导航，以及执行所定义的其他操作。代码可通过控制来接收用户界面的消息。</p>
+<p>用户与控制进行交互，会创建控制事件。控制事件表示用户可在控制上使用的各种手势，例如将手指抬离控制、手指拖移到控制上，以及在文本栏中按下。</p>
+<p><strong>常见的事件类型有三种:</strong></p>
+<ul>
+<li><strong>触碰和拖移事件</strong>。用户通过触碰或者拖移与控制交互时，发生的就是触碰和拖移事件。触碰事件分几个阶段。例如，当用户初次用手指触碰按钮，就会触发 Touch Down Inside 事件;如果用户手指拖离按钮，则会触发相应的拖移事件。当用户的手指抬离按钮但仍停留按钮边缘的范围内，就会发送 Touch Up Inside。如果用户在抬起手指前，手指已经拖离了按钮(实际上是取消了触碰)，就会触发 Touch Up Outside 事件。</li>
+<li><strong>编辑事件</strong>。用户编辑文本栏，发生的是编辑事件。 </li>
+<li><strong>值更改事件</strong>。用户对控制进行操控，从而导致控制产生一系列不同的值，发生的是值更改事件。</li>
+</ul>
+<h5 id="导航控制器："><a href="#导航控制器：" class="headerlink" title="导航控制器："></a>导航控制器：</h5><p>如果应用程序有多个内容视图层次，就需要能够在它们之间进行切换。为此，可以使用专门的视图控制器:导航控制器 (UINavigationController)。导航控制器管理在一系列视图控制器中向后和向前切换 的操作，例如用户在 iOS 版“邮件”应用程序的电子邮件帐户、收件箱邮件和单封电子邮件之间导航。</p>
+<p>我们将由特定导航控制器所管理的一组视图控制器称为其导航栈。导航栈是一组后进先出的自定视图控制器对象。添加到堆栈的第一个项目将变成根视图控制器，永不会从堆栈中弹出。而其他视图控制器可被压入或弹出导航栈。<br>虽然导航控制器的最主要作用是管理内容视图控制器的显示方式，但它还负责显示自己的自定视图。具 体来说，它会显示导航栏(位于屏幕顶部的视图，提供有关用户在导航层次中位置的上下文)。导航栏包含一个返回按钮和其他可以自定的按钮。添加到导航栈的每个视图控制器都会显示这个导航栏。</p>
+<h5 id="使用串联图来定义导航："><a href="#使用串联图来定义导航：" class="headerlink" title="使用串联图来定义导航："></a>使用串联图来定义导航：</h5><p>串联图是由一系列的场景组成，每个场景表示一个视图控制器及其视图层次。场景则由过渡连接。过渡表示两个视图控制器之间的切换:源视图控制器和目的视图控制器。</p>
+<p>有以下几种<strong>过渡</strong>：</p>
+<ul>
+<li><p>Push：Push过渡将目的视图控制器添加到导航栈。只有当源视图控制器与导航控制器连接时，才可以使用Push过渡。</p>
+</li>
+<li><p>Modal：Modal过渡就是一个视图控制器以模态方式显示另一个控制器，需要用户在显示的控制器上执行某种操作，然后返回到应用程序的主流程。Modal视图控制器不会添加到导航栈; 相反，它通常被认为是所显示的视图控制器的子视图控制器。显示的视图控制器的作用是关闭它所 创建和显示的 Modal 视图控制器。</p>
+</li>
+<li><p>Custom：可以通过将UIStoryboardSegue子类化来定义自定过渡。</p>
+</li>
+<li><p>Unwind：Unwind过渡通过向后移动一个或多个过渡，让用户返回到视图控制器的当前实例。使用Unwind过渡可以实现反向导航。</p>
+</li>
+</ul>
+<p>除了过渡之外，还可以通过关系来连接场景。例如，导航控制器与其根视图控制器之间就存在关系。就此而言，这种关系表示导航控制器包含根视图控制器。</p>
+<p>使用串联图规划应用程序的用户界面时，要确定将其中一个视图控制器标记为初始视图控制器，这一点尤为重要。运行时，该视图控制器的内容视图会在应用程序首次启动时显示，且在需要时，您可以从该视图控制器切换到其他视图控制器的内容视图。</p>
+<h3 id="3-整合数据"><a href="#3-整合数据" class="headerlink" title="3. 整合数据"></a>3. 整合数据</h3><p>应用程序的数据模型由数据结构和(可选)自定业务逻辑组成;自定业务逻辑是让数据保持一致状态所必要的。在设计数据模型时，不应完全忽略应用程序的用户界面。但是，您肯定会想单独实现数据模型对象，而不依赖于特定的视图或视图控制器是否存在。保持数据与用户界面分开，有助于通用应用程序 (可在 iPad 和 iPhone 双平台上运行的应用程序)的实现，也让代码复用变得更容易。</p>
+<h5 id="模型设计："><a href="#模型设计：" class="headerlink" title="模型设计："></a>模型设计：</h5><p>如果需要储存的数据很小，那么Foundation 框架类是最佳选择。例如，如果应用程序只需要跟踪字符串列表，则可以依赖 NSArray 和 NSString 来替您操作。</p>
+<p>如果数据模型不仅要储存数据，还要求自定业务逻辑，那么可以编写一个自定类。应考虑如何将现有框架类合并到自己的类的实现中。在自定类中使用现有框架类,往往比重写更省时省力。例如，自定类可能使用NSMutableArray来储存信息，但是会定义其自己的功能来处理该信息。</p>
+<h3 id="4-使用设计模式"><a href="#4-使用设计模式" class="headerlink" title="4. 使用设计模式"></a>4. 使用设计模式</h3><ul>
+<li><p>MVC</p>
+</li>
+<li><p>目标-操作</p>
+</li>
+<li><p>委托</p>
+<ul>
+<li><p>委托是一种简单而强大的模式。在此模式中，应用程序中的一个对象代表另一个对象，或与另一个对象协调工作。授权对象保留对另一个对象(委托对象)的引用，并适时向委托对象发送信息。该信息会告诉事件的委托对象，授权对象即将处理或刚处理了某个事件。委托对象可能会对该信息作出如下响应: 更新其本身或应用程序中其他对象的外观或状态，在某些情况下，它会返回一个值来反映待处理的事件该如何处理。 </p>
+</li>
+<li><p>委托模式不仅普遍用于既有的框架类，而且也可应用在应用程序的两个自定对象之间。常见的设计是将 委托作为一种手段，允许子视图控制器将某些值(通常为用户输入的值)传达到父视图控制器。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-处理Foundation"><a href="#5-处理Foundation" class="headerlink" title="5. 处理Foundation"></a>5. 处理Foundation</h3><h4 id="值对象："><a href="#值对象：" class="headerlink" title="值对象："></a>值对象：</h4><h5 id="字符串-NSString-："><a href="#字符串-NSString-：" class="headerlink" title="字符串(NSString)："></a>字符串(NSString)：</h5><p>NSString类为字符串提供了一个对象包装器，它具有诸多优势，如内置了可用于储存任意长度字符串的内存管理、提供了对各种字符编码(特别是Unicode)的支持，以及用于格式化字符串的实用工具等。 因为您通常会使用此类字符串，所以Objective-C提供了速写记法，即根据常量值来创建 NSString对象。要使用此NSString字面常量，只需在双引号字符串前面添加 (@) 符号。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Create the string "My String" plus carriage return.</span></span><br><span class="line">NSString *myString = @<span class="string">"My String\n"</span>;</span><br><span class="line"><span class="comment">// Create the formatted string "1 String".</span></span><br><span class="line">NSString *anotherString = [NSString stringWithFormat:@<span class="string">"%d %@"</span>, <span class="number">1</span>, @<span class="string">"String"</span>];</span><br><span class="line"><span class="comment">// Create an Objective-C string from a C string.</span></span><br><span class="line">NSString *fromCString = [NSString stringWithCString:<span class="string">"A C string"</span></span><br><span class="line">encoding:NSUTF8StringEncoding];</span><br></pre></td></tr></table></figure>
+
+<h5 id="数字-NSNumber"><a href="#数字-NSNumber" class="headerlink" title="数字(NSNumber)"></a>数字(NSNumber)</h5><p>可以创建 NSNumber 对象，表示无符号整型 (unsigned integers)、长整型 (long integers)、长长整型 (long long integers) 和浮点值 (float values)，方法是将字符“U”、“L”、“LL”和“F”分别追加到记号值末尾。例如， 创建封装浮点值的 NSNumber 对象，可以编写如下代码:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSNumber *myFloatValue = @<span class="number">3.2F</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="集对象："><a href="#集对象：" class="headerlink" title="集对象："></a>集对象：</h4><ul>
+<li>数组(NSArray / NSMutableArray)</li>
+<li>集合(NSSet / NSMutableSet)</li>
+<li>字典(NSDictionary / NSMutableDictionary)</li>
+<li>使用 NSNull 表示 nil</li>
+</ul>
+<p>入门demo可以阅读苹果官方已失传的详细教程：<a href="https://download.csdn.net/download/perry0528/11058022" target="_blank" rel="noopener">https://download.csdn.net/download/perry0528/11058022</a></p>
+<p><strong>完成demo后实现效果如下所示：</strong><br><img src="https://img-blog.csdnimg.cn/20190327163158501.gif" alt="在这里插入图片描述"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>PerryWang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://yoursite.com/2019/07/10/iOS开发入门/" title="iOS开发入门">http://yoursite.com/2019/07/10/iOS开发入门/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/10/c-实现平衡二叉树/" rel="next" title="c++实现平衡二叉树">
+                <i class="fa fa-chevron-left"></i> c++实现平衡二叉树
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/10/动态查找表/" rel="prev" title="动态查找表 || B🌲的c++实现">
+                动态查找表 || B🌲的c++实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/头像.png" alt="PerryWang">
+            
+              <p class="site-author-name" itemprop="name">PerryWang</p>
+              <div class="site-description motion-element" itemprop="description">sysu-student</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">89</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/WangPerryWPY" title="GitHub &rarr; https://github.com/WangPerryWPY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/perry0528" title="CSDN &rarr; https://blog.csdn.net/perry0528" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:1731611872@qq.com" title="E-Mail &rarr; mailto:1731611872@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-设计用户界面"><span class="nav-number">1.</span> <span class="nav-text">1. 设计用户界面</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#视图层次："><span class="nav-number">1.0.1.</span> <span class="nav-text">视图层次：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用视图构建界面："><span class="nav-number">1.0.2.</span> <span class="nav-text">使用视图构建界面：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用串联图来布局视图："><span class="nav-number">1.0.3.</span> <span class="nav-text">使用串联图来布局视图：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用检查器来配置视图："><span class="nav-number">1.0.4.</span> <span class="nav-text">使用检查器来配置视图：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用Auto-Layout来定位视图："><span class="nav-number">1.0.5.</span> <span class="nav-text">使用Auto Layout来定位视图：</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#2-定义交互"><span class="nav-number">2.</span> <span class="nav-text">2. 定义交互</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#视图控制器"><span class="nav-number">2.0.1.</span> <span class="nav-text">视图控制器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#操作-Action"><span class="nav-number">2.0.2.</span> <span class="nav-text">操作(Action)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Outlet："><span class="nav-number">2.0.3.</span> <span class="nav-text">Outlet：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#控制（Control）："><span class="nav-number">2.0.4.</span> <span class="nav-text">控制（Control）：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#导航控制器："><span class="nav-number">2.0.5.</span> <span class="nav-text">导航控制器：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用串联图来定义导航："><span class="nav-number">2.0.6.</span> <span class="nav-text">使用串联图来定义导航：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-整合数据"><span class="nav-number">3.</span> <span class="nav-text">3. 整合数据</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#模型设计："><span class="nav-number">3.0.1.</span> <span class="nav-text">模型设计：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-使用设计模式"><span class="nav-number">4.</span> <span class="nav-text">4. 使用设计模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-处理Foundation"><span class="nav-number">5.</span> <span class="nav-text">5. 处理Foundation</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#值对象："><span class="nav-number">5.1.</span> <span class="nav-text">值对象：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#字符串-NSString-："><span class="nav-number">5.1.1.</span> <span class="nav-text">字符串(NSString)：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数字-NSNumber"><span class="nav-number">5.1.2.</span> <span class="nav-text">数字(NSNumber)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集对象："><span class="nav-number">5.2.</span> <span class="nav-text">集对象：</span></a></li></ol></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Perry</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">515k</span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unjkp.com/valine/dist/Valine.min.js"></script>  
+  <script src="/js/src/Valine.min.js"></script> 
+
+    
+  
+  <script src="/js/src/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'SsAWGcn6CHm6Oif4CGFKBhVv-gzGzoHsz',
+        appKey: 'bniDOuxQuzVdGASyS3SyDFF8',
+        placeholder: '说点什么吧！',
+        avatar:'wavatar',
+        guest_info:['nick'] ,  
+        pageSize:'10' || 10,
+    });
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+  </script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

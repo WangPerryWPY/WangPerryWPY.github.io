@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="摄像机/观察空间摄像机位置摄像机位置简单来说就是世界空间中一个指向摄像机位置的向量。 1glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);  摄像机方向这里指的是摄像机指向哪个方向。现在我们让摄像机指向场景原点：(0, 0, 0)。这里运用将两个矢量相减，就能得到这两个矢量的差，用场景原点向量减去摄像机位置向量的结果就是摄像机的指向向量。由于我们知">
+<meta name="keywords" content="c++,计算机图形学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="openGL中的camera">
+<meta property="og:url" content="http://yoursite.com/2019/07/10/openGL中的camera/index.html">
+<meta property="og:site_name" content="PerryWang🍎博客">
+<meta property="og:description" content="摄像机/观察空间摄像机位置摄像机位置简单来说就是世界空间中一个指向摄像机位置的向量。 1glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);  摄像机方向这里指的是摄像机指向哪个方向。现在我们让摄像机指向场景原点：(0, 0, 0)。这里运用将两个矢量相减，就能得到这两个矢量的差，用场景原点向量减去摄像机位置向量的结果就是摄像机的指向向量。由于我们知">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190327171647498.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190327172402886.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019032717260430.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-07-10T15:13:15.522Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="openGL中的camera">
+<meta name="twitter:description" content="摄像机/观察空间摄像机位置摄像机位置简单来说就是世界空间中一个指向摄像机位置的向量。 1glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);  摄像机方向这里指的是摄像机指向哪个方向。现在我们让摄像机指向场景原点：(0, 0, 0)。这里运用将两个矢量相减，就能得到这两个矢量的差，用场景原点向量减去摄像机位置向量的结果就是摄像机的指向向量。由于我们知">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190327171647498.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="PerryWang🍎博客" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/07/10/openGL中的camera/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>openGL中的camera | PerryWang🍎博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PerryWang🍎博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">分享软件开发中学到的点滴知识</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/WangPerryWPY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/10/openGL中的camera/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/头像.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">openGL中的camera
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-10 23:12:20 / 修改时间：23:13:15" itemprop="dateCreated datePublished" datetime="2019-07-10T23:12:20+08:00">2019-07-10</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/计算机图形学/" itemprop="url" rel="index"><span itemprop="name">计算机图形学</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/10/openGL中的camera/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/10/openGL中的camera/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">8.3k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="摄像机-观察空间"><a href="#摄像机-观察空间" class="headerlink" title="摄像机/观察空间"></a>摄像机/观察空间</h2><h3 id="摄像机位置"><a href="#摄像机位置" class="headerlink" title="摄像机位置"></a>摄像机位置</h3><p>摄像机位置简单来说就是世界空间中一个指向摄像机位置的向量。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glm::vec3 cameraPos = glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">3.0f</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="摄像机方向"><a href="#摄像机方向" class="headerlink" title="摄像机方向"></a>摄像机方向</h3><p>这里指的是摄像机指向哪个方向。现在我们让摄像机指向场景原点：(0, 0, 0)。这里运用将<code>两个矢量相减，就能得到这两个矢量的差</code>，用场景原点向量减去摄像机位置向量的结果就是摄像机的指向向量。由于我们知道摄像机指向z轴负方向，但我们希望方向向量(Direction Vector)指向摄像机的z轴正方向。如果我们交换相减的顺序，我们就会获得一个指向摄像机正z轴方向的向量：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glm::vec3 cameraTarget = glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>);</span><br><span class="line">glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<h3 id="右轴"><a href="#右轴" class="headerlink" title="右轴"></a>右轴</h3><p>我们需要的另一个向量是一个<strong>右向量</strong>(Right Vector)，它代表摄像机空间的x轴的正方向。为获取右向量我们需要先使用一个小技巧：先定义一个<strong>上向量</strong>(Up Vector)。接下来把上向量和第二步得到的方向向量进行叉乘。两个向量叉乘的结果会同时垂直于两向量，因此我们会得到指向x轴正方向的那个向量（如果我们交换两个向量叉乘的顺序就会得到相反的指向x轴负方向的向量）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">glm::vec3 up = glm::vec3(<span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>); </span><br><span class="line">glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));</span><br></pre></td></tr></table></figure>
+
+<h3 id="上轴"><a href="#上轴" class="headerlink" title="上轴"></a>上轴</h3><p>我们已经有了x轴向量和z轴向量，获取一个指向摄像机的正y轴向量就相对简单了：我们把右向量和方向向量进行叉乘：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);</span><br></pre></td></tr></table></figure>
+
+<h3 id="Look-At"><a href="#Look-At" class="headerlink" title="Look At"></a>Look At</h3><p>使用3个相互垂直（或非线性）的轴定义了一个坐标空间，接下来可以用这3个轴外加一个平移向量来创建一个矩阵，并且可以用这个矩阵乘以任何向量来将其变换到那个坐标空间。这正是<strong>LookAt</strong>矩阵所做的，现在我们有了3个相互垂直的轴和一个定义摄像机空间的位置坐标，我们可以创建我们自己的LookAt矩阵了：<br>$$<br>LookAt = \begin{bmatrix} \color{red}{R_x} &amp; \color{red}{R_y} &amp; \color{red}{R_z} &amp; 0 \ \color{green}{U_x} &amp; \color{green}{U_y} &amp; \color{green}{U_z} &amp; 0 \ \color{blue}{D_x} &amp; \color{blue}{D_y} &amp; \color{blue}{D_z} &amp; 0 \ 0 &amp; 0 &amp; 0  &amp; 1 \end{bmatrix} * \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; -\color{purple}{P_x} \ 0 &amp; 1 &amp; 0 &amp; -\color{purple}{P_y} \ 0 &amp; 0 &amp; 1 &amp; -\color{purple}{P_z} \ 0 &amp; 0 &amp; 0  &amp; 1 \end{bmatrix}<br>$$<br>其中R是右向量，U是上向量，D是方向向量P是摄像机位置向量。注意，位置向量是相反的，因为我们最终希望把世界平移到与我们自身移动的相反方向。把这个LookAt矩阵作为观察矩阵可以很高效地把所有世界坐标变换到刚刚定义的观察空间。LookAt矩阵就像它的名字表达的那样：它会创建一个看着(Look at)给定目标的观察矩阵。</p>
+<p>GLM已经提供了这些支持。我们要做的只是定义一个摄像机位置，一个目标位置和一个表示世界空间中的上向量的向量（我们计算右向量使用的那个上向量）。接着GLM就会创建一个LookAt矩阵，我们可以把它当作我们的观察矩阵：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">glm::mat4 view;</span><br><span class="line">view = glm::lookAt(glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">3.0f</span>), </span><br><span class="line">           glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">0.0f</span>), </span><br><span class="line">           glm::vec3(<span class="number">0.0f</span>, <span class="number">1.0f</span>, <span class="number">0.0f</span>));</span><br></pre></td></tr></table></figure>
+
+<h2 id="自由移动："><a href="#自由移动：" class="headerlink" title="自由移动："></a>自由移动：</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">glm::vec3 cameraPos   = glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>,  <span class="number">3.0f</span>);</span><br><span class="line">glm::vec3 cameraFront = glm::vec3(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>);</span><br><span class="line">glm::vec3 cameraUp    = glm::vec3(<span class="number">0.0f</span>, <span class="number">1.0f</span>,  <span class="number">0.0f</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>LookAt函数现在成了：</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);</span><br></pre></td></tr></table></figure>
+
+<p>我们首先将摄像机位置设置为之前定义的cameraPos。方向是当前的位置加上我们刚刚定义的方向向量。这样能保证无论我们怎么移动，摄像机都会注视着目标方向。让我们摆弄一下这些向量，在按下某些按钮时更新cameraPos向量。</p>
+<p>我们已经为GLFW的键盘输入定义过一个processInput函数了，我们来新添加几个需要检查的按键命令：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">processInput</span><span class="params">(GLFWwindow *window)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="keyword">float</span> cameraSpeed = <span class="number">0.05f</span>; <span class="comment">// adjust accordingly</span></span><br><span class="line">    <span class="keyword">if</span> (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)</span><br><span class="line">        cameraPos += cameraSpeed * cameraFront;</span><br><span class="line">    <span class="keyword">if</span> (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)</span><br><span class="line">        cameraPos -= cameraSpeed * cameraFront;</span><br><span class="line">    <span class="keyword">if</span> (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)</span><br><span class="line">        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line">    <span class="keyword">if</span> (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)</span><br><span class="line">        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当我们按下<strong>WASD</strong>键的任意一个，摄像机的位置都会相应更新。如果我们希望向前或向后移动，我们就把位置向量加上或减去方向向量。如果我们希望向左右移动，我们使用叉乘来创建一个右向量(Right Vector)，并沿着它相应移动就可以了。这样就创建了使用摄像机时熟悉的横移(Strafe)效果。</p>
+<blockquote>
+<p>注意，我们对右向量进行了标准化。如果我们没对这个向量进行标准化，最后的叉乘结果会根据cameraFront变量返回大小不同的向量。如果我们不对向量进行标准化，我们就得根据摄像机的朝向不同加速或减速移动了，但如果进行了标准化移动就是匀速的。</p>
+</blockquote>
+<h3 id="移动速度"><a href="#移动速度" class="headerlink" title="移动速度"></a>移动速度</h3><p>现在你就应该能够移动摄像机了，虽然移动速度和系统有关，你可能会需要调整一下<strong>cameraSpeed</strong>。</p>
+<p>目前我们的移动速度是个常量。理论上没什么问题，但是实际情况下根据处理器的能力不同，有些人可能会比其他人每秒绘制更多帧，也就是以更高的频率调用processInput函数。结果就是，根据配置的不同，有些人可能移动很快，而有些人会移动很慢。当你发布你的程序的时候，你必须确保它在所有硬件上移动速度都一样。</p>
+<p>图形程序和游戏通常会跟踪一个<strong>时间差(Deltatime)变量</strong>，它储存了渲染上一帧所用的时间。我们把所有速度都去乘以deltaTime值。结果就是，如果我们的deltaTime很大，就意味着上一帧的渲染花费了更多时间，所以这一帧的速度需要变得更高来平衡渲染所花去的时间。使用这种方法时，无论你的电脑快还是慢，摄像机的速度都会相应平衡，这样每个用户的体验就都一样了。</p>
+<p>我们跟踪两个全局变量来计算出deltaTime值：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> deltaTime = <span class="number">0.0f</span>; <span class="comment">// 当前帧与上一帧的时间差</span></span><br><span class="line"><span class="keyword">float</span> lastFrame = <span class="number">0.0f</span>; <span class="comment">// 上一帧的时间</span></span><br></pre></td></tr></table></figure>
+
+<p>在每一帧中我们计算出新的<strong>deltaTime</strong>以备后用。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> currentFrame = glfwGetTime();</span><br><span class="line">deltaTime = currentFrame - lastFrame;</span><br><span class="line">lastFrame = currentFrame;</span><br></pre></td></tr></table></figure>
+
+<p>现在我们有了deltaTime，在计算速度的时候可以将其考虑进去了：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">processInput</span><span class="params">(GLFWwindow *window)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">float</span> cameraSpeed = <span class="number">2.5f</span> * deltaTime;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="视角移动"><a href="#视角移动" class="headerlink" title="视角移动"></a>视角移动</h2><h3 id="欧拉角："><a href="#欧拉角：" class="headerlink" title="欧拉角："></a>欧拉角：</h3><p>欧拉角可以表示在3D空间中任何旋转的3个值，分别有：俯仰角(Pitch)、偏航角(Yaw)和滚转角(Roll)。<br><img src="https://img-blog.csdnimg.cn/20190327171647498.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>俯仰角是描述我们如何往上或往下看的角，可以在第一张图中看到。第二张图展示了偏航角，偏航角表示我们往左和往右看的程度。滚转角代表我们如何翻滚摄像机，通常在太空飞船的摄像机中使用。每个欧拉角都有一个值来表示，把三个角结合起来我们就能够计算3D空间中任何的旋转向量了。</p>
+<p>对于我们的摄像机系统来说，我们只关心俯仰角和偏航角。给定一个俯仰角和偏航角，我们可以把它们转换为一个代表新的方向向量的3D向量。<br><img src="https://img-blog.csdnimg.cn/20190327172402886.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>我们想象自己在xz平面上，看向y轴，我们可以基于第一个三角形计算来计算它的长度/y方向的强度(Strength)（我们往上或往下看多少）。从图中我们可以看到对于一个给定<strong>俯仰角</strong>的y值等于sin θ：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">direction.y = <span class="built_in">sin</span>(glm::radians(pitch)); <span class="comment">// 注意我们先把角度转为弧度</span></span><br></pre></td></tr></table></figure>
+
+<p>这里我们只更新了y值，仔细观察x和z分量也被影响了。从三角形中我们可以看到它们的值等于：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">direction.x = <span class="built_in">cos</span>(glm::radians(pitch));</span><br><span class="line">direction.z = <span class="built_in">cos</span>(glm::radians(pitch));</span><br></pre></td></tr></table></figure>
+
+<p><strong>偏航角的分量为：</strong><br><img src="https://img-blog.csdnimg.cn/2019032717260430.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>就像俯仰角的三角形一样，我们可以看到x分量取决于cos(yaw)的值，z值同样取决于偏航角的正弦值。把这个加到前面的值中，会得到基于俯仰角和偏航角的方向向量：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">direction.x = <span class="built_in">cos</span>(glm::radians(pitch)) * <span class="built_in">cos</span>(glm::radians(yaw)); <span class="comment">// 译注：direction代表摄像机的前轴(Front)，这个前轴是和本文第一幅图片的第二个摄像机的方向向量是相反的</span></span><br><span class="line">direction.y = <span class="built_in">sin</span>(glm::radians(pitch));</span><br><span class="line">direction.z = <span class="built_in">cos</span>(glm::radians(pitch)) * <span class="built_in">sin</span>(glm::radians(yaw));</span><br></pre></td></tr></table></figure>
+
+<h3 id="鼠标输入："><a href="#鼠标输入：" class="headerlink" title="鼠标输入："></a>鼠标输入：</h3><p>偏航角和俯仰角是通过鼠标（或手柄）移动获得的，水平的移动影响偏航角，竖直的移动影响俯仰角。它的原理就是，储存上一帧鼠标的位置，在当前帧中我们当前计算鼠标位置与上一帧的位置相差多少。如果水平/竖直差别越大那么俯仰角或偏航角就改变越大，也就是摄像机需要移动更多的距离。</p>
+<p>首先我们要告诉GLFW，它应该隐藏光标，并<strong>捕捉(Capture)</strong>它。捕捉光标表示的是，如果焦点在你的程序上，光标应该停留在窗口中（除非程序失去焦点或者退出）。<br>我们可以用一个简单地配置调用来完成：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);</span><br></pre></td></tr></table></figure>
+
+<p>在调用这个函数之后，无论我们怎么去移动鼠标，光标都不会显示了，它也不会离开窗口。对于FPS摄像机系统来说非常完美。</p>
+<p>为了计算俯仰角和偏航角，我们需要让GLFW监听鼠标移动事件。（和键盘输入相似）我们会用一个回调函数来完成，函数的原型如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mouse_callback</span><span class="params">(GLFWwindow* window, <span class="keyword">double</span> xpos, <span class="keyword">double</span> ypos)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>这里的xpos和ypos代表当前鼠标的位置。当我们用GLFW注册了回调函数之后，鼠标一移动mouse_callback函数就会被调用：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glfwSetCursorPosCallback(window, mouse_callback);</span><br></pre></td></tr></table></figure>
+
+<p>在处理FPS风格摄像机的鼠标输入的时候，我们必须在最终获取方向向量之前做下面这几步：</p>
+<ul>
+<li>计算鼠标距上一帧的偏移量。</li>
+<li>把偏移量添加到摄像机的俯仰角和偏航角中。</li>
+<li>对偏航角和俯仰角进行最大和最小值的限制。</li>
+<li>计算方向向量。<br>第一步是计算鼠标自上一帧的偏移量。我们必须先在程序中储存上一帧的鼠标位置，我们把它的初始值设置为屏幕的中心（屏幕的尺寸是800x600）：</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> lastX = <span class="number">400</span>, lastY = <span class="number">300</span>;</span><br></pre></td></tr></table></figure>
+
+<p>然后在鼠标的回调函数中我们计算当前帧和上一帧鼠标位置的偏移量：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> xoffset = xpos - lastX;</span><br><span class="line"><span class="keyword">float</span> yoffset = lastY - ypos; <span class="comment">// 注意这里是相反的，因为y坐标是从底部往顶部依次增大的</span></span><br><span class="line">lastX = xpos;</span><br><span class="line">lastY = ypos;</span><br><span class="line"></span><br><span class="line"><span class="keyword">float</span> sensitivity = <span class="number">0.05f</span>;</span><br><span class="line">xoffset *= sensitivity;</span><br><span class="line">yoffset *= sensitivity;</span><br></pre></td></tr></table></figure>
+
+<p>注意我们把偏移量乘以了<strong>sensitivity（灵敏度）值</strong>。如果我们忽略这个值，鼠标移动就会太大了；你可以自己实验一下，找到适合自己的灵敏度值。</p>
+<p>接下来我们把偏移量加到全局变量pitch和yaw上：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yaw   += xoffset;</span><br><span class="line">pitch += yoffset;</span><br></pre></td></tr></table></figure>
+
+<p>第三步，我们需要给摄像机添加一些限制，这样摄像机就不会发生奇怪的移动了（这样也会避免一些奇怪的问题）。<strong>对于俯仰角，要让用户不能看向高于89度的地方（在90度时视角会发生逆转，所以我们把89度作为极限），同样也不允许小于-89度。</strong>这样能够保证用户只能看到天空或脚下，但是不能超越这个限制。我们可以在值超过限制的时候将其改为极限值来实现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(pitch &gt; <span class="number">89.0f</span>)</span><br><span class="line">  pitch =  <span class="number">89.0f</span>;</span><br><span class="line"><span class="keyword">if</span>(pitch &lt; <span class="number">-89.0f</span>)</span><br><span class="line">  pitch = <span class="number">-89.0f</span>;</span><br></pre></td></tr></table></figure>
+
+<p>没有给偏航角设置限制，这是因为我们不希望限制用户的水平旋转。当然，给偏航角设置限制也很容易。</p>
+<p>第四也是最后一步，就是通过俯仰角和偏航角来计算以得到真正的方向向量：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">glm::vec3 front;</span><br><span class="line">front.x = <span class="built_in">cos</span>(glm::radians(pitch)) * <span class="built_in">cos</span>(glm::radians(yaw));</span><br><span class="line">front.y = <span class="built_in">sin</span>(glm::radians(pitch));</span><br><span class="line">front.z = <span class="built_in">cos</span>(glm::radians(pitch)) * <span class="built_in">sin</span>(glm::radians(yaw));</span><br><span class="line">cameraFront = glm::normalize(front);</span><br></pre></td></tr></table></figure>
+
+<p>计算出来的方向向量就会包含根据鼠标移动计算出来的所有旋转了。由于cameraFront向量已经包含在GLM的lookAt函数中，我们这就没什么问题了。</p>
+<p>如果你现在运行代码，你会发现在窗口第一次获取焦点的时候摄像机会突然跳一下。这个问题产生的原因是，在你的鼠标移动进窗口的那一刻，鼠标回调函数就会被调用，这时候的xpos和ypos会等于鼠标刚刚进入屏幕的那个位置。这通常是一个距离屏幕中心很远的地方，因而产生一个很大的偏移量，所以就会跳了。我们可以简单的使用一个bool变量检验我们是否是第一次获取鼠标输入，如果是，那么我们先把鼠标的初始位置更新为xpos和ypos值，这样就能解决这个问题；接下来的鼠标移动就会使用刚进入的鼠标位置坐标来计算偏移量了：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(firstMouse) <span class="comment">// 这个bool变量初始时是设定为true的</span></span><br><span class="line">&#123;</span><br><span class="line">    lastX = xpos;</span><br><span class="line">    lastY = ypos;</span><br><span class="line">    firstMouse = <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>最后的代码应该是这样的：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">mouse_callback</span><span class="params">(GLFWwindow* window, <span class="keyword">double</span> xpos, <span class="keyword">double</span> ypos)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(firstMouse)</span><br><span class="line">    &#123;</span><br><span class="line">        lastX = xpos;</span><br><span class="line">        lastY = ypos;</span><br><span class="line">        firstMouse = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> xoffset = xpos - lastX;</span><br><span class="line">    <span class="keyword">float</span> yoffset = lastY - ypos; </span><br><span class="line">    lastX = xpos;</span><br><span class="line">    lastY = ypos;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">float</span> sensitivity = <span class="number">0.05</span>;</span><br><span class="line">    xoffset *= sensitivity;</span><br><span class="line">    yoffset *= sensitivity;</span><br><span class="line"></span><br><span class="line">    yaw   += xoffset;</span><br><span class="line">    pitch += yoffset;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(pitch &gt; <span class="number">89.0f</span>)</span><br><span class="line">        pitch = <span class="number">89.0f</span>;</span><br><span class="line">    <span class="keyword">if</span>(pitch &lt; <span class="number">-89.0f</span>)</span><br><span class="line">        pitch = <span class="number">-89.0f</span>;</span><br><span class="line"></span><br><span class="line">    glm::vec3 front;</span><br><span class="line">    front.x = <span class="built_in">cos</span>(glm::radians(yaw)) * <span class="built_in">cos</span>(glm::radians(pitch));</span><br><span class="line">    front.y = <span class="built_in">sin</span>(glm::radians(pitch));</span><br><span class="line">    front.z = <span class="built_in">sin</span>(glm::radians(yaw)) * <span class="built_in">cos</span>(glm::radians(pitch));</span><br><span class="line">    cameraFront = glm::normalize(front);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="缩放："><a href="#缩放：" class="headerlink" title="缩放："></a>缩放：</h3><p>视野(Field of View)或fov定义了我们可以看到场景中多大的范围。当视野变小时，场景投影出来的空间就会减小，产生放大(Zoom In)了的感觉。我们会使用鼠标的滚轮来放大。与鼠标移动、键盘输入一样，我们需要一个鼠标滚轮的回调函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">scroll_callback</span><span class="params">(GLFWwindow* window, <span class="keyword">double</span> xoffset, <span class="keyword">double</span> yoffset)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span>(fov &gt;= <span class="number">1.0f</span> &amp;&amp; fov &lt;= <span class="number">45.0f</span>)</span><br><span class="line">    fov -= yoffset;</span><br><span class="line">  <span class="keyword">if</span>(fov &lt;= <span class="number">1.0f</span>)</span><br><span class="line">    fov = <span class="number">1.0f</span>;</span><br><span class="line">  <span class="keyword">if</span>(fov &gt;= <span class="number">45.0f</span>)</span><br><span class="line">    fov = <span class="number">45.0f</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当滚动鼠标滚轮的时候，yoffset值代表我们竖直滚动的大小。当scroll_callback函数被调用后，我们改变全局变量fov变量的内容。因为45.0f是默认的视野值，我们将会把缩放级别(Zoom Level)限制在1.0f到45.0f。</p>
+<p>我们现在在每一帧都必须把透视投影矩阵上传到GPU，但现在使用fov变量作为它的视野：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">projection = glm::perspective(glm::radians(fov), <span class="number">800.0f</span> / <span class="number">600.0f</span>, <span class="number">0.1f</span>, <span class="number">100.0f</span>);</span><br></pre></td></tr></table></figure>
+
+<p>最后不要忘记注册鼠标滚轮的回调函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">glfwSetScrollCallback(window, scroll_callback);</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>PerryWang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://yoursite.com/2019/07/10/openGL中的camera/" title="openGL中的camera">http://yoursite.com/2019/07/10/openGL中的camera/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/c/" rel="tag"># c++</a>
+          
+            <a href="/tags/计算机图形学/" rel="tag"># 计算机图形学</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/10/c-实现键树/" rel="next" title="动态查找树 || c++实现键🌲(双链🌲)">
+                <i class="fa fa-chevron-left"></i> 动态查找树 || c++实现键🌲(双链🌲)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/10/malloc动态分配内存越界问题/" rel="prev" title="malloc动态分配内存越界问题">
+                malloc动态分配内存越界问题 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/头像.png" alt="PerryWang">
+            
+              <p class="site-author-name" itemprop="name">PerryWang</p>
+              <div class="site-description motion-element" itemprop="description">sysu-student</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">89</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/WangPerryWPY" title="GitHub &rarr; https://github.com/WangPerryWPY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/perry0528" title="CSDN &rarr; https://blog.csdn.net/perry0528" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:1731611872@qq.com" title="E-Mail &rarr; mailto:1731611872@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#摄像机-观察空间"><span class="nav-number">1.</span> <span class="nav-text">摄像机/观察空间</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#摄像机位置"><span class="nav-number">1.1.</span> <span class="nav-text">摄像机位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#摄像机方向"><span class="nav-number">1.2.</span> <span class="nav-text">摄像机方向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#右轴"><span class="nav-number">1.3.</span> <span class="nav-text">右轴</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上轴"><span class="nav-number">1.4.</span> <span class="nav-text">上轴</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Look-At"><span class="nav-number">1.5.</span> <span class="nav-text">Look At</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自由移动："><span class="nav-number">2.</span> <span class="nav-text">自由移动：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#移动速度"><span class="nav-number">2.1.</span> <span class="nav-text">移动速度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#视角移动"><span class="nav-number">3.</span> <span class="nav-text">视角移动</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#欧拉角："><span class="nav-number">3.1.</span> <span class="nav-text">欧拉角：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#鼠标输入："><span class="nav-number">3.2.</span> <span class="nav-text">鼠标输入：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缩放："><span class="nav-number">3.3.</span> <span class="nav-text">缩放：</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Perry</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">515k</span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unjkp.com/valine/dist/Valine.min.js"></script>  
+  <script src="/js/src/Valine.min.js"></script> 
+
+    
+  
+  <script src="/js/src/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'SsAWGcn6CHm6Oif4CGFKBhVv-gzGzoHsz',
+        appKey: 'bniDOuxQuzVdGASyS3SyDFF8',
+        placeholder: '说点什么吧！',
+        avatar:'wavatar',
+        guest_info:['nick'] ,  
+        pageSize:'10' || 10,
+    });
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+  </script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

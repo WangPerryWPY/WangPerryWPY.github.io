@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="设计模式：MVC在模型对象(model)中封装数据和基本行为 模型对象维护应用程序的数据，并定义操作数据的特定逻辑。 只要是加载的是包含有应用程序永久信息的数据，就将其放到model中。 理想状况下，模型对象同用于对其进行显示和编辑的用户界面之间不应该有任何直接的关联。  使用视图对象(view) 视图对象可以响应用户操作，并懂得如何将自己展现在屏幕上。 视图对象通常从应用程序的模型对象获取数据用">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定">
+<meta property="og:url" content="http://yoursite.com/2019/07/11/iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定/index.html">
+<meta property="og:site_name" content="PerryWang🍎博客">
+<meta property="og:description" content="设计模式：MVC在模型对象(model)中封装数据和基本行为 模型对象维护应用程序的数据，并定义操作数据的特定逻辑。 只要是加载的是包含有应用程序永久信息的数据，就将其放到model中。 理想状况下，模型对象同用于对其进行显示和编辑的用户界面之间不应该有任何直接的关联。  使用视图对象(view) 视图对象可以响应用户操作，并懂得如何将自己展现在屏幕上。 视图对象通常从应用程序的模型对象获取数据用">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190524002728195.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-07-10T16:04:01.241Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定">
+<meta name="twitter:description" content="设计模式：MVC在模型对象(model)中封装数据和基本行为 模型对象维护应用程序的数据，并定义操作数据的特定逻辑。 只要是加载的是包含有应用程序永久信息的数据，就将其放到model中。 理想状况下，模型对象同用于对其进行显示和编辑的用户界面之间不应该有任何直接的关联。  使用视图对象(view) 视图对象可以响应用户操作，并懂得如何将自己展现在屏幕上。 视图对象通常从应用程序的模型对象获取数据用">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190524002728195.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="PerryWang🍎博客" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/07/11/iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定 | PerryWang🍎博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PerryWang🍎博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">分享软件开发中学到的点滴知识</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/WangPerryWPY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/11/iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/头像.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-11 00:03:05 / 修改时间：00:04:01" itemprop="dateCreated datePublished" datetime="2019-07-11T00:03:05+08:00">2019-07-11</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/11/iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/11/iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">2.2k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="设计模式：MVC"><a href="#设计模式：MVC" class="headerlink" title="设计模式：MVC"></a>设计模式：MVC</h3><h5 id="在模型对象-model-中封装数据和基本行为"><a href="#在模型对象-model-中封装数据和基本行为" class="headerlink" title="在模型对象(model)中封装数据和基本行为"></a>在模型对象(model)中封装数据和基本行为</h5><ul>
+<li>模型对象维护应用程序的数据，并定义操作数据的特定逻辑。</li>
+<li>只要是加载的是包含有应用程序永久信息的数据，就将其放到model中。</li>
+<li>理想状况下，模型对象同用于对其进行显示和编辑的用户界面之间不应该有任何直接的关联。</li>
+</ul>
+<h5 id="使用视图对象-view"><a href="#使用视图对象-view" class="headerlink" title="使用视图对象(view)"></a>使用视图对象(view)</h5><ul>
+<li>视图对象可以响应用户操作，并懂得如何将自己展现在屏幕上。</li>
+<li>视图对象通常从应用程序的模型对象获取数据用以展示，用户可以通过视图来修改模型对象的数据。</li>
+<li>视图对象和模型对象虽然之间关系密切但不没有耦合，除非因为性能原因(比如视图需要对数据进行缓存)，否则不应该将视图用于存储其所展示的数据。</li>
+</ul>
+<h5 id="控制器对象-Controller-联系起模型和视图"><a href="#控制器对象-Controller-联系起模型和视图" class="headerlink" title="控制器对象(Controller)联系起模型和视图"></a>控制器对象(Controller)联系起模型和视图</h5><ul>
+<li>协调视图对象和模型对象，使视图得以知晓模型的变更而给予响应。</li>
+<li>还可以为应用程序执行其他操作，比如为应用程序管理其他对象的生命周期，进行设置和协调任务。</li>
+</ul>
+<h5 id="作为复合设计模式的MVC："><a href="#作为复合设计模式的MVC：" class="headerlink" title="作为复合设计模式的MVC："></a>作为复合设计模式的MVC：</h5><p>Cocoa的MVC用到的模式有：组合(Composite)、命令(Command)、中介者(Mediator)、策略(Strategy)和观察者(Observer)</p>
+<ul>
+<li>组合：视图对象之间以协作的方式构成一个视图层次体系，其中既可以有复合视图(如表格视图)，也可以有独立视图(如文本框)。每个层次的视图节点都可以响应用户操作并把自己绘制到屏幕上。</li>
+<li>命令：“目标-动作”机制，视图对象可以推迟其他对象(比如控制器的执行)的执行，让其他对象发生了某些事件后执行。这是命令模式。</li>
+<li>中介者：控制器对象起着中间人的作用，而这个中间人则采用了中介者模式，构成了视图和模型对象间传递数据的双向渠道。控制器对象将模型的变更传递给视图对象。</li>
+<li>策略：控制器可以是视图对象的一个 “策略”。视图对象将自身隔离，以期维持其作为数据展示器的唯一职责，而将一切应用程序特有的界面行为决定委托给它的“策略”对象。</li>
+<li>观察者：模型对象向它所关注的控制器等对象发出内部状态变化的通知。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20190524002728195.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<ul>
+<li>三者之间的通信只能实现Controller和Model以及Controller和View之间的通信，两者作为Controller的属性。坚决不能有Model和View之间的通信，否则失去了分离的意义。</li>
+<li>正常情况下是Controller控制View和Model，但View和Model也可以实现对Controller的反向通信。</li>
+<li>View通过以下三种方式实现与Controller的通信<ol>
+<li>action-target：用户与UI交互触发控制器。例如点击按钮实现页面跳转，网络请求。</li>
+<li>delegate：View向Controller询问自己无法决定的事情或让Controller帮助自己做一些无法独立完成的事情。例如表格视图询问Controller自己是否可以滚动，如果Model数据量很少，Controller告诉表格不可以滚动；若还有未拉出的数据，则Controller告知可以滚动。</li>
+<li>dataSource：视图让控制器给它将要显示的数据。（Controller从Model中获取数据）</li>
+</ol>
+</li>
+<li>Model通过以下两种方式实现与Controller的通信：<ol>
+<li>Notification：控制器注册监听某模型数据变化的广播频道，当此模型数据变化后向该控制器发送广播，告知模型变化情况。</li>
+<li>KVO机制：模型作为控制器的属性，当模型属性被修改后，持有此模型属性的控制器就会收到通知。</li>
+</ol>
+</li>
+<li>多个MVC的结合，例如可以在标签栏中设置多个标签，每个标签指针指向一个MVC。一个小的MVC可作为一个大MVC的V。一个大的model可以有多个小的MVC。</li>
+</ul>
+<h3 id="MVVM"><a href="#MVVM" class="headerlink" title="MVVM"></a>MVVM</h3><p>MVVM比起MVC最大的好处就是可以实现自动绑定，将数据绑定在UI组件上，当UI中的值发生变化时，那么它对应的模型中也跟随着发生变化，这就是双向绑定机制，原因在于它在视图层和数据模型层之间实现了一个绑定器，绑定器可以管理两个值，它一直监听组件UI的值，只要发生变化，它将会把值传输过去改变model中的值。绑定器比较灵活，还可以实现单向绑定。</p>
+<ol>
+<li>实际开发中的做法：让Controller拥有View和ViewModel属性，VM拥有Model属性；Controller或者View来接收ViewModel发送的Model改变的通知</li>
+<li>用户的操作点击或者Controller的视图生命周期里面让ViewModel去执行请求，请求完成后ViewModel将返回数据模型化并保存，从而更新了Model；Controller和View是属于V部分，即实现V改变M（V绑定M）。如果不需要请求，这直接修改Model就是了。</li>
+<li>第2步中的Model的改变，VM是知道的（因为持有关系），只需要Model改变后发一个通知；Controller或View接收到通知后（一般是Controller先接收再赋值给View），根据这个新Model去改变视图就完成了M改变V（M绑定V）<br>使用RAC（RactiveCocoa）框架实现绑定可以简单到一句话概括：ViewModel中创建好请求的信号RACSignal, Controller中订阅这个信号，在ViewModel完成请求后订阅者调用sendNext:方法，Controller里面订阅时写的block就收到回调了。</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>PerryWang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://yoursite.com/2019/07/11/iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定/" title="iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定">http://yoursite.com/2019/07/11/iOS的MVC设计模式和MVVM的异同点以及iOS中如何实现数据绑定/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/10/c-类存储方式/" rel="next" title="c++类存储方式">
+                <i class="fa fa-chevron-left"></i> c++类存储方式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/11/iOS-深拷贝和浅拷贝/" rel="prev" title="assign">
+                assign <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/头像.png" alt="PerryWang">
+            
+              <p class="site-author-name" itemprop="name">PerryWang</p>
+              <div class="site-description motion-element" itemprop="description">sysu-student</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">89</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/WangPerryWPY" title="GitHub &rarr; https://github.com/WangPerryWPY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/perry0528" title="CSDN &rarr; https://blog.csdn.net/perry0528" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:1731611872@qq.com" title="E-Mail &rarr; mailto:1731611872@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#设计模式：MVC"><span class="nav-number">1.</span> <span class="nav-text">设计模式：MVC</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#在模型对象-model-中封装数据和基本行为"><span class="nav-number">1.0.1.</span> <span class="nav-text">在模型对象(model)中封装数据和基本行为</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#使用视图对象-view"><span class="nav-number">1.0.2.</span> <span class="nav-text">使用视图对象(view)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#控制器对象-Controller-联系起模型和视图"><span class="nav-number">1.0.3.</span> <span class="nav-text">控制器对象(Controller)联系起模型和视图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#作为复合设计模式的MVC："><span class="nav-number">1.0.4.</span> <span class="nav-text">作为复合设计模式的MVC：</span></a></li></ol></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#MVVM"><span class="nav-number">2.</span> <span class="nav-text">MVVM</span></a></li></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Perry</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">515k</span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unjkp.com/valine/dist/Valine.min.js"></script>  
+  <script src="/js/src/Valine.min.js"></script> 
+
+    
+  
+  <script src="/js/src/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'SsAWGcn6CHm6Oif4CGFKBhVv-gzGzoHsz',
+        appKey: 'bniDOuxQuzVdGASyS3SyDFF8',
+        placeholder: '说点什么吧！',
+        avatar:'wavatar',
+        guest_info:['nick'] ,  
+        pageSize:'10' || 10,
+    });
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+  </script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>

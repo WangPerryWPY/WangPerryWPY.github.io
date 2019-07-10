@@ -346,7 +346,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/图的遍历/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/08/求连通图的关节点/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="PerryWang">
@@ -366,7 +366,7 @@
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/07/05/图的遍历/" class="post-title-link" itemprop="url">图的遍历</a>
+                <a href="/2019/07/08/求连通图的关节点/" class="post-title-link" itemprop="url">求连通图的关节点</a>
               
             
           </h1>
@@ -391,7 +391,7 @@
                 
               
 
-              <time title="创建时间：2019-07-05 17:00:53 / 修改时间：22:40:52" itemprop="dateCreated datePublished" datetime="2019-07-05T17:00:53+08:00">2019-07-05</time>
+              <time title="创建时间：2019-07-08 10:48:57 / 修改时间：10:49:45" itemprop="dateCreated datePublished" datetime="2019-07-08T10:48:57+08:00">2019-07-08</time>
             </span>
           
 
@@ -428,8 +428,8 @@
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/05/图的遍历/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/05/图的遍历/" itemprop="commentCount"></span>
+                <a href="/2019/07/08/求连通图的关节点/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/08/求连通图的关节点/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -449,7 +449,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">6.8k</span>
+              <span title="本文字数">5.2k</span>
             </span>
           
 
@@ -473,18 +473,16 @@
         
           
             <p>
-              
-图的深度遍历和广度遍历
-基于的数据结构是图的邻接表结构，详细可以看上一章节（图的存储结构）
-
-深度遍历：
-bool visited[100]; //用于表示节点是否被访问的标志位void DFS(Graph G, VertexType v) &#123;	visited[v] = 1; 	prin
+              对图的存储结构基于无向图的邻接多重表。
+关节点和重连通图：假若在删去顶点v以及v相关联的各边之后，将图的一个连通分量分割成两个或两个以上的连通分量，则称顶点v为该图的一个关节点。
+如果没有关节点的连通图则称为重连通图(双连通图)。
+算法实现：1. 方法一：最简单也是最直接的算法是，删除一个点然后判断
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/07/05/图的遍历/#more" rel="contents">
+              <a class="btn" href="/2019/07/08/求连通图的关节点/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -547,7 +545,7 @@ bool visited[100]; //用于表示节点是否被访问的标志位void DFS(Graph
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/图的四种存储结构的实现/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/08/c-实现Prim算法和Kruskal算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="PerryWang">
@@ -567,7 +565,7 @@ bool visited[100]; //用于表示节点是否被访问的标志位void DFS(Graph
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/07/05/图的四种存储结构的实现/" class="post-title-link" itemprop="url">图的四种存储结构的实现</a>
+                <a href="/2019/07/08/c-实现Prim算法和Kruskal算法/" class="post-title-link" itemprop="url">c++实现Prim算法和Kruskal算法</a>
               
             
           </h1>
@@ -592,7 +590,7 @@ bool visited[100]; //用于表示节点是否被访问的标志位void DFS(Graph
                 
               
 
-              <time title="创建时间：2019-07-05 16:59:35 / 修改时间：22:40:08" itemprop="dateCreated datePublished" datetime="2019-07-05T16:59:35+08:00">2019-07-05</time>
+              <time title="创建时间：2019-07-08 10:47:37 / 修改时间：10:48:21" itemprop="dateCreated datePublished" datetime="2019-07-08T10:47:37+08:00">2019-07-08</time>
             </span>
           
 
@@ -629,8 +627,603 @@ bool visited[100]; //用于表示节点是否被访问的标志位void DFS(Graph
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/05/图的四种存储结构的实现/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/05/图的四种存储结构的实现/" itemprop="commentCount"></span>
+                <a href="/2019/07/08/c-实现Prim算法和Kruskal算法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/08/c-实现Prim算法和Kruskal算法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">9.7k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              Prim算法和Kruskal都是典型的贪心算法，也就是在求解最小生成树时，我们总是不从全局考虑，而每次仅仅是考虑局部最优解。下面的算法都基于无向图的邻接多重表。
+Prim算法:算法描述：基本步骤：设R是有n个定点的对称连通关系。
+
+1）选取R的一个定点v1，设V = {v1}， E={}。
+2）选取
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/07/08/c-实现Prim算法和Kruskal算法/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/08/图的广度优先搜索遍历以及求两点间的最短路径/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/头像.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/08/图的广度优先搜索遍历以及求两点间的最短路径/" class="post-title-link" itemprop="url">图的广度优先搜索遍历以及求两点间的最短路径</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-08 10:46:13 / 修改时间：10:47:01" itemprop="dateCreated datePublished" datetime="2019-07-08T10:46:13+08:00">2019-07-08</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/08/图的广度优先搜索遍历以及求两点间的最短路径/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/08/图的广度优先搜索遍历以及求两点间的最短路径/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">7.7k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              图的广度优先搜索遍历：
+存储的数据结构为无向图的多重邻接表
+类似于树的层序遍历，依次按照路径为1，2，3…进行遍历，因而每次要获得一个节点然后得到这点的未经访问的邻近点后再将此点抛弃，因此我们用队列这一结构。void BFSReverse(AMLGraph G) &#123;	queue&lt;in
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/07/08/图的广度优先搜索遍历以及求两点间的最短路径/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/07/图深度优先搜索遍历以及求两点间的简单路径/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/头像.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/07/图深度优先搜索遍历以及求两点间的简单路径/" class="post-title-link" itemprop="url">图深度优先搜索遍历以及求两点间的简单路径</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-07 20:10:17 / 修改时间：20:11:22" itemprop="dateCreated datePublished" datetime="2019-07-07T20:10:17+08:00">2019-07-07</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/07/图深度优先搜索遍历以及求两点间的简单路径/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/07/图深度优先搜索遍历以及求两点间的简单路径/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">8.4k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              本文图的存储结构是基于无向图的邻接多重表实现的
+图的深度优先搜索的递归遍历void DFS(AMLGraph G, int i) &#123;	cout &lt;&lt; G.adjmulist[i].data &lt;&lt; endl;	visit[i] = visited;	for (int 
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/07/07/图深度优先搜索遍历以及求两点间的简单路径/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/07/图像分割进行A4纸矫正/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/头像.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/07/图像分割进行A4纸矫正/" class="post-title-link" itemprop="url">图像分割进行A4纸矫正</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-07 19:55:54 / 修改时间：19:56:31" itemprop="dateCreated datePublished" datetime="2019-07-07T19:55:54+08:00">2019-07-07</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/计算机视觉/" itemprop="url" rel="index"><span itemprop="name">计算机视觉</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/07/图像分割进行A4纸矫正/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/07/图像分割进行A4纸矫正/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -674,14 +1267,13 @@ bool visited[100]; //用于表示节点是否被访问的标志位void DFS(Graph
         
           
             <p>
-              1. 数组表示法（邻接矩阵法）：
-#include &lt;stdio.h&gt;#include &lt;limits.h&gt;#define INFINITY INT_MAX#define Maxvex 100typedef struct graph &#123;	int vexs[Maxve
+              图像分割进行A4纸矫正(1) 将图像从rgb空间转为灰度空间void ImageSegmentation::rgb2gray() &#123;	grayImg.resize(Img._width, Img._height, 1, 1, 0);	cimg_forXY(grayImg, x, y) &#
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/07/05/图的四种存储结构的实现/#more" rel="contents">
+              <a class="btn" href="/2019/07/07/图像分割进行A4纸矫正/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -744,7 +1336,7 @@ bool visited[100]; //用于表示节点是否被访问的标志位void DFS(Graph
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/哈夫曼树及哈夫曼编码的实现/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/07/mnist手写字体识别/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="PerryWang">
@@ -764,7 +1356,7 @@ bool visited[100]; //用于表示节点是否被访问的标志位void DFS(Graph
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/07/05/哈夫曼树及哈夫曼编码的实现/" class="post-title-link" itemprop="url">哈夫曼树及哈夫曼编码的实现</a>
+                <a href="/2019/07/07/mnist手写字体识别/" class="post-title-link" itemprop="url">mnist手写字体识别</a>
               
             
           </h1>
@@ -789,207 +1381,7 @@ bool visited[100]; //用于表示节点是否被访问的标志位void DFS(Graph
                 
               
 
-              <time title="创建时间：2019-07-05 16:57:33 / 修改时间：22:38:16" itemprop="dateCreated datePublished" datetime="2019-07-05T16:57:33+08:00">2019-07-05</time>
-            </span>
-          
-
-          
-            
-
-            
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-              
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/05/哈夫曼树及哈夫曼编码的实现/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/05/哈夫曼树及哈夫曼编码的实现/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span title="本文字数">2.6k</span>
-            </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              
-代码带有注释，不详细解释，检测采用严蔚敏老师数据结构的一个范例
-
-HuffmanCode.h
-#ifndef _HUFFMANCODE_H_#define _HUFFMANCODE_H_#include &lt;stdbool.h&gt;typedef struct &#123;	unsigned
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/07/05/哈夫曼树及哈夫曼编码的实现/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/CImg库的配置以及简单使用/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="PerryWang">
-      <meta itemprop="description" content="sysu-student">
-      <meta itemprop="image" content="/images/头像.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PerryWang🍎博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/07/05/CImg库的配置以及简单使用/" class="post-title-link" itemprop="url">CImg库的配置以及简单使用</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-07-05 16:56:02 / 修改时间：22:37:21" itemprop="dateCreated datePublished" datetime="2019-07-05T16:56:02+08:00">2019-07-05</time>
+              <time title="创建时间：2019-07-07 19:53:24 / 修改时间：19:55:27" itemprop="dateCreated datePublished" datetime="2019-07-07T19:53:24+08:00">2019-07-07</time>
             </span>
           
 
@@ -1026,8 +1418,8 @@ HuffmanCode.h
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/05/CImg库的配置以及简单使用/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/05/CImg库的配置以及简单使用/" itemprop="commentCount"></span>
+                <a href="/2019/07/07/mnist手写字体识别/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/07/mnist手写字体识别/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1047,7 +1439,7 @@ HuffmanCode.h
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">7.2k</span>
+              <span title="本文字数">3.9k</span>
             </span>
           
 
@@ -1071,22 +1463,13 @@ HuffmanCode.h
         
           
             <p>
-              1. CImg的配置
-下载CImg的包到指定的文件夹下，解压
-然后只需要在编写的cpp或hpp文件中加入
-
-#include "XX/CImg.h" // XX/是指CImg所在的路径using namespace cimg_library;
-
-
-编译命令（环境为windows下的MinGW）
-
-g
+              手写字体的检测(1) Adaboost进行手写字体的检测导入mnist数据集import tensorflow.examples.tutorials.mnist.input_data as input_datadata_dir = '../MNIST_data/'mnist = input_data
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/07/05/CImg库的配置以及简单使用/#more" rel="contents">
+              <a class="btn" href="/2019/07/07/mnist手写字体识别/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1149,7 +1532,7 @@ g
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/c-树的实现-适用于一般的🌲/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/06/c-实现DES加密算法/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="PerryWang">
@@ -1169,7 +1552,7 @@ g
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/07/05/c-树的实现-适用于一般的🌲/" class="post-title-link" itemprop="url">c++树的实现(适用于一般的🌲)</a>
+                <a href="/2019/07/06/c-实现DES加密算法/" class="post-title-link" itemprop="url">c++实现DES加密算法</a>
               
             
           </h1>
@@ -1194,7 +1577,7 @@ g
                 
               
 
-              <time title="创建时间：2019-07-05 16:53:31 / 修改时间：22:36:32" itemprop="dateCreated datePublished" datetime="2019-07-05T16:53:31+08:00">2019-07-05</time>
+              <time title="创建时间：2019-07-06 21:12:25 / 修改时间：21:13:07" itemprop="dateCreated datePublished" datetime="2019-07-06T21:12:25+08:00">2019-07-06</time>
             </span>
           
 
@@ -1213,7 +1596,7 @@ g
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/信息安全技术/" itemprop="url" rel="index"><span itemprop="name">信息安全技术</span></a></span>
 
                 
                 
@@ -1231,8 +1614,8 @@ g
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/05/c-树的实现-适用于一般的🌲/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/05/c-树的实现-适用于一般的🌲/" itemprop="commentCount"></span>
+                <a href="/2019/07/06/c-实现DES加密算法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/06/c-实现DES加密算法/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1252,7 +1635,7 @@ g
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">4.9k</span>
+              <span title="本文字数">12k</span>
             </span>
           
 
@@ -1276,17 +1659,14 @@ g
         
           
             <p>
-              
-其实主要是采用类似c这种面向过程的语言的接口实现办法，用c++更多只是为了调用队列，栈等一些接口
-网上资料大部分树的实现都是二叉树，而实际常见的树一般是普通的树
-所以我们要学会通过二叉树的思想来转换到普通的树来使用
-本文采用的存储结构为（孩子-兄弟）结点表示法，也叫二叉链表，有不懂得地方可以查看我
+              算法原理：DES算法是一种对称加密算法，以64位为分组对数据加密，加密和解密用的是同一个算法。它的密钥长度是56位（因为每个第8 位都用作奇偶校验），密钥可以是任意的56位的数，而且可以任意时候改变。其中有极少数被认为是易破解的弱密钥，但是很容易避开它们不用。所以保密性依赖于密钥。 
+其基本流程如下
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/07/05/c-树的实现-适用于一般的🌲/#more" rel="contents">
+              <a class="btn" href="/2019/07/06/c-实现DES加密算法/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1349,7 +1729,7 @@ g
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/树的常见的三种链表存储结构/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/06/c-实现MD5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="PerryWang">
@@ -1369,7 +1749,7 @@ g
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/07/05/树的常见的三种链表存储结构/" class="post-title-link" itemprop="url">树的常见的三种链表存储结构</a>
+                <a href="/2019/07/06/c-实现MD5/" class="post-title-link" itemprop="url">c++实现MD5</a>
               
             
           </h1>
@@ -1394,7 +1774,7 @@ g
                 
               
 
-              <time title="创建时间：2019-07-05 16:51:18 / 修改时间：22:34:35" itemprop="dateCreated datePublished" datetime="2019-07-05T16:51:18+08:00">2019-07-05</time>
+              <time title="创建时间：2019-07-06 21:10:58 / 修改时间：21:11:57" itemprop="dateCreated datePublished" datetime="2019-07-06T21:10:58+08:00">2019-07-06</time>
             </span>
           
 
@@ -1413,7 +1793,7 @@ g
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/信息安全技术/" itemprop="url" rel="index"><span itemprop="name">信息安全技术</span></a></span>
 
                 
                 
@@ -1431,8 +1811,8 @@ g
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/05/树的常见的三种链表存储结构/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/05/树的常见的三种链表存储结构/" itemprop="commentCount"></span>
+                <a href="/2019/07/06/c-实现MD5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/06/c-实现MD5/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1452,7 +1832,7 @@ g
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">725</span>
+              <span title="本文字数">9.3k</span>
             </span>
           
 
@@ -1476,13 +1856,13 @@ g
         
           
             <p>
-              1.双亲表示法：// - - - - - 树的双亲表存储表示 - - - - -#define MAX_TREE_SIZE 100typedef struct PTNode &#123; //结点结构	ElemType data;	int parent; //双亲位置域&#125;PTNode;ty
+              MD5算法简介：消息摘要算法第五版（英语：Message-Digest Algorithm 5，缩写为MD5），是当前计算机领域用于确保信息传输完整一致而广泛使用的散列算法之一（又译哈希算法、摘要算法等），主流编程语言普遍已有MD5的实现。将数据 （如一段文字）运算变为另一固定长度值，是散列算法的基
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/07/05/树的常见的三种链表存储结构/#more" rel="contents">
+              <a class="btn" href="/2019/07/06/c-实现MD5/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1545,7 +1925,7 @@ g
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/线索二叉树的实现/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/06/Stitch/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="PerryWang">
@@ -1565,7 +1945,7 @@ g
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/07/05/线索二叉树的实现/" class="post-title-link" itemprop="url">线索二叉树的实现</a>
+                <a href="/2019/07/06/Stitch/" class="post-title-link" itemprop="url">图像拼接(Image Stitch)</a>
               
             
           </h1>
@@ -1590,7 +1970,7 @@ g
                 
               
 
-              <time title="创建时间：2019-07-05 16:48:36 / 修改时间：22:33:03" itemprop="dateCreated datePublished" datetime="2019-07-05T16:48:36+08:00">2019-07-05</time>
+              <time title="创建时间：2019-07-06 21:09:16 / 修改时间：21:10:19" itemprop="dateCreated datePublished" datetime="2019-07-06T21:09:16+08:00">2019-07-06</time>
             </span>
           
 
@@ -1609,7 +1989,7 @@ g
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/计算机视觉/" itemprop="url" rel="index"><span itemprop="name">计算机视觉</span></a></span>
 
                 
                 
@@ -1627,8 +2007,8 @@ g
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/05/线索二叉树的实现/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/05/线索二叉树的实现/" itemprop="commentCount"></span>
+                <a href="/2019/07/06/Stitch/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/06/Stitch/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1648,7 +2028,7 @@ g
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">4.1k</span>
+              <span title="本文字数">17k</span>
             </span>
           
 
@@ -1672,19 +2052,18 @@ g
         
           
             <p>
-              
-n个结点一定有n+1个指针域是空的
-如果结点左指针为空则作为前驱指针
-若右指针为空则作为后继指针
-指向线索序列的前序后继指针即为线索
-同时为了区分指针是作为线索指向前驱后继还是指向子树，我们约定设置一个标志位，若为0指向子树，为1作为线索
-每个节点除原来的数据域以及左右子孩子节点指针外，还需要增加
+              编译运行：运行环境：
+Ubuntu 18
+链接库：
+VLFeat&amp;&amp;CImg
+编译命令：
+g++ -o test main.cpp ImageStitching.cpp ImageStitching.h -lpthread -l X11 -Lglnxa64/ -lvl -O3 -st
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/07/05/线索二叉树的实现/#more" rel="contents">
+              <a class="btn" href="/2019/07/06/Stitch/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1747,7 +2126,7 @@ n个结点一定有n+1个指针域是空的
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/二叉树的创建销毁遍历，计算叶子数、深度以及对二叉树进行拷贝等操作/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/06/自适应的霍夫曼编码与原始的霍夫曼编码的比较/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="PerryWang">
@@ -1767,7 +2146,7 @@ n个结点一定有n+1个指针域是空的
           <h1 class="post-title" itemprop="name headline">
                 
                 
-                <a href="/2019/07/05/二叉树的创建销毁遍历，计算叶子数、深度以及对二叉树进行拷贝等操作/" class="post-title-link" itemprop="url">二叉树的创建销毁遍历，计算叶子数、深度以及对二叉树进行拷贝等操作</a>
+                <a href="/2019/07/06/自适应的霍夫曼编码与原始的霍夫曼编码的比较/" class="post-title-link" itemprop="url">自适应的霍夫曼编码与原始的霍夫曼编码的比较</a>
               
             
           </h1>
@@ -1792,7 +2171,7 @@ n个结点一定有n+1个指针域是空的
                 
               
 
-              <time title="创建时间：2019-07-05 16:45:57 / 修改时间：22:32:38" itemprop="dateCreated datePublished" datetime="2019-07-05T16:45:57+08:00">2019-07-05</time>
+              <time title="创建时间：2019-07-06 21:07:54 / 修改时间：21:08:30" itemprop="dateCreated datePublished" datetime="2019-07-06T21:07:54+08:00">2019-07-06</time>
             </span>
           
 
@@ -1811,7 +2190,7 @@ n个结点一定有n+1个指针域是空的
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/多媒体技术/" itemprop="url" rel="index"><span itemprop="name">多媒体技术</span></a></span>
 
                 
                 
@@ -1829,8 +2208,8 @@ n个结点一定有n+1个指针域是空的
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/05/二叉树的创建销毁遍历，计算叶子数、深度以及对二叉树进行拷贝等操作/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/05/二叉树的创建销毁遍历，计算叶子数、深度以及对二叉树进行拷贝等操作/" itemprop="commentCount"></span>
+                <a href="/2019/07/06/自适应的霍夫曼编码与原始的霍夫曼编码的比较/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/06/自适应的霍夫曼编码与原始的霍夫曼编码的比较/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -1850,7 +2229,7 @@ n个结点一定有n+1个指针域是空的
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">6.5k</span>
+              <span title="本文字数">841</span>
             </span>
           
 
@@ -1874,423 +2253,14 @@ n个结点一定有n+1个指针域是空的
         
           
             <p>
-              
-二叉树是一块比较重要的知识点，而且是从线性结构到树形结构的一个跨越，建议大家动手实现以下。
-树是递归算法最好的应用，当然不嫌麻烦的话也可以用栈。
-
-前序遍历初始化树：void InitializeTree(Tree *T) &#123;	char ch;	scanf("%c",&amp;ch);	
+              第一题：(a) 自适应的霍夫曼编码与原始的霍夫曼编码相比什么优点：
+原始的Huffman算法给出了一种静态的编码树构造方案，要求在实际编码之前统计被编码对象中符号出现的几率，并据此进行编码树的构造。所以应用此方案时必须对输入符号流进行两遍扫描，而在大多数多媒体应用中数据分布的先前统计数据是不可行的。
               ...
             </p>
           <!--noindex-->
           
             <div class="post-button text-center">
-              <a class="btn" href="/2019/07/05/二叉树的创建销毁遍历，计算叶子数、深度以及对二叉树进行拷贝等操作/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/c-c-定义全局变量的方法/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="PerryWang">
-      <meta itemprop="description" content="sysu-student">
-      <meta itemprop="image" content="/images/头像.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PerryWang🍎博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/07/05/c-c-定义全局变量的方法/" class="post-title-link" itemprop="url">c/c++定义全局变量的方法</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-07-05 16:43:52 / 修改时间：22:32:12" itemprop="dateCreated datePublished" datetime="2019-07-05T16:43:52+08:00">2019-07-05</time>
-            </span>
-          
-
-          
-            
-
-            
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/c/" itemprop="url" rel="index"><span itemprop="name">c++</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-              
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/05/c-c-定义全局变量的方法/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/05/c-c-定义全局变量的方法/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span title="本文字数">814</span>
-            </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              我们想定义一个全局变量，能够在多个文件中使用，举例说明比如说三个文件main.c hello.c hello.h想在main.c和hello.c中使用一个名字为a的变量，可能大家会简单地想直接在hello.h里面定义一个变量unsigned int a;然后在main.c和hello.c中引用”he
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/07/05/c-c-定义全局变量的方法/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-      
-    
-    
-
-    
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/04/二叉树的层序遍历/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="PerryWang">
-      <meta itemprop="description" content="sysu-student">
-      <meta itemprop="image" content="/images/头像.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="PerryWang🍎博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/2019/07/04/二叉树的层序遍历/" class="post-title-link" itemprop="url">二叉树的层序遍历</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-
-          
-          
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2019-07-04 13:59:28" itemprop="dateCreated datePublished" datetime="2019-07-04T13:59:28+08:00">2019-07-04</time>
-            </span>
-          
-
-          
-            
-
-            
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2019-07-05 22:31:39" itemprop="dateModified" datetime="2019-07-05T22:31:39+08:00">2019-07-05</time>
-              </span>
-            
-          
-
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            
-              
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-            
-                <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/04/二叉树的层序遍历/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/04/二叉树的层序遍历/" itemprop="commentCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-          
-
-          
-
-          <br>
-          
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">本文字数：</span>
-              
-              <span title="本文字数">511</span>
-            </span>
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>
-              
-层序遍历即从一棵树的每一层由上到下开始依次从左到右遍历输出
-从上面一句话的原理不难看出这就是一个FIFO算法，也就是一个基本的先进先出队列，因此我们考虑调用STL的queue
-
-数据结构：typedef struct BiTNode &#123;	ElemType data;	struct BiT
-              ...
-            </p>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/2019/07/04/二叉树的层序遍历/#more" rel="contents">
+              <a class="btn" href="/2019/07/06/自适应的霍夫曼编码与原始的霍夫曼编码的比较/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -2342,7 +2312,7 @@ n个结点一定有n+1个指针域是空的
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/4/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/6/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -2386,7 +2356,7 @@ n个结点一定有n+1个指针域是空的
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">59</span>
+                    <span class="site-state-item-count">89</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2429,7 +2399,11 @@ n个结点一定有n+1个指针域是空的
                     
                       
                     
-                    <span class="site-state-item-count">13</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
@@ -2480,7 +2454,13 @@ n个结点一定有n+1个指针域是空的
                     
                       
                     
-                    <span class="site-state-item-count">17</span>
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -2590,7 +2570,7 @@ n个结点一定有n+1个指针域是空的
     
       <span class="post-meta-item-text">站点总字数：</span>
     
-    <span title="站点总字数">328k</span>
+    <span title="站点总字数">515k</span>
   
 
   

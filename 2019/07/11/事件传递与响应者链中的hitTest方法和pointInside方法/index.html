@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="主要概念事件用户使用app的过程中，会产生各种各样的事件，iOS事件大体分为3种类型  触摸事件 加速计事件 远程控制事件  加速计事件可以用来做摇一摇等功能，而耳机控制音量大小等则属于远程控制事件。">
+<meta name="keywords" content="iOS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS || 事件传递与响应者链中的hitTest方法和pointInside方法">
+<meta property="og:url" content="http://yoursite.com/2019/07/11/事件传递与响应者链中的hitTest方法和pointInside方法/index.html">
+<meta property="og:site_name" content="PerryWang🍎博客">
+<meta property="og:description" content="主要概念事件用户使用app的过程中，会产生各种各样的事件，iOS事件大体分为3种类型  触摸事件 加速计事件 远程控制事件  加速计事件可以用来做摇一摇等功能，而耳机控制音量大小等则属于远程控制事件。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190605154903358.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-07-10T16:25:55.366Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS || 事件传递与响应者链中的hitTest方法和pointInside方法">
+<meta name="twitter:description" content="主要概念事件用户使用app的过程中，会产生各种各样的事件，iOS事件大体分为3种类型  触摸事件 加速计事件 远程控制事件  加速计事件可以用来做摇一摇等功能，而耳机控制音量大小等则属于远程控制事件。">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190605154903358.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="PerryWang🍎博客" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/07/11/事件传递与响应者链中的hitTest方法和pointInside方法/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>iOS || 事件传递与响应者链中的hitTest方法和pointInside方法 | PerryWang🍎博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PerryWang🍎博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">分享软件开发中学到的点滴知识</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/WangPerryWPY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/11/事件传递与响应者链中的hitTest方法和pointInside方法/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/头像.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS || 事件传递与响应者链中的hitTest方法和pointInside方法
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-11 00:25:17 / 修改时间：00:25:55" itemprop="dateCreated datePublished" datetime="2019-07-11T00:25:17+08:00">2019-07-11</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/11/事件传递与响应者链中的hitTest方法和pointInside方法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/11/事件传递与响应者链中的hitTest方法和pointInside方法/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">4.9k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="主要概念"><a href="#主要概念" class="headerlink" title="主要概念"></a>主要概念</h3><h4 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h4><p>用户使用app的过程中，会产生各种各样的事件，iOS事件大体分为3种类型</p>
+<ul>
+<li>触摸事件</li>
+<li>加速计事件</li>
+<li>远程控制事件</li>
+</ul>
+<p>加速计事件可以用来做摇一摇等功能，而耳机控制音量大小等则属于远程控制事件。</p>
+<a id="more"></a>
+
+<h4 id="响应者对象"><a href="#响应者对象" class="headerlink" title="响应者对象"></a>响应者对象</h4><p>在iOS中不是任何对象都能处理事件，只有继承了UIResponder的对象才能接收并处理事件。我们称之为“响应者对象”，例如UIApplication、UIViewController、UIView都继承自UIResponder，因此它们都是响应者度喜庆，都能接收并处理事件。</p>
+<h5 id="UIResponder"><a href="#UIResponder" class="headerlink" title="UIResponder"></a>UIResponder</h5><p>触摸事件</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event;</span><br><span class="line">- (<span class="keyword">void</span>)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event;</span><br><span class="line">- (<span class="keyword">void</span>)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event;</span><br><span class="line">- (<span class="keyword">void</span>)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event;</span><br></pre></td></tr></table></figure>
+
+<p>加速计事件</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event;</span><br><span class="line">- (<span class="keyword">void</span>)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event;</span><br><span class="line">- (<span class="keyword">void</span>)motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent *)event;</span><br></pre></td></tr></table></figure>
+
+<p>远程控制事件</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)remoteControlReceivedWithEvent:(UIEvent *)event;</span><br></pre></td></tr></table></figure>
+
+<h5 id="UIView的触摸事件处理"><a href="#UIView的触摸事件处理" class="headerlink" title="UIView的触摸事件处理"></a>UIView的触摸事件处理</h5><p>UIView是UIResponder的子类，可以覆盖下列4个方法处理不同的触摸事件</p>
+<ul>
+<li>一根或者多根手指开始触摸view，系统会自动给调用view下面的方法</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>一根或者多根手指在view上移动，系统会自动调用view的下面方法（随着手指的移动，会持续调用该方法）</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>一根或者多根手指离开view，系统会自动调用view的下面方法</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>触摸结束前，某个系统事件(例如电话呼入)会打断触摸过程，系统会自动调用view的下面</li>
+</ul>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event</span><br></pre></td></tr></table></figure>
+
+<p><strong>PS:</strong> touch中存放的都是 UITouch 对象。</p>
+<h4 id="UITouch"><a href="#UITouch" class="headerlink" title="UITouch"></a>UITouch</h4><h5 id="UITouch-1"><a href="#UITouch-1" class="headerlink" title="UITouch"></a>UITouch</h5><ul>
+<li>当用户用一根手指触摸屏幕时，会创建一个与手指相关联的UITouch对象</li>
+<li>一根手指对应一个UITouch对象</li>
+<li>UITouch作用：保存着跟手指相关的信息，比如触摸的位置、时间、阶段</li>
+<li>当手指移动时，系统会更新同一个UITouch对象，使之能够一直保存该手指在的触摸位置。</li>
+<li>当手指离开屏幕时，系统会销毁响应的UITouch对象</li>
+</ul>
+<h5 id="UITouch-重要属性"><a href="#UITouch-重要属性" class="headerlink" title="UITouch 重要属性"></a>UITouch 重要属性</h5><ul>
+<li><p>触摸产生时所处的窗口</p>
+<p><code>@property(nonatomic, readonly, retain) UIWindow *window;</code></p>
+</li>
+<li><p>触摸产生时所处的视图</p>
+<p><code>@property(nonatomic, readonly, retain) UIView *view;</code></p>
+</li>
+<li><p>短时间内点按屏幕的次数，可以根据tapCount判断单击、双击或者更多点击</p>
+<p><code>@property(nonatomic, readonly) NSUInteger tapCount;</code></p>
+</li>
+<li><p>记录了触摸事件产生或变化时的时间，单位是秒</p>
+<p><code>@property(nonatomic, readonly) NSTimeInterval timestamp;</code></p>
+</li>
+<li><p>当前触摸事件所处的状态</p>
+<p><code>@property(nonatomic, readonly) UITouchPhase phase;</code></p>
+</li>
+</ul>
+<h5 id="UITouch-重要方法"><a href="#UITouch-重要方法" class="headerlink" title="UITouch 重要方法"></a>UITouch 重要方法</h5><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (CGPoint)locationInView:(UIView *)view;</span><br><span class="line"><span class="comment">// 返回值表示触摸在view上的位置，这里返回的位置是针对view的坐标系的(以view的左上角为原点(0,0))</span></span><br><span class="line"><span class="comment">// 调用时传入的view参数为nil的话，返回的触摸点是在UIWindow的位置</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (CGPoint)previousLocationInView:(UIView *)view;</span><br><span class="line"><span class="comment">// 该方法记录了前一个触摸点的位置</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="UIEvent"><a href="#UIEvent" class="headerlink" title="UIEvent"></a>UIEvent</h4><ul>
+<li>每产生一个事件，就会产生一个UIEvent对象</li>
+<li>UIEvent：称为事件对象，记录事件产生的时刻和类型</li>
+</ul>
+<h5 id="UIEvent-常见属性"><a href="#UIEvent-常见属性" class="headerlink" title="UIEvent 常见属性"></a>UIEvent 常见属性</h5><ul>
+<li><p>事件类型</p>
+<p><code>@property(nonatomic, readonly) UIEventType type;</code></p>
+<p><code>@property(nonatomic, readonly) UIEventSubtype subtype;</code></p>
+</li>
+<li><p>事件产生的时间</p>
+<p><code>@property(nonatomic, readonly) NSTimeInterval timestamp;</code></p>
+</li>
+<li><p>UIEvent 还提供了相应的方法可以获得在某个view上面的触摸对象（UITouch）一次完整的触摸过程，会经历三个状态：</p>
+<p>触摸开始：- (void)touchesBegan:(NSSet )touches withEvent:(UIEvent )event<br>触摸移动：- (void)touchesMoved:(NSSet )touches withEvent:(UIEvent )event<br>触摸结束：- (void)touchesEnded:(NSSet )touches withEvent:(UIEvent )event </p>
+<p>触摸取消（<strong>可能会经历</strong>）：- (void)touchesCancelled:(NSSet )touches withEvent:(UIEvent )event </p>
+</li>
+</ul>
+<p>4个触摸事件处理方法中，都有NSSet *touches和UIEvent *event两个参数 </p>
+<p>一次完整的触摸过程中，只会产生一个事件对象，4个触摸方法都是同一个event参数</p>
+<ul>
+<li><p>如果两根手指同时触摸一个view，那么view只会调用一次touchesBegan:withEvent:方法，touches参数中装着2个UITouch对象</p>
+</li>
+<li><p>如果这两根手指一前一后分开触摸同一个view，那么view会分别调用2次touchesBegan:withEvent:方法，并且每次调用时的touches参数中只包含一个UITouch对象</p>
+</li>
+</ul>
+<p>根据touches中UITouch的个数可以判断出是单点触摸还是多点触摸</p>
+<h3 id="事件传递"><a href="#事件传递" class="headerlink" title="事件传递"></a>事件传递</h3><ul>
+<li>发生触摸事件后，系统会将该事件加入到一个由 UIApplication 管理的事件队列中。</li>
+<li>UIApplication 会从事件队列中取出最前面的事件，并将事件分发下去以便处理，通常，先发送事件给应用程序的主窗口(keyWindow)</li>
+<li>主窗口会在视图层次结构中找到一个合适的视图来处理触摸事件，这也是整个事件处理过程的第一步。</li>
+<li>找到合适的视图控件后，就会调用视图控件的toucher方法来做具体的事件处理<ul>
+<li>touchesBegin</li>
+<li>touchesMoved</li>
+<li>touchesEnded</li>
+</ul>
+</li>
+</ul>
+<h4 id="如何找到一个最合适的视图，如何判断"><a href="#如何找到一个最合适的视图，如何判断" class="headerlink" title="如何找到一个最合适的视图，如何判断"></a>如何找到一个最合适的视图，如何判断</h4><h5 id="hitTest"><a href="#hitTest" class="headerlink" title="hitTest"></a>hitTest</h5><p>其实系统就是通过 <code>-(UIView *)hitTest:(CGPoint)point withEvent:(UIEvent* )event</code>方法来寻找最合适view的。</p>
+<p>该函数的内部实现：</p>
+<ul>
+<li>自己能否接收触摸事件(如果自己都不能接收那么子视图就不能接收处理事件)</li>
+<li>触摸点是否在自己身上</li>
+<li>从后往前遍历子控件，重复前面两个步骤</li>
+<li>如果没有符合条件的子控件，那么就自己处理最合适</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20190605154903358.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//作用:去寻找最适合的View</span></span><br><span class="line"><span class="comment">//什么时候调用:当一个事件传递给当前View,就会调用.</span></span><br><span class="line"><span class="comment">//返回值:返回的是谁,谁就是最适合的View(就会调用最适合的View的touch方法)</span></span><br><span class="line">-(UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event&#123;</span><br><span class="line">    NSLog(@<span class="string">"%s"</span>,__func__);</span><br><span class="line">    <span class="keyword">return</span> [super hitTest:point withEvent:event];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="PointInside"><a href="#PointInside" class="headerlink" title="PointInside"></a>PointInside</h5><p>系统通过<code>-(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event</code>方法来判断触摸点是否在自己身上。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *  作用:判断当前点在不在它调用View,(谁调用pointInside,这个View就是谁)</span></span><br><span class="line"><span class="comment"> *  什么时候调用:它是在hitTest方法当中调用的.</span></span><br><span class="line"><span class="comment"> *  注意:point点必须得要跟它方法调用者在同一个坐标系里面</span></span><br><span class="line"><span class="comment"> *  @param point &lt;#point description#&gt;</span></span><br><span class="line"><span class="comment"> *  @param event &lt;#event description#&gt;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> *  @return &lt;#return value description#&gt;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">-(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event&#123;</span><br><span class="line"><span class="comment">//    NSLog(@"%s",__func__);</span></span><br><span class="line"><span class="comment">//    return [super pointInside:point withEvent:event];</span></span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="comment">//    </span></span><br><span class="line"><span class="comment">//    //如果返回NO就代表，当前点不在红色view（self）上面，那么当我们确实点击红色view，红色view也不会响应事件。</span></span><br><span class="line"><span class="comment">//    return NO;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//如果返回YES就代表，当前点在红色view（self）上面，那么即使我们没有点击红色view，红色view也会响应事件。</span></span><br><span class="line">    <span class="keyword">return</span> YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="响应者链"><a href="#响应者链" class="headerlink" title="响应者链"></a>响应者链</h3><h4 id="响应者链-1"><a href="#响应者链-1" class="headerlink" title="响应者链"></a>响应者链</h4><p>响应者链条：是由多个响应者对象连接起来的链条，响应者链刚好与事件的传递相反，两者形成一个环。</p>
+<p>作用：能很清楚地看见每个响应者之间的联系，并且可以让一个事件多个对象处理。</p>
+<p>响应者对象：能处理事件的对象。</p>
+<ul>
+<li><ol>
+<li>找到最适合的响应视图后事件会从此视图开始沿着响应链nextResponder传递，直到找到处理事件的视图,如果没有处理的事件会被丢弃。 </li>
+</ol>
+</li>
+<li><ol start="2">
+<li>如果找到了能处理该事件的视图，则返回该视图停止传递。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>如果当前这个view是控制器的view,那么控制器就是上一个响应者；如果当前这个view不是控制器的view,那么父控件就是上一个响应者。</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>如果view的控制器存在，就传递给控制器；如果控制器不存在，则将其传递给它的父视图<br>在视图层次结构的最顶级视图，如果也不能处理收到的事件或消息，则其将事件或消息传递给window对象进行处理。</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>如果window对象也不处理，则其将事件或消息传递给UIApplication对象，如果UIApplication也不能处理该事件或消息，则将其丢弃。</li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>PerryWang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://yoursite.com/2019/07/11/事件传递与响应者链中的hitTest方法和pointInside方法/" title="iOS || 事件传递与响应者链中的hitTest方法和pointInside方法">http://yoursite.com/2019/07/11/事件传递与响应者链中的hitTest方法和pointInside方法/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/11/iOS-RunLoop/" rel="next" title="iOS || RunLoop">
+                <i class="fa fa-chevron-left"></i> iOS || RunLoop
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/11/缓存NSCache详解/" rel="prev" title="iOS || 缓存NSCache详解">
+                iOS || 缓存NSCache详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/头像.png" alt="PerryWang">
+            
+              <p class="site-author-name" itemprop="name">PerryWang</p>
+              <div class="site-description motion-element" itemprop="description">sysu-student</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">89</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">15</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">20</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/WangPerryWPY" title="GitHub &rarr; https://github.com/WangPerryWPY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/perry0528" title="CSDN &rarr; https://blog.csdn.net/perry0528" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:1731611872@qq.com" title="E-Mail &rarr; mailto:1731611872@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#主要概念"><span class="nav-number">1.</span> <span class="nav-text">主要概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#事件"><span class="nav-number">1.1.</span> <span class="nav-text">事件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#响应者对象"><span class="nav-number">1.2.</span> <span class="nav-text">响应者对象</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#UIResponder"><span class="nav-number">1.2.1.</span> <span class="nav-text">UIResponder</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#UIView的触摸事件处理"><span class="nav-number">1.2.2.</span> <span class="nav-text">UIView的触摸事件处理</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UITouch"><span class="nav-number">1.3.</span> <span class="nav-text">UITouch</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#UITouch-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">UITouch</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#UITouch-重要属性"><span class="nav-number">1.3.2.</span> <span class="nav-text">UITouch 重要属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#UITouch-重要方法"><span class="nav-number">1.3.3.</span> <span class="nav-text">UITouch 重要方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UIEvent"><span class="nav-number">1.4.</span> <span class="nav-text">UIEvent</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#UIEvent-常见属性"><span class="nav-number">1.4.1.</span> <span class="nav-text">UIEvent 常见属性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件传递"><span class="nav-number">2.</span> <span class="nav-text">事件传递</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#如何找到一个最合适的视图，如何判断"><span class="nav-number">2.1.</span> <span class="nav-text">如何找到一个最合适的视图，如何判断</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#hitTest"><span class="nav-number">2.1.1.</span> <span class="nav-text">hitTest</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#PointInside"><span class="nav-number">2.1.2.</span> <span class="nav-text">PointInside</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#响应者链"><span class="nav-number">3.</span> <span class="nav-text">响应者链</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#响应者链-1"><span class="nav-number">3.1.</span> <span class="nav-text">响应者链</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Perry</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">515k</span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unjkp.com/valine/dist/Valine.min.js"></script>  
+  <script src="/js/src/Valine.min.js"></script> 
+
+    
+  
+  <script src="/js/src/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'SsAWGcn6CHm6Oif4CGFKBhVv-gzGzoHsz',
+        appKey: 'bniDOuxQuzVdGASyS3SyDFF8',
+        placeholder: '说点什么吧！',
+        avatar:'wavatar',
+        guest_info:['nick'] ,  
+        pageSize:'10' || 10,
+    });
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+  </script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
