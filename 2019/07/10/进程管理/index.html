@@ -94,22 +94,22 @@
 
 
 
-  <meta name="description" content="进程组成：PCBPCB：系统为每个运行的程序配置一个数据结构，称为进程控制块(PCB)，用来描述进程的各种信息(如程序代码存放位置) PCB，程序段，数据段三部分构成了进程实体(进程映像)。所谓创建进程，实际上是创建进程实体中的PCB。撤销进程实际就是撤销进程的PCB，PCB是进程存在的唯一标志。 PCB组成：（进程的管理者） 进程描述信息 进程标识符PID 创建此进程的父进程 用户标志符UID">
+  <meta name="description" content="进程组成：PCBPCB：系统为每个运行的程序配置一个数据结构，称为进程控制块(PCB)，用来描述进程的各种信息(如程序代码存放位置) PCB，程序段，数据段三部分构成了进程实体(进程映像)。所谓创建进程，实际上是创建进程实体中的PCB。撤销进程实际就是撤销进程的PCB，PCB是进程存在的唯一标志。">
 <meta name="keywords" content="操作系统">
 <meta property="og:type" content="article">
 <meta property="og:title" content="进程管理">
 <meta property="og:url" content="http://yoursite.com/2019/07/10/进程管理/index.html">
 <meta property="og:site_name" content="PerryWang🍎博客">
-<meta property="og:description" content="进程组成：PCBPCB：系统为每个运行的程序配置一个数据结构，称为进程控制块(PCB)，用来描述进程的各种信息(如程序代码存放位置) PCB，程序段，数据段三部分构成了进程实体(进程映像)。所谓创建进程，实际上是创建进程实体中的PCB。撤销进程实际就是撤销进程的PCB，PCB是进程存在的唯一标志。 PCB组成：（进程的管理者） 进程描述信息 进程标识符PID 创建此进程的父进程 用户标志符UID">
+<meta property="og:description" content="进程组成：PCBPCB：系统为每个运行的程序配置一个数据结构，称为进程控制块(PCB)，用来描述进程的各种信息(如程序代码存放位置) PCB，程序段，数据段三部分构成了进程实体(进程映像)。所谓创建进程，实际上是创建进程实体中的PCB。撤销进程实际就是撤销进程的PCB，PCB是进程存在的唯一标志。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190709192044978.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190709192059162.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190709192105862.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20190709192112864.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2019-07-10T14:29:36.425Z">
+<meta property="og:updated_time" content="2019-07-10T14:34:09.658Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="进程管理">
-<meta name="twitter:description" content="进程组成：PCBPCB：系统为每个运行的程序配置一个数据结构，称为进程控制块(PCB)，用来描述进程的各种信息(如程序代码存放位置) PCB，程序段，数据段三部分构成了进程实体(进程映像)。所谓创建进程，实际上是创建进程实体中的PCB。撤销进程实际就是撤销进程的PCB，PCB是进程存在的唯一标志。 PCB组成：（进程的管理者） 进程描述信息 进程标识符PID 创建此进程的父进程 用户标志符UID">
+<meta name="twitter:description" content="进程组成：PCBPCB：系统为每个运行的程序配置一个数据结构，称为进程控制块(PCB)，用来描述进程的各种信息(如程序代码存放位置) PCB，程序段，数据段三部分构成了进程实体(进程映像)。所谓创建进程，实际上是创建进程实体中的PCB。撤销进程实际就是撤销进程的PCB，PCB是进程存在的唯一标志。">
 <meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190709192044978.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
 
 
@@ -395,7 +395,7 @@
                 
               
 
-              <time title="创建时间：2019-07-10 22:29:02 / 修改时间：22:29:36" itemprop="dateCreated datePublished" datetime="2019-07-10T22:29:02+08:00">2019-07-10</time>
+              <time title="创建时间：2019-07-10 22:29:02 / 修改时间：22:34:09" itemprop="dateCreated datePublished" datetime="2019-07-10T22:29:02+08:00">2019-07-10</time>
             </span>
           
 
@@ -484,6 +484,8 @@
       
         <h3 id="进程组成："><a href="#进程组成：" class="headerlink" title="进程组成："></a>进程组成：</h3><h4 id="PCB"><a href="#PCB" class="headerlink" title="PCB"></a>PCB</h4><p>PCB：系统为每个运行的程序配置一个数据结构，称为进程控制块(PCB)，用来描述进程的各种信息(如程序代码存放位置)</p>
 <p><strong>PCB</strong>，<strong>程序段</strong>，<strong>数据段</strong>三部分构成了<strong>进程实体</strong>(进程映像)。所谓创建进程，实际上是创建进程实体中的PCB。撤销进程实际就是撤销进程的PCB，PCB是进程存在的唯一标志。</p>
+<a id="more"></a>
+
 <h5 id="PCB组成：（进程的管理者）"><a href="#PCB组成：（进程的管理者）" class="headerlink" title="PCB组成：（进程的管理者）"></a>PCB组成：（进程的管理者）</h5><ul>
 <li>进程描述信息<ul>
 <li>进程标识符PID</li>
