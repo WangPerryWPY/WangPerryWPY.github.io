@@ -94,21 +94,24 @@
 
 
 
-  <meta name="description" content="内存管理的层次 内存管理的目标 抽象： 逻辑地址空间（不考虑底层细节，只需访问一个连续的地址空间）   保护： 独立地址空间（不会被别的进程破坏）   共享 访问相同内存（进程间数据传递）   虚拟化 更多的地址空间（把最需要的数据放入内存，暂时不需要的数据放到磁盘）    地址空间 &amp;amp; 地址生成 物理地址空间 逻辑地址空间  地址空间定义：物理地址空间：主存和磁盘等硬件直接管理的地址空间">
+  <meta name="description" content="覆盖技术： 程序设计分为常驻区以及覆盖区  覆盖区可以通过运行与阻塞时换入换出实现内存空间的共享  同一覆盖区的程序模块之间必须不存在相互调用关系    交换技术： 将进程的整个地址空间在某个时刻导入到外存或从外存导入内存 交换技术的问题： 开销比较大，只有当内存不足时再换入换出 硬盘中交换区必须足够大以存放所有用户进程的所有内存的拷贝 程序换入时的重定位，动态地址映射方法。    覆盖和交换的区">
 <meta name="keywords" content="操作系统">
 <meta property="og:type" content="article">
-<meta property="og:title" content="内存管理||物理内存">
-<meta property="og:url" content="http://yoursite.com/2019/07/08/内存管理/index.html">
+<meta property="og:title" content="内存管理">
+<meta property="og:url" content="http://yoursite.com/2019/07/10/内存管理-虚拟内存/index.html">
 <meta property="og:site_name" content="PerryWang🍎博客">
-<meta property="og:description" content="内存管理的层次 内存管理的目标 抽象： 逻辑地址空间（不考虑底层细节，只需访问一个连续的地址空间）   保护： 独立地址空间（不会被别的进程破坏）   共享 访问相同内存（进程间数据传递）   虚拟化 更多的地址空间（把最需要的数据放入内存，暂时不需要的数据放到磁盘）    地址空间 &amp;amp; 地址生成 物理地址空间 逻辑地址空间  地址空间定义：物理地址空间：主存和磁盘等硬件直接管理的地址空间">
+<meta property="og:description" content="覆盖技术： 程序设计分为常驻区以及覆盖区  覆盖区可以通过运行与阻塞时换入换出实现内存空间的共享  同一覆盖区的程序模块之间必须不存在相互调用关系    交换技术： 将进程的整个地址空间在某个时刻导入到外存或从外存导入内存 交换技术的问题： 开销比较大，只有当内存不足时再换入换出 硬盘中交换区必须足够大以存放所有用户进程的所有内存的拷贝 程序换入时的重定位，动态地址映射方法。    覆盖和交换的区">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20190708143143780.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20190708143056309.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
-<meta property="og:updated_time" content="2019-07-08T06:55:50.166Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190709015556787.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190709015623553.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190709015629953.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190709015642510.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190709015651672.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-07-10T14:28:37.569Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="内存管理||物理内存">
-<meta name="twitter:description" content="内存管理的层次 内存管理的目标 抽象： 逻辑地址空间（不考虑底层细节，只需访问一个连续的地址空间）   保护： 独立地址空间（不会被别的进程破坏）   共享 访问相同内存（进程间数据传递）   虚拟化 更多的地址空间（把最需要的数据放入内存，暂时不需要的数据放到磁盘）    地址空间 &amp;amp; 地址生成 物理地址空间 逻辑地址空间  地址空间定义：物理地址空间：主存和磁盘等硬件直接管理的地址空间">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190708143143780.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta name="twitter:title" content="内存管理">
+<meta name="twitter:description" content="覆盖技术： 程序设计分为常驻区以及覆盖区  覆盖区可以通过运行与阻塞时换入换出实现内存空间的共享  同一覆盖区的程序模块之间必须不存在相互调用关系    交换技术： 将进程的整个地址空间在某个时刻导入到外存或从外存导入内存 交换技术的问题： 开销比较大，只有当内存不足时再换入换出 硬盘中交换区必须足够大以存放所有用户进程的所有内存的拷贝 程序换入时的重定位，动态地址映射方法。    覆盖和交换的区">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190709015556787.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
 
 
 
@@ -118,7 +121,7 @@
 
   
   
-  <link rel="canonical" href="http://yoursite.com/2019/07/08/内存管理/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/10/内存管理-虚拟内存/">
 
 
 
@@ -128,7 +131,7 @@
   };
 </script>
 
-  <title>内存管理||物理内存 | PerryWang🍎博客</title>
+  <title>内存管理 | PerryWang🍎博客</title>
   
 
 
@@ -350,7 +353,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/08/内存管理/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/10/内存管理-虚拟内存/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="PerryWang">
@@ -367,7 +370,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">内存管理||物理内存
+          <h1 class="post-title" itemprop="name headline">内存管理
 
               
             
@@ -393,7 +396,7 @@
                 
               
 
-              <time title="创建时间：2019-07-08 14:54:30 / 修改时间：14:55:50" itemprop="dateCreated datePublished" datetime="2019-07-08T14:54:30+08:00">2019-07-08</time>
+              <time title="创建时间：2019-07-10 22:26:44 / 修改时间：22:28:37" itemprop="dateCreated datePublished" datetime="2019-07-10T22:26:44+08:00">2019-07-10</time>
             </span>
           
 
@@ -430,8 +433,8 @@
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/08/内存管理/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/08/内存管理/" itemprop="commentCount"></span>
+                <a href="/2019/07/10/内存管理-虚拟内存/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/10/内存管理-虚拟内存/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -459,7 +462,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">2k</span>
+              <span title="本文字数">2.5k</span>
             </span>
           
 
@@ -480,146 +483,132 @@
       
 
       
-        <h3 id="内存管理的层次"><a href="#内存管理的层次" class="headerlink" title="内存管理的层次"></a>内存管理的层次</h3><p><img src="https://img-blog.csdnimg.cn/20190708143143780.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<h3 id="内存管理的目标"><a href="#内存管理的目标" class="headerlink" title="内存管理的目标"></a>内存管理的目标</h3><ul>
-<li>抽象：<ul>
-<li>逻辑地址空间（不考虑底层细节，只需访问一个连续的地址空间）</li>
-</ul>
+        <h4 id="覆盖技术："><a href="#覆盖技术：" class="headerlink" title="覆盖技术："></a>覆盖技术：</h4><ul>
+<li><p>程序设计分为常驻区以及覆盖区</p>
 </li>
-<li>保护：<ul>
-<li>独立地址空间（不会被别的进程破坏）</li>
-</ul>
+<li><p>覆盖区可以通过运行与阻塞时换入换出实现内存空间的共享</p>
 </li>
-<li>共享<ul>
-<li>访问相同内存（进程间数据传递）</li>
-</ul>
-</li>
-<li>虚拟化<ul>
-<li>更多的地址空间（把最需要的数据放入内存，暂时不需要的数据放到磁盘）</li>
-</ul>
+<li><p>同一覆盖区的程序模块之间必须不存在相互调用关系</p>
 </li>
 </ul>
-<h3 id="地址空间-amp-地址生成"><a href="#地址空间-amp-地址生成" class="headerlink" title="地址空间 &amp; 地址生成"></a>地址空间 &amp; 地址生成</h3><ul>
-<li>物理地址空间</li>
-<li>逻辑地址空间</li>
+<p><img src="https://img-blog.csdnimg.cn/20190709015556787.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="交换技术："><a href="#交换技术：" class="headerlink" title="交换技术："></a>交换技术：</h4><ul>
+<li>将进程的整个地址空间在某个时刻导入到外存或从外存导入内存</li>
+<li>交换技术的问题：<ul>
+<li>开销比较大，只有当内存不足时再换入换出</li>
+<li>硬盘中交换区必须足够大以存放所有用户进程的所有内存的拷贝</li>
+<li>程序换入时的重定位，动态地址映射方法。</li>
 </ul>
-<h4 id="地址空间定义："><a href="#地址空间定义：" class="headerlink" title="地址空间定义："></a>地址空间定义：</h4><p>物理地址空间：主存和磁盘等硬件直接管理的地址空间</p>
-<p>逻辑地址空间：运行的应用程序直接看到一维的线性地址空间</p>
-<p>操作系统将逻辑地址空间映射到实际的地址空间</p>
-<h4 id="逻辑地址空间的生成："><a href="#逻辑地址空间的生成：" class="headerlink" title="逻辑地址空间的生成："></a>逻辑地址空间的生成：</h4><p>c语言–<strong>编译</strong>–&gt;汇编语言–<strong>汇编</strong>–&gt;机器语言(.o文件)–<strong>链接</strong>–&gt;可执行文件(.exe)–<strong>载入(loader)</strong>/<strong>程序重定位</strong>–&gt;加载到内存中去运行</p>
-<p>c/汇编语言内的变量名和函数名实际就是地址，是名字</p>
-<p>机器语言内已将变量符号名和函数符号名等转化为相应的相对连续的地址空间(逻辑地址空间)，是地址的二进制</p>
-<h4 id="逻辑地址和物理地址的对应："><a href="#逻辑地址和物理地址的对应：" class="headerlink" title="逻辑地址和物理地址的对应："></a>逻辑地址和物理地址的对应：</h4><p>CPU的内存管理单元(MMU)中有物理地址和逻辑地址的对应关系表，当CPU要取指或数据是则根据逻辑地址查表前往对应的物理地址去取出</p>
-<p>操作系统负责建立物理地址空间和逻辑地址空间的映射关系(建表)，存在内存中，为了加快访问放在CPU中进行缓存。</p>
-<h3 id="连续内存分配："><a href="#连续内存分配：" class="headerlink" title="连续内存分配："></a>连续内存分配：</h3><h4 id="内存碎片："><a href="#内存碎片：" class="headerlink" title="内存碎片："></a>内存碎片：</h4><p>空闲内存不能被利用</p>
+</li>
+</ul>
+<h4 id="覆盖和交换的区别："><a href="#覆盖和交换的区别：" class="headerlink" title="覆盖和交换的区别："></a>覆盖和交换的区别：</h4><ul>
+<li>覆盖发生在一个程序里面，通过没有调用关系的模块共享一个内存区使得空间充分利用，但需要程序员手动指定之间覆盖模块的逻辑关系。</li>
+<li>交换每次是换入换出一个程序，开销比较大，但由操作系统，不需要程序员手动操作。</li>
+</ul>
+<h3 id="虚拟内存："><a href="#虚拟内存：" class="headerlink" title="虚拟内存："></a>虚拟内存：</h3><p>在页式或段式内存管理的基础上实现</p>
 <ul>
-<li>外部碎片：在分配单元之间的未使用的内存</li>
-<li>内部碎片：在分配单元内未使用的内存</li>
+<li>在装入程序时，不必将全部装入内存，只需将当前需要执行的部分页面或段装入内存</li>
+<li>在程序执行过程中，如果需执行的指令或访问数据未在内存(缺页或缺段)，则处理器通知操作系统将相应的页面或段调入到内存，然后继续执行程序。</li>
+<li>另外，操作系统将内存中暂时不使用的页面或段调出保存在外存上，从而腾出更多空闲空间存放将要装入的程序</li>
 </ul>
-<h4 id="分区的动态分配："><a href="#分区的动态分配：" class="headerlink" title="分区的动态分配："></a>分区的动态分配：</h4><ul>
-<li>将应用程序加载到内存时，需要为应用程序分配内存空间</li>
-<li>应用程序在运行时，需要访问数据，要给这些数据分配内存空间</li>
-</ul>
-<h5 id="分配策略："><a href="#分配策略：" class="headerlink" title="分配策略："></a>分配策略：</h5><ul>
-<li>首次适配：简单，产生外部碎片，大的内存块集中在内存尾部</li>
-<li>最佳适配：重分配慢，和应用程序所需内存差值最小的内存块，产生小的外部碎片，不易于后续的回收</li>
-<li>最差适配：重分配慢，寻找和所需内存差值最大的内存块，对大块的请求造成影响</li>
-</ul>
-<h4 id="减少内存碎片的方法："><a href="#减少内存碎片的方法：" class="headerlink" title="减少内存碎片的方法："></a>减少内存碎片的方法：</h4><p>压缩式碎片整理</p>
-<p>交换式碎片整理(换入换出)</p>
+<h4 id="需要程序具有较好的局部性"><a href="#需要程序具有较好的局部性" class="headerlink" title="需要程序具有较好的局部性"></a>需要程序具有较好的局部性</h4><p>以便不需要多次与外存进行换入换出，也就是减少缺页率。</p>
+<p>程序的局部性原理：程序在执行过程中一个较短的时期，所执行的指令地址和指令的操作数地址，分别局限于一定区域。</p>
 <ul>
-<li>充分应用硬盘，抢占正在等待的程序，将等待的程序载入硬盘上去，并回收他们的内存。</li>
+<li>时间局部性：一次指令的一次执行和下次执行，一个数据的一次访问和下次访问都集中在一个较短的时期。</li>
+<li>空间局部性：当前指令和邻近几条指令，当前访问的数据和邻近几个数据都集中在一个较小的区域内。</li>
 </ul>
-<h4 id="伙伴系统："><a href="#伙伴系统：" class="headerlink" title="伙伴系统："></a>伙伴系统：</h4><ul>
-<li>整个可分配的分区大小 2^U</li>
-<li>需要的分区大小为 2^(U-1) &lt; s &lt;= 2^U 时，把整个块分配给该进程<ul>
-<li>如 s &lt;= 2^(i-1) ，将大小为 2i 的当前空闲分区划分成两个大小为 2^(i-1) 的空闲分区</li>
-<li>重复划分过程，直到 2^(i-1) &lt; s &lt;= 2^i ，并把一个空闲分区分配给该进程</li>
+<h4 id="虚拟内存特征："><a href="#虚拟内存特征：" class="headerlink" title="虚拟内存特征："></a>虚拟内存特征：</h4><ul>
+<li>大的用户空间：将物理内存和外存结合起来。</li>
+<li>部分交换：与交换技术相比，虚拟内存的调入调出是对部分虚拟空间地址进行的。</li>
+<li>不连续性</li>
 </ul>
+<h4 id="虚拟页式内存管理："><a href="#虚拟页式内存管理：" class="headerlink" title="虚拟页式内存管理："></a>虚拟页式内存管理：</h4><p>大部分虚拟存储系统都采用页式存储管理技术，即在页式存储管理的基础上，增加请求调页和页面置换功能。</p>
+<p><img src="https://img-blog.csdnimg.cn/20190709015623553.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h5 id="缺页中断："><a href="#缺页中断：" class="headerlink" title="缺页中断："></a>缺页中断：</h5><p><img src="https://img-blog.csdnimg.cn/20190709015629953.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h4 id="分段内存管理："><a href="#分段内存管理：" class="headerlink" title="分段内存管理："></a>分段内存管理：</h4><ul>
+<li><p>段号+偏移量</p>
+</li>
+<li><p>具有处理不断增长的数据结构的能力</p>
+</li>
+<li><p>支持共享和保护 </p>
 </li>
 </ul>
-<h5 id="伙伴系统的实现"><a href="#伙伴系统的实现" class="headerlink" title="伙伴系统的实现"></a>伙伴系统的实现</h5><ul>
-<li>数据结构<ul>
-<li>空闲块按大小和起始地址组织成二维数组</li>
-<li>初始状态：只有一个大小为 2^U 的空闲块</li>
-</ul>
-</li>
-<li>分配过程<ul>
-<li>由小到大在空闲块数组中找最小的可用空闲块</li>
-<li>如空闲块过大，对可用空闲块进行二等分，知道得到合适的可用空闲块</li>
-</ul>
-</li>
-<li>释放过程<ul>
-<li>把释放的块放入空闲块数组</li>
-<li>合并满足合并条件的空闲块</li>
-</ul>
-</li>
-<li>合并条件<ul>
-<li>大小相同 2^i</li>
-<li>地址相邻</li>
-<li>起始地址较小的块的起始地址必须是 2^(i+1) 的倍数</li>
-</ul>
-</li>
-</ul>
-<h3 id="非连续的内存分配："><a href="#非连续的内存分配：" class="headerlink" title="非连续的内存分配："></a>非连续的内存分配：</h3><p>非连续内存分配方法：</p>
+<h4 id="段页式内存管理："><a href="#段页式内存管理：" class="headerlink" title="段页式内存管理："></a>段页式内存管理：</h4><p>用户程序的地址空间被划分为很多段，再把每个段分为若干个页</p>
+<p>段号+段内页号+页内地址</p>
+<h3 id="虚拟内存的操作系统策略："><a href="#虚拟内存的操作系统策略：" class="headerlink" title="虚拟内存的操作系统策略："></a>虚拟内存的操作系统策略：</h3><h4 id="读取策略："><a href="#读取策略：" class="headerlink" title="读取策略："></a>读取策略：</h4><p>何时读入内存</p>
 <ul>
-<li>一个程序的物理地址空间是非连续的</li>
-<li>更好的内存利用和利用，减少内碎片和外碎片</li>
-<li>允许共享代码和数据(共享库等…)</li>
-<li>支持动态加载和动态链接</li>
+<li>请求分页(缺页时才读入内存)，运行期间调入。</li>
+<li>预先分页：局部性原理，一次性调入若干相邻的页面。但可能调入的大多数未被访问，则降低效率。所以实际应用中主要用于进程的首次调入。</li>
 </ul>
-<h4 id="分段"><a href="#分段" class="headerlink" title="分段"></a>分段</h4><p>将程序的不同段分散到多个物理地址中去</p>
+<p>当一个进程被换出内存并被置于挂起状态，它的驻留页都被换出。当进程被唤醒时，所有以前在内存中的页都被重新读回内存。</p>
+<h4 id="放置策略："><a href="#放置策略：" class="headerlink" title="放置策略："></a>放置策略：</h4><p>进程块在内存中的实际位置</p>
 <ul>
-<li><p>连续的逻辑地址映射到不连续的物理地址中去</p>
-</li>
-<li><p>例如c程序中栈段，堆段，代码段，数据段</p>
-</li>
+<li>纯分段机制可以使用最佳适配等方法</li>
+<li>段页式或页式可以有硬件高效实现</li>
 </ul>
-<h5 id="寻址方案的实现："><a href="#寻址方案的实现：" class="headerlink" title="寻址方案的实现："></a>寻址方案的实现：</h5><p>段访问机制：</p>
-<ul>
-<li>段号<ul>
-<li>查询段表查找所对应物理内存的起始地址</li>
-<li>通过段表还可以查询到段的长度限制</li>
-</ul>
+<h4 id="置换策略："><a href="#置换策略：" class="headerlink" title="置换策略："></a>置换策略：</h4><h5 id="最佳置换算法-OPT"><a href="#最佳置换算法-OPT" class="headerlink" title="最佳置换算法(OPT)"></a>最佳置换算法(OPT)</h5><ul>
+<li><p>淘汰的页面是以后永不使用或在最长时间内不再访问的页面或在较长时间内不再访问。</p>
 </li>
-<li>段内偏移<ul>
-<li>段偏移和段长度进行比较，若偏移超出段长，则该逻辑地址无效，抛出异常</li>
-</ul>
+<li><p>需要看之后的页面号引用串，淘汰最长时间不被引用的。</p>
+</li>
+<li><p>但是该算法前提条件是知道之后引用的页面，而实际运行中操作系统不可能事先知道页面的访问序列，因而这种算法只是一种理想算法，实际并不会实现。</p>
 </li>
 </ul>
-<p>PS：分段机制类似之前的动态分区，也会产生外部碎片，但是因为程序分布在不连续的物理地址空间，所以产生的外部碎片大大减小了。</p>
-<h4 id="分页"><a href="#分页" class="headerlink" title="分页"></a>分页</h4><p>分页分为页寻址和页帧寻址两部分</p>
-<ul>
-<li>页帧(物理地址的寻址)</li>
-<li>页(逻辑地址的寻址)</li>
+<h5 id="先进先出置换算法-FIFO"><a href="#先进先出置换算法-FIFO" class="headerlink" title="先进先出置换算法(FIFO)"></a>先进先出置换算法(FIFO)</h5><ul>
+<li><p>淘汰最早进入内存的页面</p>
+</li>
+<li><p>系统维持一个置换队列，队列中节点数等于为进程分配的内存块数，每次置换删除队首节点，新节点插入队尾。</p>
+</li>
+<li><p>该算法会造成Belady异常，也就是分配多的内存缺页次数反而增多。</p>
+</li>
 </ul>
-<p>分页寻址机制：</p>
-<ul>
-<li>页映射到帧</li>
-<li>页是连续的虚拟内存</li>
-<li>帧是非连续的物理内存</li>
-<li>不是所有的页都有对应的帧</li>
+<h5 id="最近最久未使用置换算法-LRU"><a href="#最近最久未使用置换算法-LRU" class="headerlink" title="最近最久未使用置换算法(LRU)"></a>最近最久未使用置换算法(LRU)</h5><ul>
+<li>每次淘汰的页面是最近最久未使用的页面</li>
+<li>性能好，但是实现困难，需要硬件支持，开销大</li>
 </ul>
-<p><img src="https://img-blog.csdnimg.cn/20190708143056309.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>根据逻辑地址获取页号p–&gt;查询页表根据页号查到帧号f—&gt;f和逻辑地址中的偏移量o结合为物理地址–&gt;[2^(o的位数，例如图中为9)*f+o] 即为所需要数据所在的物理地址</p>
-<p>PS：采用分页机制类似之前的固定分区，但分页技术的分区相当小，一个程序可以占据不连续的多个分区，因而大大减小了内部碎片，提高了内存利用率。</p>
-<h4 id="页表"><a href="#页表" class="headerlink" title="页表"></a>页表</h4><ul>
-<li>每个进程有一个页表<ul>
-<li>页表岁进程运行状态的变化而动态变化</li>
-<li>页表基址寄存器存储页表在内存中的地址</li>
+<h5 id="时钟置换算法-CLOCK"><a href="#时钟置换算法-CLOCK" class="headerlink" title="时钟置换算法(CLOCK)"></a>时钟置换算法(CLOCK)</h5><ul>
+<li><p>也称为最近未用算法(NRU)</p>
+</li>
+<li><p>每个页面都有一个访问位，将内存中的页面通过链接指针链接成一个循环队列。当页面被访问时，其访问位置置为1。当需要淘汰一个页面时，只需要检查页面的访问位。如果是0，则选择该页换出；如果是1，则将其置为0，暂不换出，继续检查下一个页面。若第一轮扫描所有页面都是1，则将这些页依次置为0后，再进行第二轮扫描。</p>
+</li>
+<li><p>若页面已经存在循环链表中，则不需要移动指针。因为不会查看置换队列。</p>
+</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20190709015642510.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h5 id="改进型时钟置换算法"><a href="#改进型时钟置换算法" class="headerlink" title="改进型时钟置换算法"></a>改进型时钟置换算法</h5><ul>
+<li><p>简单时钟置换算法仅考虑一个页面最近是否被访问过。事实上如果被淘汰的页面没有被修改过，则不需要执行I/O操作写回外存。所以在其他条件相同情况下，优先淘汰没有修改过的页面。</p>
+</li>
+<li><p>因此增加一个修改位，修改位为1表示页面被修改过。</p>
+</li>
+<li><p>算法规则：将所有可能被置换的页面排成一个循环队列(访问位，修改位)，淘汰一个页面最多经过四轮扫描</p>
+<ul>
+<li>第一轮：淘汰(0, 0)。本轮扫描不修改任何标志位。淘汰优先级为(0, 0)</li>
+<li>第二轮：淘汰第一个(0, 1)。本轮扫描所有的访问位置为0。淘汰优先级为(0, 1)</li>
+<li>第三轮：淘汰第一个(0, 0)。本轮扫描不修改任何标志位。淘汰优先级为(1, 0)</li>
+<li>第四轮：淘汰第一个(0, 1)。淘汰优先级(1, 1)</li>
 </ul>
 </li>
 </ul>
-<h5 id="页存储管理机制存在性能问题："><a href="#页存储管理机制存在性能问题：" class="headerlink" title="页存储管理机制存在性能问题："></a>页存储管理机制存在性能问题：</h5><ul>
-<li>访问一个内存单元需要访问2次内存（访问页表项，访问数据）</li>
-<li>页表可能非常大</li>
-</ul>
-<p><strong>解决方法：</strong></p>
+<h4 id="分配策略："><a href="#分配策略：" class="headerlink" title="分配策略："></a>分配策略：</h4><p>驻留集：请求分页存储管理中给进程分配的物理块(页框)的集合，在虚存中驻留集大小一般小于进程的总大小。</p>
+<p>若驻留集太小会导致缺页频繁，若太大则可能导致多道程序中资源利用率低。</p>
+<p><strong>驻留集的大小：</strong></p>
 <ul>
-<li>建立快表(TLB)</li>
-<li>多级页表</li>
-<li>反向页表</li>
+<li>固定分配：OS为每个进程分配一组固定数量的物理块，在进程运行期间不再改变，驻留集不变</li>
+<li>可变分配：先为每个进程分配一定数量的物理块，在进程运行期间可根据情况做适当的增加或减少。驻留集可变</li>
 </ul>
+<p><strong>置换范围：</strong></p>
+<ul>
+<li>局部置换：置换只能选择进程内部的物理块</li>
+<li>全局置换：可以将操作系统保留的空闲物理块分配给缺页进程，也可以将别的进程持有的物理块置换到外存，再分配给缺页进程。</li>
+</ul>
+<p>固定分配局部置换</p>
+<p>可变分配全局置换：刚开始为每个进程分配一定数量的物理块。操作系统会保持一个空闲物理块队列。当某进程缺页时，从空闲物理块中取出一块分配给该进程；若无空闲物理块。则可选择一个未锁定页面换出外存，再将该物理块分配给缺页的进程。</p>
+<p>可变分配局部置换</p>
+<h5 id="抖动-颠簸-现象"><a href="#抖动-颠簸-现象" class="headerlink" title="抖动(颠簸)现象"></a>抖动(颠簸)现象</h5><p>频繁的页面换入换出行为，原因是分配给进程的物理块不够</p>
+<h6 id="防止方法："><a href="#防止方法：" class="headerlink" title="防止方法："></a>防止方法：</h6><p><strong>工作集</strong>：进程在某段时间间隔实际访问的页面集合。</p>
+<p>工作集大小可能小于窗口尺寸，根据工作集大小动态调整窗口尺寸，一般来说驻留集大小不能小于工作集大小。</p>
+<h4 id="调入策略："><a href="#调入策略：" class="headerlink" title="调入策略："></a>调入策略：</h4><p>从何处调入页面</p>
+<p><img src="https://img-blog.csdnimg.cn/20190709015651672.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 
       
     </div>
@@ -654,7 +643,7 @@
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
     
-    <a href="http://yoursite.com/2019/07/08/内存管理/" title="内存管理||物理内存">http://yoursite.com/2019/07/08/内存管理/</a>
+    <a href="http://yoursite.com/2019/07/10/内存管理-虚拟内存/" title="内存管理">http://yoursite.com/2019/07/10/内存管理-虚拟内存/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
@@ -694,8 +683,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/08/求连通图的关节点/" rel="next" title="求连通图的关节点">
-                <i class="fa fa-chevron-left"></i> 求连通图的关节点
+              <a href="/2019/07/08/次优查找树的c-实现/" rel="next" title="次优查找树的c++实现">
+                <i class="fa fa-chevron-left"></i> 次优查找树的c++实现
               </a>
             
           </div>
@@ -704,8 +693,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/07/08/图中两点的最短路径-迪杰斯特拉算法/" rel="prev" title="图中两点的最短路径-迪杰斯特拉算法">
-                图中两点的最短路径-迪杰斯特拉算法 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/07/10/进程管理/" rel="prev" title="进程管理">
+                进程管理 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -967,7 +956,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理的层次"><span class="nav-number">1.</span> <span class="nav-text">内存管理的层次</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存管理的目标"><span class="nav-number">2.</span> <span class="nav-text">内存管理的目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#地址空间-amp-地址生成"><span class="nav-number">3.</span> <span class="nav-text">地址空间 &amp; 地址生成</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#地址空间定义："><span class="nav-number">3.1.</span> <span class="nav-text">地址空间定义：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑地址空间的生成："><span class="nav-number">3.2.</span> <span class="nav-text">逻辑地址空间的生成：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#逻辑地址和物理地址的对应："><span class="nav-number">3.3.</span> <span class="nav-text">逻辑地址和物理地址的对应：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连续内存分配："><span class="nav-number">4.</span> <span class="nav-text">连续内存分配：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内存碎片："><span class="nav-number">4.1.</span> <span class="nav-text">内存碎片：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分区的动态分配："><span class="nav-number">4.2.</span> <span class="nav-text">分区的动态分配：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#分配策略："><span class="nav-number">4.2.1.</span> <span class="nav-text">分配策略：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#减少内存碎片的方法："><span class="nav-number">4.3.</span> <span class="nav-text">减少内存碎片的方法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#伙伴系统："><span class="nav-number">4.4.</span> <span class="nav-text">伙伴系统：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#伙伴系统的实现"><span class="nav-number">4.4.1.</span> <span class="nav-text">伙伴系统的实现</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#非连续的内存分配："><span class="nav-number">5.</span> <span class="nav-text">非连续的内存分配：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分段"><span class="nav-number">5.1.</span> <span class="nav-text">分段</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#寻址方案的实现："><span class="nav-number">5.1.1.</span> <span class="nav-text">寻址方案的实现：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分页"><span class="nav-number">5.2.</span> <span class="nav-text">分页</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页表"><span class="nav-number">5.3.</span> <span class="nav-text">页表</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#页存储管理机制存在性能问题："><span class="nav-number">5.3.1.</span> <span class="nav-text">页存储管理机制存在性能问题：</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#覆盖技术："><span class="nav-number">1.</span> <span class="nav-text">覆盖技术：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#交换技术："><span class="nav-number">2.</span> <span class="nav-text">交换技术：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#覆盖和交换的区别："><span class="nav-number">3.</span> <span class="nav-text">覆盖和交换的区别：</span></a></li></ol><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟内存："><span class="nav-number"></span> <span class="nav-text">虚拟内存：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#需要程序具有较好的局部性"><span class="nav-number">1.</span> <span class="nav-text">需要程序具有较好的局部性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟内存特征："><span class="nav-number">2.</span> <span class="nav-text">虚拟内存特征：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚拟页式内存管理："><span class="nav-number">3.</span> <span class="nav-text">虚拟页式内存管理：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#缺页中断："><span class="nav-number">3.1.</span> <span class="nav-text">缺页中断：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分段内存管理："><span class="nav-number">4.</span> <span class="nav-text">分段内存管理：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#段页式内存管理："><span class="nav-number">5.</span> <span class="nav-text">段页式内存管理：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟内存的操作系统策略："><span class="nav-number"></span> <span class="nav-text">虚拟内存的操作系统策略：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#读取策略："><span class="nav-number">1.</span> <span class="nav-text">读取策略：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#放置策略："><span class="nav-number">2.</span> <span class="nav-text">放置策略：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#置换策略："><span class="nav-number">3.</span> <span class="nav-text">置换策略：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#最佳置换算法-OPT"><span class="nav-number">3.1.</span> <span class="nav-text">最佳置换算法(OPT)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#先进先出置换算法-FIFO"><span class="nav-number">3.2.</span> <span class="nav-text">先进先出置换算法(FIFO)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#最近最久未使用置换算法-LRU"><span class="nav-number">3.3.</span> <span class="nav-text">最近最久未使用置换算法(LRU)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#时钟置换算法-CLOCK"><span class="nav-number">3.4.</span> <span class="nav-text">时钟置换算法(CLOCK)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#改进型时钟置换算法"><span class="nav-number">3.5.</span> <span class="nav-text">改进型时钟置换算法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分配策略："><span class="nav-number">4.</span> <span class="nav-text">分配策略：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#抖动-颠簸-现象"><span class="nav-number">4.1.</span> <span class="nav-text">抖动(颠簸)现象</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#防止方法："><span class="nav-number">4.1.1.</span> <span class="nav-text">防止方法：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调入策略："><span class="nav-number">5.</span> <span class="nav-text">调入策略：</span></a></li></ol></li></div>
             
 
           </div>

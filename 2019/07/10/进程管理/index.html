@@ -94,22 +94,23 @@
 
 
 
-  <meta name="description" content="代码带有注释，不详细解释，检测采用严蔚敏老师数据结构的一个范例  HuffmanCode.h 1234567891011121314#ifndef _HUFFMANCODE_H_#define _HUFFMANCODE_H_#include &amp;lt;stdbool.h&amp;gt;typedef struct &amp;#123;	unsigned int weight;	unsigned int paren">
-<meta name="keywords" content="c,数据结构">
+  <meta name="description" content="进程组成：PCBPCB：系统为每个运行的程序配置一个数据结构，称为进程控制块(PCB)，用来描述进程的各种信息(如程序代码存放位置) PCB，程序段，数据段三部分构成了进程实体(进程映像)。所谓创建进程，实际上是创建进程实体中的PCB。撤销进程实际就是撤销进程的PCB，PCB是进程存在的唯一标志。 PCB组成：（进程的管理者） 进程描述信息 进程标识符PID 创建此进程的父进程 用户标志符UID">
+<meta name="keywords" content="操作系统">
 <meta property="og:type" content="article">
-<meta property="og:title" content="哈夫曼树及哈夫曼编码的实现">
-<meta property="og:url" content="http://yoursite.com/2019/07/05/哈夫曼树及哈夫曼编码的实现/index.html">
+<meta property="og:title" content="进程管理">
+<meta property="og:url" content="http://yoursite.com/2019/07/10/进程管理/index.html">
 <meta property="og:site_name" content="PerryWang🍎博客">
-<meta property="og:description" content="代码带有注释，不详细解释，检测采用严蔚敏老师数据结构的一个范例  HuffmanCode.h 1234567891011121314#ifndef _HUFFMANCODE_H_#define _HUFFMANCODE_H_#include &amp;lt;stdbool.h&amp;gt;typedef struct &amp;#123;	unsigned int weight;	unsigned int paren">
+<meta property="og:description" content="进程组成：PCBPCB：系统为每个运行的程序配置一个数据结构，称为进程控制块(PCB)，用来描述进程的各种信息(如程序代码存放位置) PCB，程序段，数据段三部分构成了进程实体(进程映像)。所谓创建进程，实际上是创建进程实体中的PCB。撤销进程实际就是撤销进程的PCB，PCB是进程存在的唯一标志。 PCB组成：（进程的管理者） 进程描述信息 进程标识符PID 创建此进程的父进程 用户标志符UID">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://img-blog.csdn.net/20180918112416405?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
-<meta property="og:image" content="https://img-blog.csdn.net/20180918112442174?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
-<meta property="og:image" content="https://img-blog.csdn.net/20180918112507414?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
-<meta property="og:updated_time" content="2019-07-05T14:38:16.309Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190709192044978.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190709192059162.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190709192105862.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190709192112864.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-07-10T14:29:36.425Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="哈夫曼树及哈夫曼编码的实现">
-<meta name="twitter:description" content="代码带有注释，不详细解释，检测采用严蔚敏老师数据结构的一个范例  HuffmanCode.h 1234567891011121314#ifndef _HUFFMANCODE_H_#define _HUFFMANCODE_H_#include &amp;lt;stdbool.h&amp;gt;typedef struct &amp;#123;	unsigned int weight;	unsigned int paren">
-<meta name="twitter:image" content="https://img-blog.csdn.net/20180918112416405?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70">
+<meta name="twitter:title" content="进程管理">
+<meta name="twitter:description" content="进程组成：PCBPCB：系统为每个运行的程序配置一个数据结构，称为进程控制块(PCB)，用来描述进程的各种信息(如程序代码存放位置) PCB，程序段，数据段三部分构成了进程实体(进程映像)。所谓创建进程，实际上是创建进程实体中的PCB。撤销进程实际就是撤销进程的PCB，PCB是进程存在的唯一标志。 PCB组成：（进程的管理者） 进程描述信息 进程标识符PID 创建此进程的父进程 用户标志符UID">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190709192044978.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
 
 
 
@@ -119,7 +120,7 @@
 
   
   
-  <link rel="canonical" href="http://yoursite.com/2019/07/05/哈夫曼树及哈夫曼编码的实现/">
+  <link rel="canonical" href="http://yoursite.com/2019/07/10/进程管理/">
 
 
 
@@ -129,7 +130,7 @@
   };
 </script>
 
-  <title>哈夫曼树及哈夫曼编码的实现 | PerryWang🍎博客</title>
+  <title>进程管理 | PerryWang🍎博客</title>
   
 
 
@@ -351,7 +352,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/05/哈夫曼树及哈夫曼编码的实现/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/10/进程管理/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="PerryWang">
@@ -368,7 +369,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">哈夫曼树及哈夫曼编码的实现
+          <h1 class="post-title" itemprop="name headline">进程管理
 
               
             
@@ -394,7 +395,7 @@
                 
               
 
-              <time title="创建时间：2019-07-05 16:57:33 / 修改时间：22:38:16" itemprop="dateCreated datePublished" datetime="2019-07-05T16:57:33+08:00">2019-07-05</time>
+              <time title="创建时间：2019-07-10 22:29:02 / 修改时间：22:29:36" itemprop="dateCreated datePublished" datetime="2019-07-10T22:29:02+08:00">2019-07-10</time>
             </span>
           
 
@@ -413,7 +414,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据结构/" itemprop="url" rel="index"><span itemprop="name">数据结构</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/操作系统/" itemprop="url" rel="index"><span itemprop="name">操作系统</span></a></span>
 
                 
                 
@@ -431,8 +432,8 @@
                 </span>
             
                 <span class="post-meta-item-text">评论数：</span>
-                <a href="/2019/07/05/哈夫曼树及哈夫曼编码的实现/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/05/哈夫曼树及哈夫曼编码的实现/" itemprop="commentCount"></span>
+                <a href="/2019/07/10/进程管理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/10/进程管理/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -460,7 +461,7 @@
               
                 <span class="post-meta-item-text">本文字数：</span>
               
-              <span title="本文字数">2.6k</span>
+              <span title="本文字数">2k</span>
             </span>
           
 
@@ -481,23 +482,222 @@
       
 
       
-        <ul>
-<li>代码带有注释，不详细解释，检测采用严蔚敏老师数据结构的一个范例</li>
+        <h3 id="进程组成："><a href="#进程组成：" class="headerlink" title="进程组成："></a>进程组成：</h3><h4 id="PCB"><a href="#PCB" class="headerlink" title="PCB"></a>PCB</h4><p>PCB：系统为每个运行的程序配置一个数据结构，称为进程控制块(PCB)，用来描述进程的各种信息(如程序代码存放位置)</p>
+<p><strong>PCB</strong>，<strong>程序段</strong>，<strong>数据段</strong>三部分构成了<strong>进程实体</strong>(进程映像)。所谓创建进程，实际上是创建进程实体中的PCB。撤销进程实际就是撤销进程的PCB，PCB是进程存在的唯一标志。</p>
+<h5 id="PCB组成：（进程的管理者）"><a href="#PCB组成：（进程的管理者）" class="headerlink" title="PCB组成：（进程的管理者）"></a>PCB组成：（进程的管理者）</h5><ul>
+<li>进程描述信息<ul>
+<li>进程标识符PID</li>
+<li>创建此进程的父进程</li>
+<li>用户标志符UID</li>
 </ul>
-<p><strong>HuffmanCode.h</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> _HUFFMANCODE_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> _HUFFMANCODE_H_</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdbool.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> weight;</span><br><span class="line">	<span class="keyword">unsigned</span> <span class="keyword">int</span> parent, lchild, rchild;</span><br><span class="line">	</span><br><span class="line">&#125;HTNode, *HuffmanTree;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">char</span> ** HuffmanCode;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HuffmanCoding</span><span class="params">(HuffmanTree *HT, HuffmanCode *HC, <span class="keyword">int</span> *w, <span class="keyword">int</span> n)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
-
-<p><strong>HuffmanCode.c</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"HuffmanCode.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;limits.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Select</span><span class="params">(HuffmanTree HT, <span class="keyword">int</span> n, <span class="keyword">int</span> *s1, <span class="keyword">int</span> *s2)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">HuffmanCoding</span><span class="params">(HuffmanTree *HT, HuffmanCode *HC, <span class="keyword">int</span> *w, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (n&lt;=<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	<span class="keyword">int</span> m = <span class="number">2</span> * n - <span class="number">1</span>;</span><br><span class="line">	(*HT) = (HuffmanTree)<span class="built_in">malloc</span>((m+<span class="number">1</span>)*<span class="keyword">sizeof</span>(HTNode));</span><br><span class="line">	HuffmanTree p = (*HT) + <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">int</span> i, s1, s2;</span><br><span class="line">	<span class="keyword">for</span> (p = (*HT) + <span class="number">1</span>, i = <span class="number">1</span>; i &lt;= n; ++i, ++p, ++w) &#123;</span><br><span class="line">		(*p).weight = *w;</span><br><span class="line">		(*p).parent = <span class="number">0</span>;</span><br><span class="line">		(*p).lchild = <span class="number">0</span>;</span><br><span class="line">		(*p).rchild = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (; i &lt;= m; ++i, ++p) &#123;</span><br><span class="line">		(*p).weight = <span class="number">0</span>;</span><br><span class="line">		(*p).parent = <span class="number">0</span>;</span><br><span class="line">		(*p).lchild = <span class="number">0</span>;</span><br><span class="line">		(*p).rchild = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> (i = n + <span class="number">1</span>; i &lt;= m; ++i) &#123;</span><br><span class="line">		Select((*HT), i<span class="number">-1</span>, &amp;s1, &amp;s2);</span><br><span class="line">		(*HT)[s1].parent = i;</span><br><span class="line">		(*HT)[s2].parent = i;</span><br><span class="line">		(*HT)[i].lchild = s1;</span><br><span class="line">		(*HT)[i].rchild = s2;</span><br><span class="line">		(*HT)[i].weight = (*HT)[s1].weight + (*HT)[s2].weight;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// - - - 从叶子到根逆向求每个字符的哈夫曼编码 - - -</span></span><br><span class="line">	(*HC) = (HuffmanCode)<span class="built_in">malloc</span>((n+<span class="number">1</span>)*<span class="keyword">sizeof</span>(<span class="keyword">char</span>*)); <span class="comment">//分配n个字符编码的头指针向量</span></span><br><span class="line">	<span class="keyword">char</span> *cd = (<span class="keyword">char</span>*)<span class="built_in">malloc</span>(n*<span class="keyword">sizeof</span>(<span class="keyword">char</span>)); <span class="comment">//分配求编码的工作空间</span></span><br><span class="line"> 	cd[n<span class="number">-1</span>] = <span class="string">'\0'</span>;</span><br><span class="line">	<span class="keyword">for</span> (i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">		<span class="keyword">int</span> start = n - <span class="number">1</span>;</span><br><span class="line">		<span class="keyword">int</span> c, f;</span><br><span class="line">		<span class="keyword">for</span> (c = i, f = (*HT)[i].parent; f != <span class="number">0</span>; c = f, f = (*HT)[f].parent)</span><br><span class="line">			<span class="keyword">if</span> ((*HT)[f].lchild == c)</span><br><span class="line">				cd[--start] = <span class="string">'0'</span>;</span><br><span class="line">			<span class="keyword">else</span> </span><br><span class="line">				cd[--start] = <span class="string">'1'</span>;</span><br><span class="line">		(*HC)[i] = (<span class="keyword">char</span>*)<span class="built_in">malloc</span>((n - start) * <span class="keyword">sizeof</span>(<span class="keyword">char</span>));</span><br><span class="line">	<span class="comment">/*	for (int j = 0; j &lt; start; j++) &#123;</span></span><br><span class="line"><span class="comment">			cd++;</span></span><br><span class="line"><span class="comment">		&#125;*/</span></span><br><span class="line">		<span class="built_in">strcpy</span>((*HC)[i], &amp;cd[start]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">free</span>(cd);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Select</span><span class="params">(HuffmanTree HT, <span class="keyword">int</span> n, <span class="keyword">int</span> *s1, <span class="keyword">int</span> *s2)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> min = INT_MAX, semin = INT_MAX;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">		<span class="keyword">if</span> (HT[i].parent == <span class="number">0</span> &amp;&amp; HT[i].weight &lt; min) &#123;</span><br><span class="line">			min = HT[i].weight;</span><br><span class="line">			*s1 = i;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	HT[*s1].parent = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i) &#123;</span><br><span class="line">		<span class="keyword">if</span> (HT[i].parent == <span class="number">0</span> &amp;&amp; HT[i].weight &lt; semin) &#123;</span><br><span class="line">			semin = HT[i].weight;</span><br><span class="line">			*s2 = i;</span><br><span class="line">			<span class="comment">//HT[i].parent = 1;</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(*s1&gt;*s2) &#123;</span><br><span class="line">	    <span class="keyword">int</span> j=*s1;</span><br><span class="line">	    *s1=*s2;</span><br><span class="line">	    *s2=j;</span><br><span class="line">	 &#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//printf("%d\n%d\n",*s1,*s2);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>main.c</strong></p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"HuffmanCode.h"</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span> </span>&#123;</span><br><span class="line">	HuffmanTree T;</span><br><span class="line">	HuffmanCode C;</span><br><span class="line">	<span class="keyword">int</span> w[<span class="number">8</span>] = &#123;<span class="number">5</span>,<span class="number">29</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">14</span>,<span class="number">23</span>,<span class="number">3</span>,<span class="number">11</span>&#125;;</span><br><span class="line">	HuffmanCoding(&amp;T, &amp;C, w, <span class="number">8</span>);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">8</span>; i++) &#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%s\n"</span>,C[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>运行示例：</p>
-<p><img src="https://img-blog.csdn.net/20180918112416405?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdn.net/20180918112442174?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
-<p><strong>运行结果：</strong></p>
-<p><img src="https://img-blog.csdn.net/20180918112507414?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+</li>
+<li>进程控制和管理信息<ul>
+<li>进程当前状态</li>
+<li>进程优先级</li>
+</ul>
+</li>
+<li>资源分配清单<ul>
+<li>程序段指针</li>
+<li>数据段指针</li>
+<li>键盘</li>
+<li>鼠标</li>
+</ul>
+</li>
+<li>处理机相关信息<ul>
+<li>各种寄存器的值<ul>
+<li>进程运行时需要把进程当前的运行情况记录下来保存在PCB中，如程序计数器的值表示了当前程序执行到哪一句。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="进程的组织方式："><a href="#进程的组织方式：" class="headerlink" title="进程的组织方式："></a>进程的组织方式：</h3><ul>
+<li>链接方式<ul>
+<li>按照进程状态将PCB分为多个队列<ul>
+<li>执行队列</li>
+<li>就绪队列：通常会把优先级高的进程放在队头</li>
+<li>阻塞态队列</li>
+</ul>
+</li>
+<li>操作系统持有指向各个队列的指针</li>
+</ul>
+</li>
+<li>索引方式<ul>
+<li>根据进程状态不同，建立几张索引表<ul>
+<li>执行表</li>
+<li>就绪表</li>
+<li>索引表</li>
+</ul>
+</li>
+<li>操作系统持有指向各个索引表的指针</li>
+</ul>
+</li>
+</ul>
+<h3 id="进程特征："><a href="#进程特征：" class="headerlink" title="进程特征："></a>进程特征：</h3><ul>
+<li>动态性</li>
+<li>并发性</li>
+<li>独立性<ul>
+<li>是资源分配最小单位</li>
+</ul>
+</li>
+<li>异步性<ul>
+<li>导致并发程序执行结果的不确定性</li>
+</ul>
+</li>
+<li>结构性</li>
+</ul>
+<h3 id="进程的状态："><a href="#进程的状态：" class="headerlink" title="进程的状态："></a>进程的状态：</h3><p><strong>三种基本状态：</strong></p>
+<ul>
+<li>运行态<ul>
+<li>占有CPU并在CPU上运行</li>
+</ul>
+</li>
+<li>就绪态<ul>
+<li>已具备运行条件，但没有空闲CPU所以暂时不能运行</li>
+</ul>
+</li>
+<li>阻塞态<ul>
+<li>因某一等待时间暂停不能运行</li>
+</ul>
+</li>
+</ul>
+<p><strong>其他两种状态：</strong></p>
+<ul>
+<li>创建态：分配资源，初始化PCB</li>
+<li>终止态：回收进程的资源，撤销PCB</li>
+</ul>
+<p>进程状态转换</p>
+<p><img src="https://img-blog.csdnimg.cn/20190709192044978.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<h3 id="进程控制："><a href="#进程控制：" class="headerlink" title="进程控制："></a>进程控制：</h3><p>进程控制就是实现进程间的状态转换</p>
+<h4 id="原语："><a href="#原语：" class="headerlink" title="原语："></a>原语：</h4><p>一般地，把核心态下执行的某些具有特定功能的程序段成为原语。</p>
+<ul>
+<li>原语有俩类：<ul>
+<li>一类是机器指令级的，其特点是执行期间不允许中断。</li>
+<li>另一类是功能型的，其特点是作为原语的程序段不允许并发执行。</li>
+</ul>
+</li>
+</ul>
+<p>原语操作所做事情：</p>
+<ul>
+<li><p>更新PCB中的信息(修改进程状态标志，将运行环境保存到PCB，从PCB中回复运行环境)</p>
+<ul>
+<li>进程控制原语一定会修改进程状态标志</li>
+</ul>
+</li>
+<li><p>将PCB插入到合适的队列</p>
+</li>
+<li><p>分配/回收资源</p>
+</li>
+</ul>
+<p>相关原语：</p>
+<ul>
+<li>进程的创建</li>
+<li>进程的终止<ul>
+<li>终止其所有子进程</li>
+<li>将该进程的资源归还给父进程或操作系统</li>
+</ul>
+</li>
+<li>进程的阻塞和唤醒</li>
+<li>进程切换<ul>
+<li>运行态-&gt;阻塞态/就绪态</li>
+<li>就绪态-&gt;运行态</li>
+</ul>
+</li>
+</ul>
+<h5 id="进程执行的中断机制"><a href="#进程执行的中断机制" class="headerlink" title="进程执行的中断机制"></a>进程执行的中断机制</h5><table>
+<thead>
+<tr>
+<th align="center">机制</th>
+<th align="center">原因</th>
+<th align="center">使用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">中断</td>
+<td align="center">当前指令的外部执行</td>
+<td align="center">对异步事件的反应</td>
+</tr>
+<tr>
+<td align="center">陷阱</td>
+<td align="center">正在运行的进程</td>
+<td align="center">正在运行进程所产生的错误或异常条件</td>
+</tr>
+<tr>
+<td align="center">系统调用</td>
+<td align="center">显示请求</td>
+<td align="center">调用操作系统函数，例如一个用户进程打开文件，这个调用会导致转移到作为操作系统代码一部分的一个例程上执行并将用户进程转为阻塞态。</td>
+</tr>
+</tbody></table>
+<p>其中中断又分为：</p>
+<ul>
+<li>时钟中断：正在运行的进程的执行时间超过了最大允许时间段</li>
+<li>I/O中断：等待一个IO事件</li>
+<li>内存失效：发生了缺页中断，从硬盘中调入该页框</li>
+</ul>
+<h3 id="进程通信："><a href="#进程通信：" class="headerlink" title="进程通信："></a>进程通信：</h3><p>各进程拥有的内存地址空间相互独立，一个进程不能直接访问另一个进程的地址空间。</p>
+<p><strong>共享存储</strong></p>
+<p>两个进程对共享空间的访问操作是互斥的(通过操作系统提供的互斥工具&lt;如PV操作&gt;)。</p>
+<p><strong>管道通信</strong></p>
+<p>特殊的共享文件，实质是在内存空间中开辟的大小固定的缓冲区</p>
+<ul>
+<li><p>管道只能半双工通信，也就是在某一时间段只能单向传输。若想双向同时通信必须设置两个管道。</p>
+</li>
+<li><p>各进程互斥地访问管道</p>
+</li>
+<li><p>数据以字符流的形式写入管道，当管道写满时，写进程的wirte()系统调用将被阻塞，等待读进程将数据取走。当读进程的将全部数据取走后，管道为空，此时读进程的read()系统调用将被阻塞。</p>
+</li>
+<li><p>如果没写满则不允许读。如果没读空则不允许写。</p>
+</li>
+<li><p>数据一旦读出则从管道中抛弃，意味着读进程最多只能一个，否则可能读错数据。</p>
+</li>
+</ul>
+<p><strong>消息传递</strong></p>
+<ul>
+<li><p>传递结构化消息(消息头/消息体)</p>
+</li>
+<li><p>系统提供发送/接收原语</p>
+</li>
+<li><p>两种方式：</p>
+<ul>
+<li><p>直接通信方式：消息直接挂到接收方的消息队列</p>
+</li>
+<li><p>间接通信方式：消息先发送到中间体(信箱)中</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="线程"><a href="#线程" class="headerlink" title="线程"></a>线程</h3><ul>
+<li><p>传统的进程只能串行地执行一系列程序。引入线程增加并发度。- </p>
+</li>
+<li><p>线程是CPU调度的最小单位</p>
+</li>
+<li><p>进程间并发需要切换进程的运行环境，系统开销很大。线程间并发则不需要，系统开销小。</p>
+</li>
+<li><p>每个线程都有一个线程ID、线程控制块(TCB)</p>
+</li>
+<li><p>同一进程的不同线程可以共享进程的资源。同时由于共享内存地址空间，同一进程中的线程间的通信是无需系统干预。</p>
+</li>
+</ul>
+<h4 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h4><p>用户级线程</p>
+<ul>
+<li><p>由应用程序通过线程库来实现</p>
+</li>
+<li><p>线程管理工作由应用程序负责，线程切换在用户态下即可完成</p>
+</li>
+<li><p>对内核不可变，内核只知道有一个进程，只会分配一个处理器</p>
+</li>
+</ul>
+<p>内核级线程</p>
+<ul>
+<li>线程调度切换由内核负责</li>
+<li>内核级线程才是处理机分配的单位</li>
+</ul>
+<h5 id="多线程模型"><a href="#多线程模型" class="headerlink" title="多线程模型"></a>多线程模型</h5><p>多对一模型(纯粹的用户级线程)</p>
+<p><img src="https://img-blog.csdnimg.cn/20190709192059162.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>一对一模型(纯粹的内核级线程)</p>
+<p><img src="https://img-blog.csdnimg.cn/20190709192105862.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>多对多模型</p>
+<p><img src="https://img-blog.csdnimg.cn/20190709192112864.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 
       
     </div>
@@ -532,7 +732,7 @@
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
     
-    <a href="http://yoursite.com/2019/07/05/哈夫曼树及哈夫曼编码的实现/" title="哈夫曼树及哈夫曼编码的实现">http://yoursite.com/2019/07/05/哈夫曼树及哈夫曼编码的实现/</a>
+    <a href="http://yoursite.com/2019/07/10/进程管理/" title="进程管理">http://yoursite.com/2019/07/10/进程管理/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
@@ -559,9 +759,7 @@
         
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag"># c</a>
-          
-            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+            <a href="/tags/操作系统/" rel="tag"># 操作系统</a>
           
         </div>
       
@@ -574,8 +772,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/07/05/CImg库的配置以及简单使用/" rel="next" title="CImg库的配置以及简单使用">
-                <i class="fa fa-chevron-left"></i> CImg库的配置以及简单使用
+              <a href="/2019/07/10/内存管理-虚拟内存/" rel="next" title="内存管理">
+                <i class="fa fa-chevron-left"></i> 内存管理
               </a>
             
           </div>
@@ -583,10 +781,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/07/05/图的四种存储结构的实现/" rel="prev" title="图的四种存储结构的实现">
-                图的四种存储结构的实现 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -634,8 +828,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -827,6 +1030,23 @@
         </div>
       </div>
 
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程组成："><span class="nav-number">1.</span> <span class="nav-text">进程组成：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PCB"><span class="nav-number">1.1.</span> <span class="nav-text">PCB</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#PCB组成：（进程的管理者）"><span class="nav-number">1.1.1.</span> <span class="nav-text">PCB组成：（进程的管理者）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程的组织方式："><span class="nav-number">2.</span> <span class="nav-text">进程的组织方式：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程特征："><span class="nav-number">3.</span> <span class="nav-text">进程特征：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程的状态："><span class="nav-number">4.</span> <span class="nav-text">进程的状态：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程控制："><span class="nav-number">5.</span> <span class="nav-text">进程控制：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原语："><span class="nav-number">5.1.</span> <span class="nav-text">原语：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#进程执行的中断机制"><span class="nav-number">5.1.1.</span> <span class="nav-text">进程执行的中断机制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程通信："><span class="nav-number">6.</span> <span class="nav-text">进程通信：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程"><span class="nav-number">7.</span> <span class="nav-text">线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分类"><span class="nav-number">7.1.</span> <span class="nav-text">分类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#多线程模型"><span class="nav-number">7.1.1.</span> <span class="nav-text">多线程模型</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
       
 
       
