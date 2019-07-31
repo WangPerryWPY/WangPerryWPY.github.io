@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"always","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="iOS vs Flutter(语法篇)首先说一下，为什么要关心iOS和Flutter的区别问题。因为移动端开发的业务逻辑设计模式等是一致的，区别可能只在于使用的语言不同，实现逻辑的风格不同而已。所以这里我们先分析一下iOS和Flutter的区别到底有哪些，有利于我们更快地去入门。">
+<meta name="keywords" content="iOS,Flutter,Dart,Objective">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOSvsFlutter">
+<meta property="og:url" content="http://yoursite.com/2019/07/31/iOSvsFlutter/index.html">
+<meta property="og:site_name" content="PerryWang🍎博客">
+<meta property="og:description" content="iOS vs Flutter(语法篇)首先说一下，为什么要关心iOS和Flutter的区别问题。因为移动端开发的业务逻辑设计模式等是一致的，区别可能只在于使用的语言不同，实现逻辑的风格不同而已。所以这里我们先分析一下iOS和Flutter的区别到底有哪些，有利于我们更快地去入门。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190729161208558.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019072916124644.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190729161323870.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019072916142898.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+<meta property="og:updated_time" content="2019-07-31T04:57:55.499Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOSvsFlutter">
+<meta name="twitter:description" content="iOS vs Flutter(语法篇)首先说一下，为什么要关心iOS和Flutter的区别问题。因为移动端开发的业务逻辑设计模式等是一致的，区别可能只在于使用的语言不同，实现逻辑的风格不同而已。所以这里我们先分析一下iOS和Flutter的区别到底有哪些，有利于我们更快地去入门。">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190729161208558.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="PerryWang🍎博客" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://yoursite.com/2019/07/31/iOSvsFlutter/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>iOSvsFlutter | PerryWang🍎博客</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">PerryWang🍎博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">分享软件开发中学到的点滴知识</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/WangPerryWPY" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/31/iOSvsFlutter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="PerryWang">
+      <meta itemprop="description" content="sysu-student">
+      <meta itemprop="image" content="/images/头像.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="PerryWang🍎博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOSvsFlutter
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-31 12:52:08 / 修改时间：12:57:55" itemprop="dateCreated datePublished" datetime="2019-07-31T12:52:08+08:00">2019-07-31</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Flutter/" itemprop="url" rel="index"><span itemprop="name">Flutter</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">评论数：</span>
+                <a href="/2019/07/31/iOSvsFlutter/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/07/31/iOSvsFlutter/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 阅读次数： 
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">本文字数：</span>
+              
+              <span title="本文字数">14k</span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="iOS-vs-Flutter-语法篇"><a href="#iOS-vs-Flutter-语法篇" class="headerlink" title="iOS vs Flutter(语法篇)"></a>iOS vs Flutter(语法篇)</h2><p>首先说一下，为什么要关心iOS和Flutter的区别问题。因为移动端开发的业务逻辑设计模式等是一致的，区别可能只在于使用的语言不同，实现逻辑的风格不同而已。所以这里我们先分析一下iOS和Flutter的区别到底有哪些，有利于我们更快地去入门。</p>
+<a id="more"></a>
+
+<h3 id="生命周期："><a href="#生命周期：" class="headerlink" title="生命周期："></a>生命周期：</h3><h4 id="页面加载的生命周期："><a href="#页面加载的生命周期：" class="headerlink" title="页面加载的生命周期："></a>页面加载的生命周期：</h4><p>移动端开发首先要关注的一点肯定要了解一个页面加载的生命周期，就像了解iOS的viewcontroller的生命周期在UI绘制的场景中有多么重要：</p>
+<h5 id="iOS："><a href="#iOS：" class="headerlink" title="iOS："></a>iOS：</h5><p>iOS的设计初衷就是MVC，所以iOS中的核心是Controller。每个Controller都有自己的生命周期：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">//类的初始化方法</span><br><span class="line">+ (void)initialize;</span><br><span class="line">//对象初始化方法</span><br><span class="line">- (instancetype)init;</span><br><span class="line">//从归档初始化</span><br><span class="line">- (instancetype)initWithCoder:(NSCoder *)coder;</span><br><span class="line">//加载视图</span><br><span class="line">-(void)loadView;</span><br><span class="line">//将要加载视图</span><br><span class="line">- (void)viewDidLoad;</span><br><span class="line">//将要布局子视图</span><br><span class="line">-(void)viewWillLayoutSubviews;</span><br><span class="line">//已经布局子视图</span><br><span class="line">-(void)viewDidLayoutSubviews;</span><br><span class="line">//内存警告</span><br><span class="line">- (void)didReceiveMemoryWarning;</span><br><span class="line">//已经展示</span><br><span class="line">-(void)viewDidAppear:(BOOL)animated;</span><br><span class="line">//将要展示</span><br><span class="line">-(void)viewWillAppear:(BOOL)animated;</span><br><span class="line">//将要消失</span><br><span class="line">-(void)viewWillDisappear:(BOOL)animated;</span><br><span class="line">//已经消失</span><br><span class="line">-(void)viewDidDisappear:(BOOL)animated;</span><br><span class="line">//被释放</span><br><span class="line">-(void)dealloc;</span><br></pre></td></tr></table></figure>
+
+<h5 id="flutter："><a href="#flutter：" class="headerlink" title="flutter："></a>flutter：</h5><p>这一点flutter则有所不同，flutter页面加载的核心则是build一棵渲染树的过程。</p>
+<p><img src="https://img-blog.csdnimg.cn/20190729161208558.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>如图所示大体上它的生命周期可以分为三个过程：初始化，状态改变，销毁。每一次build都是页面的一次加载。</p>
+<p><strong>didUpdateWidget</strong>: Flutter中的Widget分为两种：stateful(状态可变)和stateless(状态不可变)。如果是stateful的widget需要实现setState方法。当调用了 setState 将 Widget 的状态被改变时 didUpdateWidget 会被调用，Flutter 会创建一个新的 Widget 来绑定这个 State，并在这个方法中传递旧的 Widget ，因此如果你想比对新旧 Widget 并且对 State 做一些调整，你可以用它，另外如果你的某些 Widget 上涉及到 controller 的变更，要么一定要在这个回调方法中移除旧的 controller 并创建新的 controller 监听。</p>
+<p><strong>dispose</strong>：某些情况下你的 Widget 被释放了，一个很经典的例子是 Navigator.pop 被调用，如果被释放的 Widget 中有一些监听或持久化的变量，你需要在 dispose 中进行释放。很重要的一个应用是在 Bloc 或 Stream 时在这个回调方法中去关闭 Stream。</p>
+<p>可参考博客：<a href="https://segmentfault.com/a/1190000015211309" target="_blank" rel="noopener">https://segmentfault.com/a/1190000015211309</a></p>
+<h4 id="App-的生命周期"><a href="#App-的生命周期" class="headerlink" title="App 的生命周期"></a>App 的生命周期</h4><p>iOS中的APP的生命周期在appdelegate里设置，这里不多说。</p>
+<p>而在flutter中如果我们想监听 App 级别的生命周期，可以通过向Binding 中添加一个􏵞􏴥􏰲􏱀 Observer，同时要实现didChangeAppLifecycleState来监听指定事件的到来，并且最后还需要在 dispose 回调方法中移除这个监听。但限制是它在iOS平台智能监听三种状态。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class LifeCycleDemoState extends State&lt;MyHomePage&gt; with WidgetsBindingObserver &#123;</span><br><span class="line">     @override</span><br><span class="line">     void initState() &#123;</span><br><span class="line">       super.initState();</span><br><span class="line">       WidgetsBinding.instance.addObserver(this);</span><br><span class="line">     &#125;</span><br><span class="line">     @override</span><br><span class="line">     void didChangeAppLifecycleState(AppLifecycleState state) &#123;</span><br><span class="line">       super.didChangeAppLifecycleState(state);</span><br><span class="line">       switch (state) &#123;</span><br><span class="line">         case AppLifecycleState.inactive:</span><br><span class="line">           print(&apos;Application Lifecycle inactive&apos;);</span><br><span class="line">           break;</span><br><span class="line">         case AppLifecycleState.paused:</span><br><span class="line">           print(&apos;Application Lifecycle paused&apos;);</span><br><span class="line">           break;</span><br><span class="line">         case AppLifecycleState.resumed:</span><br><span class="line">           print(&apos;Application Lifecycle resumed&apos;);</span><br><span class="line">           break;</span><br><span class="line">         default:</span><br><span class="line">           print(&apos;Application Lifecycle other&apos;);</span><br><span class="line">       &#125;</span><br><span class="line">		&#125;</span><br><span class="line">    @override</span><br><span class="line">    void dispose()&#123;</span><br><span class="line">      WidgetsBinding.instance.removeObserver(this);</span><br><span class="line">      super.dispose();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>详细使用源码看这里：<a href="https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/widgets/binding.dart" target="_blank" rel="noopener">https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/widgets/binding.dart</a></p>
+<h3 id="布局："><a href="#布局：" class="headerlink" title="布局："></a>布局：</h3><p>Flutter的布局首先要建立一棵Widget树(分析一下UI图建立一棵控件树)，根据树的结构层层嵌套Widget控件。margin和padding等的约束布局设置则有点类似css。</p>
+<h4 id="UIView-gt-Widgets"><a href="#UIView-gt-Widgets" class="headerlink" title="UIView =&gt; Widgets"></a>UIView =&gt; Widgets</h4><p><strong>iOS</strong>：UIView可变，UIView发生改变本质上是间接调用(官方建议不要显式调用，因为这开销很大)了LayoutSubviews方法进行布局上的重构，drawRect进行显示上的重构，updateConstrains进行约束上的重构。三者的更新会在每次RunLoop之后进行update cycle操作(也可以调用layoutIfNeeded等方法进行立刻更新)。(推荐一篇讲述布局不错的文章：<a href="https://juejin.im/post/5a951c655188257a804abf94" target="_blank" rel="noopener">https://juejin.im/post/5a951c655188257a804abf94</a>)</p>
+<p><strong>Flutter</strong>：Widget不可变，也正是由于不可变性，使得Widget比起UIView来说更轻量，因为它不是控件，只是UI的描述。</p>
+<ul>
+<li>widget的分为Stateful(状态可变)和Stateless(状态不可变)两种，Stateful本质上也是不可变的，它只是将状态拆分到State中去管理。State会存储Widget的状态数据，并在widget树重建时携带着它，因此状态不会丢失。</li>
+<li>即使一个widget是有状态的，包含它的父亲的widget也可以是无状态的，只要父widget本身不响应这些变化即可。</li>
+<li>在UI更新这一点上感觉flutter会比iOS要麻烦一点，例如点击按钮导致Text的文字发生变化，iOS只需要简单的target-action就可以，而flutter则需要将无状态的text套在一个StatefulWidget父类里面才可以。</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SampleApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      title: <span class="string">'My App'</span>,</span><br><span class="line">      theme: ThemeData(</span><br><span class="line">        primarySwatch: Colors.blue,</span><br><span class="line">      ),</span><br><span class="line">      home: SampleAppPage(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SampleAppPage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  SampleAppPage(&#123;Key key&#125;) : <span class="keyword">super</span>(key: key);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  _SampleAppPageState createState() =&gt; _SampleAppPageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_SampleAppPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">SampleAppPage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="comment">// Default placeholder text</span></span><br><span class="line">  <span class="built_in">String</span> textToShow = <span class="string">"Flutter"</span>;</span><br><span class="line">  <span class="keyword">void</span> _updateText() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      <span class="comment">// update the text</span></span><br><span class="line">      textToShow = <span class="string">"Text is changed!"</span>;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        title: Text(<span class="string">"My App"</span>),</span><br><span class="line">      ),</span><br><span class="line">      body: Center(child: Text(textToShow)),</span><br><span class="line">      floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: _updateText,</span><br><span class="line">        child: Icon(Icons.update),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="comment">// Do any additional setup after loading the view.</span></span><br><span class="line">    <span class="built_in">UIButton</span> *button = [<span class="built_in">UIButton</span> buttonWithType:<span class="built_in">UIButtonTypeSystem</span>];</span><br><span class="line">    button.frame = <span class="built_in">CGRectMake</span>(<span class="number">300</span>, <span class="number">600</span>, <span class="number">80</span>, <span class="number">40</span>);</span><br><span class="line">    [button setTitle:<span class="string">@"点击"</span> forState:<span class="built_in">UIControlStateNormal</span>];</span><br><span class="line">    [button addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(onClick) forControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>];</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:button];</span><br><span class="line">    <span class="keyword">self</span>.textField = [[<span class="built_in">UITextField</span> alloc] initWithFrame:<span class="built_in">CGRectMake</span>(<span class="number">100</span>, <span class="number">300</span>, <span class="number">200</span>, <span class="number">60</span>)];</span><br><span class="line">    <span class="keyword">self</span>.textField.text = <span class="string">@"iOS"</span>;</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:<span class="keyword">self</span>.textField];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(<span class="keyword">void</span>) onClick</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">self</span>.textField.text = <span class="string">@"text has changed!"</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>在布局方面，iOS分为xib和storyboard还有代码布局的方式，flutter比较统一，通过建立一棵widget树进行布局，同时还有类似Center，Column等Widget进行布局。添加约束的话，iOS通过autolayout来添加约束，而flutter则是通过使用container容器添加padding，margin等属性来添加约束。这点非常类似html和css的布局原理。如下所示：</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/2019072916124644.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<ul>
+<li><p>父子视图的移除方面，比如说举个常见的例子，一个bool值的改变导致两个视图的切换，iOS需要在父view中调用addSubview()或在子view中调用removeFromSuperView() 来动态添加或移除子view，如果涉及到一些传值问题可能还需要通过观察者模式来观察bool值的更新。而在flutter中则需要向父widget中传入一个返回widget的函数，并用bool来控制子widget的创建。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SampleApp</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      title: <span class="string">'Sample App'</span>,</span><br><span class="line">      theme: ThemeData(</span><br><span class="line">        primarySwatch: Colors.blue,</span><br><span class="line">      ),</span><br><span class="line">      home: SampleAppPage(),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SampleAppPage</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  SampleAppPage(&#123;Key key&#125;) : <span class="keyword">super</span>(key: key);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  _SampleAppPageState createState() =&gt; _SampleAppPageState();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_SampleAppPageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">SampleAppPage</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">bool</span> toggle = <span class="keyword">true</span>;</span><br><span class="line">  <span class="keyword">void</span> _toggle() &#123;</span><br><span class="line">    setState(() &#123;</span><br><span class="line">      toggle = !toggle;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  _getToggleChild() &#123;</span><br><span class="line">    <span class="keyword">if</span> (toggle) &#123;</span><br><span class="line">      <span class="keyword">return</span> Text(<span class="string">'View One'</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> CupertinoButton(</span><br><span class="line">        onPressed: () &#123;&#125;,</span><br><span class="line">        child: Text(<span class="string">'View Two'</span>),</span><br><span class="line">      );</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        title: Text(<span class="string">"Sample App"</span>),</span><br><span class="line">      ),</span><br><span class="line">      body: Center(</span><br><span class="line">        child: _getToggleChild(),</span><br><span class="line">      ),</span><br><span class="line">      floatingActionButton: FloatingActionButton(</span><br><span class="line">        onPressed: _toggle,</span><br><span class="line">        tooltip: <span class="string">'Update Text'</span>,</span><br><span class="line">        child: Icon(Icons.update),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="comment">// Do any additional setup after loading the view.</span></span><br><span class="line">    <span class="built_in">UIButton</span> *button = [<span class="built_in">UIButton</span> buttonWithType:<span class="built_in">UIButtonTypeSystem</span>];</span><br><span class="line">    button.frame = <span class="built_in">CGRectMake</span>(<span class="number">350</span>, <span class="number">750</span>, <span class="number">50</span>, <span class="number">30</span>);</span><br><span class="line">    [button setTitle:<span class="string">@"切换"</span> forState:<span class="built_in">UIControlStateNormal</span>];</span><br><span class="line">    [button addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(onClick) forControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>];</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:button];</span><br><span class="line">    <span class="keyword">self</span>.textField = [[<span class="built_in">UITextField</span> alloc] initWithFrame:<span class="built_in">CGRectMake</span>(<span class="number">100</span>, <span class="number">300</span>, <span class="number">200</span>, <span class="number">60</span>)];</span><br><span class="line">    <span class="keyword">self</span>.textField.text = <span class="string">@"View 1"</span>;</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview: <span class="keyword">self</span>.textField];</span><br><span class="line">    <span class="keyword">self</span>.button2 = [<span class="built_in">UIButton</span> buttonWithType:<span class="built_in">UIButtonTypeSystem</span>];</span><br><span class="line">    <span class="keyword">self</span>.button2.frame = <span class="built_in">CGRectMake</span>(<span class="number">100</span>, <span class="number">300</span>, <span class="number">200</span>, <span class="number">60</span>);</span><br><span class="line">    [<span class="keyword">self</span>.button2 setTitle:<span class="string">@"View 2"</span> forState:<span class="built_in">UIControlStateNormal</span>];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(<span class="keyword">void</span>) onClick</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">self</span>.textField.superview) &#123;</span><br><span class="line">        [<span class="keyword">self</span>.textField removeFromSuperview];</span><br><span class="line">        [<span class="keyword">self</span>.view addSubview:<span class="keyword">self</span>.button2];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">        [<span class="keyword">self</span>.button2 removeFromSuperview];</span><br><span class="line">        [<span class="keyword">self</span>.view addSubview:<span class="keyword">self</span>.textField];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="导航"><a href="#导航" class="headerlink" title="导航"></a>导航</h3><h4 id="UIViewController-gt-Scaffold"><a href="#UIViewController-gt-Scaffold" class="headerlink" title="UIViewController =&gt; Scaffold"></a>UIViewController =&gt; Scaffold</h4><p>Flutter中没有专门用来管理视图而且类似那种和View一对一的Controller类。有类似的Scaffold，其包含控制器的appBar，也可以通过body设置一个widget来做其视图。</p>
+<h4 id="页面跳转"><a href="#页面跳转" class="headerlink" title="页面跳转"></a>页面跳转</h4><p>iOS有UINavigationController栈进行push，pop操作，其并不负责显示，而是负责各个页面跳转。或者使用模态视图。</p>
+<p>同时注意iOS通过navigationController导航时要记得添加NavigationController，可在stroyboard设置，如果代码的话添加如下：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ViewController *vc = [ViewController new];</span><br><span class="line"><span class="built_in">UINavigationController</span> *navigation = [[<span class="built_in">UINavigationController</span> alloc] initWithRootViewController:vc];</span><br><span class="line"><span class="keyword">self</span>.window.rootViewController = navigation;</span><br><span class="line">[<span class="keyword">self</span>.window makeKeyWindow];</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// --------  ViewController  --------</span></span><br><span class="line">-(NextViewController *)next</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (!_next)</span><br><span class="line">    &#123;</span><br><span class="line">        _next = [NextViewController new];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> _next;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="comment">// Do any additional setup after loading the view.</span></span><br><span class="line">    <span class="keyword">self</span>.view.backgroundColor = [<span class="built_in">UIColor</span> whiteColor];</span><br><span class="line">    <span class="built_in">UIButton</span> *button = [<span class="built_in">UIButton</span> buttonWithType:<span class="built_in">UIButtonTypeSystem</span>];</span><br><span class="line">    button.frame = <span class="built_in">CGRectMake</span>(<span class="number">350</span>, <span class="number">750</span>, <span class="number">50</span>, <span class="number">30</span>);</span><br><span class="line">    [button setTitle:<span class="string">@"切换"</span> forState:<span class="built_in">UIControlStateNormal</span>];</span><br><span class="line">    [button addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(onClick) forControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>];</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:button];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(<span class="keyword">void</span>) onClick</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">self</span>.navigationController pushViewController:<span class="keyword">self</span>.next animated:<span class="literal">YES</span>];</span><br><span class="line">    <span class="comment">// [self presentViewController:self.next animated:YES completion:nil];</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// --------  NextViewController  --------</span></span><br><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line">    <span class="keyword">self</span>.view.backgroundColor = [<span class="built_in">UIColor</span> whiteColor];</span><br><span class="line">    <span class="comment">// Do any additional setup after loading the view.</span></span><br><span class="line">    <span class="built_in">UIButton</span> *button = [<span class="built_in">UIButton</span> buttonWithType:<span class="built_in">UIButtonTypeSystem</span>];</span><br><span class="line">    button.frame = <span class="built_in">CGRectMake</span>(<span class="number">350</span>, <span class="number">750</span>, <span class="number">50</span>, <span class="number">30</span>);</span><br><span class="line">    [button setTitle:<span class="string">@"返回"</span> forState:<span class="built_in">UIControlStateNormal</span>];</span><br><span class="line">    [button addTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(onClick) forControlEvents:<span class="built_in">UIControlEventTouchUpInside</span>];</span><br><span class="line">    [<span class="keyword">self</span>.view addSubview:button];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">-(<span class="keyword">void</span>) onClick</span><br><span class="line">&#123;</span><br><span class="line">    [<span class="keyword">self</span>.navigationController popViewControllerAnimated:<span class="literal">YES</span>];</span><br><span class="line">    <span class="comment">// [self dismissViewControllerAnimated:YES completion:nil];</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Flutter中可以将MaterialApp理解为iOS的导航控制器，其包含一个navigationBar以及导航栈，这点和iOS是一样的。</p>
+<p>Flutter中使用了 <code>Navigator</code> 和 <code>Routes</code>。一个路由是 App 中“屏幕”或“页面”的抽象，而一个 Navigator 是管理多个路由的 widget。可以粗略地把一个路由对应到一个 <code>UIViewController</code>。Navigator 的工作原理和 iOS 中 <code>UINavigationController</code> 非常相似，当你想跳转到新页面或者从新页面返回时，它可以 <code>push()</code> 和 <code>pop()</code> 路由。</p>
+<p>在页面之间跳转，有如下选择：</p>
+<ul>
+<li>具体指定一个由路由名构成的 <code>Map</code>。（MaterialApp）</li>
+<li>直接跳转到一个路由。（WidgetApp）</li>
+</ul>
+<p>下面是构建一个 Map 的例子：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(MaterialApp(</span><br><span class="line">    home: MyAppHome(), <span class="comment">// becomes the route named '/'</span></span><br><span class="line">    routes: &lt;<span class="built_in">String</span>, WidgetBuilder&gt; &#123;</span><br><span class="line">      <span class="string">'/a'</span>: (BuildContext context) =&gt; MyPage(title: <span class="string">'page A'</span>),</span><br><span class="line">      <span class="string">'/b'</span>: (BuildContext context) =&gt; MyPage(title: <span class="string">'page B'</span>),</span><br><span class="line">      <span class="string">'/c'</span>: (BuildContext context) =&gt; MyPage(title: <span class="string">'page C'</span>),</span><br><span class="line">    &#125;,</span><br><span class="line">  ));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过把路由的名字 <code>push</code> 给一个 <code>Navigator</code> 来跳转：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Navigator.of(context).pushNamed(<span class="string">'/b'</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="页面传值"><a href="#页面传值" class="headerlink" title="页面传值"></a>页面传值</h4><p>iOS中页面传值正向直接通过属性传输即可，反向的话可以通过Block，delegate，通知等方式进行传值。</p>
+<p>而在Flutter中反向传值就简单了很多，举个例子，要跳转到“位置”路由来让用户选择一个地点，可能要这么做：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Map</span> coordinates = <span class="keyword">await</span> Navigator.of(context).pushNamed(<span class="string">'/location'</span>);</span><br></pre></td></tr></table></figure>
+
+<p>之后，在 location 路由中，一旦用户选择了地点，携带结果一起 <code>pop()</code> 出栈：</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Navigator.of(context).pop(&#123;<span class="string">"lat"</span>:<span class="number">43.821757</span>,<span class="string">"long"</span>:<span class="number">-79.226392</span>&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="多线程"><a href="#多线程" class="headerlink" title="多线程"></a>多线程</h3><h4 id="RunLoop-VS-EventLoop"><a href="#RunLoop-VS-EventLoop" class="headerlink" title="RunLoop VS EventLoop"></a><code>RunLoop</code> <strong>VS</strong> <code>EventLoop</code></h4><p>说起Flutter的多线程前先谈一下Flutter中的Event Loop。我们都知道前端开发框架大都是事件驱动的。意味着程序中必然存在事件循环和事件队列。事件循环会不断地从事件队列中获取和处理各种事件。</p>
+<p><strong>iOS</strong>：iOS中的类似机制是RunLoop，可以通过一个RunLoopObserver来实现对RunLoop的观察，当遇到Source0，Source1或者Timer等事件会进行处理。下面图可以很清晰的理解整个过程。(关于RunLoop的讲解推荐一篇很详细的文章：<a href="https://juejin.im/post/5add46606fb9a07abf721d1d" target="_blank" rel="noopener">https://juejin.im/post/5add46606fb9a07abf721d1d</a>)</p>
+<p><img src="https://img-blog.csdnimg.cn/20190729161323870.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><strong>Flutter</strong>：Flutter中的Event Loop和JavaScript的基本一样。循环中有两个队列。一个是微任务队列（MicroTask queue），一个是事件队列(Event queue)。这里类似iOS中存在set里面的Source0和Source1。</p>
+<ul>
+<li>event queue: 主要是外部事件，负责处理I/O事件、绘制事件、手势事件、Timer等</li>
+<li>microtask queue：可以自己向<code>isolate</code>内部添加事件，事件的优先级比<code>event queue</code>高。</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/2019072916142898.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3BlcnJ5MDUyOA==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p>两个队列是有优先级的，当<code>isolate</code>开始执行后，会先处理<code>microtask</code>的事件，当<code>microtask</code>队列中没有事件后，才会处理<code>event</code>队列中的事件，并按照这个顺序反复执行。当执行<code>microtask</code>的事件时会阻塞<code>event</code>队列，这会导致渲染响应手势等<code>event</code>事件响应延迟。为保证渲染和手势响应，所以应尽量将耗时操作放到<code>event</code>队列中。</p>
+<h4 id="线程和协程："><a href="#线程和协程：" class="headerlink" title="线程和协程："></a>线程和协程：</h4><p>Flutter中的多线程和异步是比较难理解的一块。先看两个语法糖：</p>
+<ol>
+<li><p>Future：</p>
+<p>学过js的童鞋应该很容易理解这块了，Future就是js里的Promise，曾经js里面延时只能层层回调，这样很容易造成回调地狱。所以应运而生了Promise(Future)，它是一个链式操作，可以通过追加then方法进行多层处理。</p>
+</li>
+<li><p>async/await：用法完全沿用自js。</p>
+</li>
+</ol>
+<p><strong>多协程：</strong></p>
+<p>我们拆开来看，首先对于异步操作这块，flutter基本上是沿用ES6的async和await这些异步语法糖以及Future。这里涉及到一个和传统意义不一样的概念——协程(<a href="https://www.itcodemonkey.com/article/4620.html这篇漫画讲的比较生动，https://www.zhihu.com/question/308641794讲解为什么协程比线程要好)，最早接触是在python里有遇到过，在Flutter中，执行到async则表示进入一个协程，会同步执行async的代码块。当执行到await时，则表示有任务需要等待，CPU则去调度执行其他IO。过一段时间CPU会轮询一次查看某个协程是否任务已经处理完成，有返回结果可以被继续执行，如果可以被继续执行的话，则会沿着上次离开时指针指向的位置继续执行。也就是await标志的位置。" target="_blank" rel="noopener">https://www.itcodemonkey.com/article/4620.html这篇漫画讲的比较生动，https://www.zhihu.com/question/308641794讲解为什么协程比线程要好)，最早接触是在python里有遇到过，在Flutter中，执行到async则表示进入一个协程，会同步执行async的代码块。当执行到await时，则表示有任务需要等待，CPU则去调度执行其他IO。过一段时间CPU会轮询一次查看某个协程是否任务已经处理完成，有返回结果可以被继续执行，如果可以被继续执行的话，则会沿着上次离开时指针指向的位置继续执行。也就是await标志的位置。</a></p>
+<p>iOS中有没有类似的实现呢，其实是有的，个人感觉是串行队列中的<code>dispatch_async</code>操作，遇到耗时操作也不会阻塞，而是放到事件队列中等待当前操作执行完再继续执行。Flutter在当执行到<code>await</code>时，保存当前的上下文，并将当前位置标记为待处理任务，用一个指针指向当前位置，并将待处理任务放入当前线程的队列中。在每个事件循环时都去询问这个任务，如果需要进行处理，就恢复上下文进行任务处理。</p>
+<p><strong>多线程：</strong></p>
+<p>而async和await是沿用自js的，但有一点要注意的是，js是脚本语言，所以必须是单线程的，到这里就足够了。而flutter是手机框架，很可能我们要进行很耗时的IO操作，这仅仅凭异步是解决不了的，必须要多线程。这里flutter引入了新的方案，叫做isolate。</p>
+<p>但isolate和普通的Thread还不同，它具有独立的内存，isolate间的通信通过port来实现，这个port消息传递的过程是异步的。实例化一个isolate的过程也就是实例化isolate这个结构体、在堆中分配线程内存，配置port。</p>
+<p>感觉从操作来看其实isolate更像是进程，而实际async则更像是线程操作。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">loadData() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="comment">// 通过spawn新建一个isolate，并绑定静态方法</span></span><br><span class="line">    ReceivePort receivePort =ReceivePort();</span><br><span class="line">    <span class="keyword">await</span> Isolate.spawn(dataLoader, receivePort.sendPort);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 获取新isolate的监听port</span></span><br><span class="line">    SendPort sendPort = <span class="keyword">await</span> receivePort.first;</span><br><span class="line">    <span class="comment">// 调用sendReceive自定义方法</span></span><br><span class="line">    <span class="built_in">List</span> dataList = <span class="keyword">await</span> sendReceive(sendPort, <span class="string">'https://jsonplaceholder.typicode.com/posts'</span>);</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">'dataList <span class="subst">$dataList</span>'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// isolate的绑定方法</span></span><br><span class="line"><span class="keyword">static</span> dataLoader(SendPort sendPort) <span class="keyword">async</span>&#123;</span><br><span class="line">    <span class="comment">// 创建监听port，并将sendPort传给外界用来调用</span></span><br><span class="line">    ReceivePort receivePort =ReceivePort();</span><br><span class="line">    sendPort.send(receivePort.sendPort);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 监听外界调用</span></span><br><span class="line">    <span class="keyword">await</span> <span class="keyword">for</span> (<span class="keyword">var</span> msg <span class="keyword">in</span> receivePort) &#123;</span><br><span class="line">      <span class="built_in">String</span> requestURL =msg[<span class="number">0</span>];</span><br><span class="line">      SendPort callbackPort =msg[<span class="number">1</span>];</span><br><span class="line">    </span><br><span class="line">      Client client = Client();</span><br><span class="line">      Response response = <span class="keyword">await</span> client.<span class="keyword">get</span>(requestURL);</span><br><span class="line">      <span class="built_in">List</span> dataList = json.decode(response.body);</span><br><span class="line">      <span class="comment">// 回调返回值给调用者</span></span><br><span class="line">      callbackPort.send(dataList);</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建自己的监听port，并且向新isolate发送消息</span></span><br><span class="line">Future sendReceive(SendPort sendPort, <span class="built_in">String</span> url) &#123;</span><br><span class="line">    ReceivePort receivePort =ReceivePort();</span><br><span class="line">    sendPort.send([url, receivePort.sendPort]);</span><br><span class="line">    <span class="comment">// 接收到返回值，返回给调用者</span></span><br><span class="line">    <span class="keyword">return</span> receivePort.first;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>(代码引用自<a href="https://lequ7.com/2019/04/26/richang/shen-ru-li-jie-Flutter-duo-xian-cheng/" target="_blank" rel="noopener">https://lequ7.com/2019/04/26/richang/shen-ru-li-jie-Flutter-duo-xian-cheng/</a>)</p>
+<h4 id="网络请求和数据解析"><a href="#网络请求和数据解析" class="headerlink" title="网络请求和数据解析"></a>网络请求和数据解析</h4><p>这点不做详述，理解了Dart的多线程以及网络请求的基本原理也很容易搞懂这块(<a href="https://flutterchina.club/networking/)。" target="_blank" rel="noopener">https://flutterchina.club/networking/)。</a></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>文章不从性能进行分析，而是仅仅从语法方面进行入门比对。其实如果做过Web前端的童鞋学期Flutter来说应该会比较简单，因为Flutter中的Widget布局方式完全类似于html和css。而Dart语言本身有非常像js，尤其是ES6特性引入很多语法糖后的js，这些语法糖大大简化了代码的复杂度。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>PerryWang</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="http://yoursite.com/2019/07/31/iOSvsFlutter/" title="iOSvsFlutter">http://yoursite.com/2019/07/31/iOSvsFlutter/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          
+            <a href="/tags/Dart/" rel="tag"># Dart</a>
+          
+            <a href="/tags/Objective/" rel="tag"># Objective</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/11/缓存NSCache详解/" rel="next" title="iOS || 缓存NSCache详解">
+                <i class="fa fa-chevron-left"></i> iOS || 缓存NSCache详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/头像.png" alt="PerryWang">
+            
+              <p class="site-author-name" itemprop="name">PerryWang</p>
+              <div class="site-description motion-element" itemprop="description">sysu-student</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">90</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  
+                    
+                      <a href="/categories/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">23</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/WangPerryWPY" title="GitHub &rarr; https://github.com/WangPerryWPY" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://blog.csdn.net/perry0528" title="CSDN &rarr; https://blog.csdn.net/perry0528" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:1731611872@qq.com" title="E-Mail &rarr; mailto:1731611872@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+             <div class="cc-license motion-element" itemprop="license">
+              
+              
+                
+              
+              
+              
+              <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+             </div>
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS-vs-Flutter-语法篇"><span class="nav-number">1.</span> <span class="nav-text">iOS vs Flutter(语法篇)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生命周期："><span class="nav-number">1.1.</span> <span class="nav-text">生命周期：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#页面加载的生命周期："><span class="nav-number">1.1.1.</span> <span class="nav-text">页面加载的生命周期：</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#iOS："><span class="nav-number">1.1.1.1.</span> <span class="nav-text">iOS：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#flutter："><span class="nav-number">1.1.1.2.</span> <span class="nav-text">flutter：</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#App-的生命周期"><span class="nav-number">1.1.2.</span> <span class="nav-text">App 的生命周期</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#布局："><span class="nav-number">1.2.</span> <span class="nav-text">布局：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UIView-gt-Widgets"><span class="nav-number">1.2.1.</span> <span class="nav-text">UIView =&gt; Widgets</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导航"><span class="nav-number">1.3.</span> <span class="nav-text">导航</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UIViewController-gt-Scaffold"><span class="nav-number">1.3.1.</span> <span class="nav-text">UIViewController =&gt; Scaffold</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页面跳转"><span class="nav-number">1.3.2.</span> <span class="nav-text">页面跳转</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#页面传值"><span class="nav-number">1.3.3.</span> <span class="nav-text">页面传值</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多线程"><span class="nav-number">1.4.</span> <span class="nav-text">多线程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#RunLoop-VS-EventLoop"><span class="nav-number">1.4.1.</span> <span class="nav-text">RunLoop VS EventLoop</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线程和协程："><span class="nav-number">1.4.2.</span> <span class="nav-text">线程和协程：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#网络请求和数据解析"><span class="nav-number">1.4.3.</span> <span class="nav-text">网络请求和数据解析</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Perry</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">站点总字数：</span>
+    
+    <span title="站点总字数">529k</span>
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unjkp.com/valine/dist/Valine.min.js"></script>  
+  <script src="/js/src/Valine.min.js"></script> 
+
+    
+  
+  <script src="/js/src/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(function (item) {
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'SsAWGcn6CHm6Oif4CGFKBhVv-gzGzoHsz',
+        appKey: 'bniDOuxQuzVdGASyS3SyDFF8',
+        placeholder: '说点什么吧！',
+        avatar:'wavatar',
+        guest_info:['nick'] ,  
+        pageSize:'10' || 10,
+    });
+    var infoEle = document.querySelector('#comments .info');
+    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0){
+      infoEle.childNodes.forEach(function(item) {
+        item.parentNode.removeChild(item);
+      });
+    }
+  </script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;"></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/src/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
